@@ -1,0 +1,84 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ namespacedModel }};
+use {{ rootNamespace }}Http\Controllers\Controller;
+use {{ namespacedRequests }}
+use App\Repositories\{{ model }}Repository;
+use App\Support\Response\ApiResponse;
+use Illuminate\Routing\Controllers\HasMiddleware;
+// use Illuminate\Routing\Controllers\Middleware;
+
+class {{ class }} extends Controller implements HasMiddleware
+{
+    // public function __construct(protected {{ model }}Repository $repository) {}
+
+    /**
+     * Get the middleware that should be assigned to the controller.
+     */
+    public static function middleware(): array
+    {
+        return [
+            // new Middleware('can:-index'),
+            // new Middleware('can:-create', only: ['create', 'store']),
+            // new Middleware('can:-update', only: ['edit', 'update']),
+            // new Middleware('can:-delete', only: ['destroy']),
+        ];
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        // $model = $this->repository->table();
+        // return ApiResponse::make($model);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store({{ storeRequest }} $request)
+    {
+        // $model = $this->repository->store($request->validated());
+        // return ApiResponse::data($model);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show({{ model }} ${{ modelVariable }})
+    {
+        // $model = $this->repository->toArray(${{ modelVariable }});
+        // return ApiResponse::data($model);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update({{ updateRequest }} $request, {{ model }} ${{ modelVariable }})
+    {
+        // $model = $this->repository->edit($request->validated(), ${{ modelVariable }});
+        // return ApiResponse::data($model);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy({{ model }} ${{ modelVariable }})
+    {
+        // $this->repository->destroy(${{ modelVariable }});
+        // return ApiResponse::data();
+    }
+
+    /**
+     * Remove resource(s) from storage.
+     */
+    public function destroys(Request $request)
+    {
+        // $validated = $request->validate(['ids' => 'array']);
+        // $this->repository->destroys($validated['ids']);
+        // return ApiResponse::data();
+    }
+}

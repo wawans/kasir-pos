@@ -1,0 +1,59 @@
+<?php
+
+namespace {{ namespace }};
+
+use App\Repositories\Repository;
+
+/**
+ * \{{ namespace }}\{{ class }}
+ *
+ * @property {{ model }} $model
+ *
+ * @method \Illuminate\Database\Eloquent\Builder|{{ model }} query()
+ * @method {{ model }} update(array $attributes, int|{{ model }} $id)
+ */
+class {{ class }} extends Repository
+{
+    /**
+     * Create a new repository instance.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $model
+     */
+    public function __construct(protected \Illuminate\Database\Eloquent\Model $model)
+    {
+    }
+
+    /**
+     * Create a new instance of the given model.
+     *
+     * @param array $attributes
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function store($attributes)
+    {
+        return $this->create($attributes);
+    }
+
+    /**
+     * Update the model in the database.
+     *
+     * @param array $attributes
+     * @param int|\Illuminate\Database\Eloquent\Model $id
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function edit($attributes, $id)
+    {
+        return $this->update($attributes, $id);
+    }
+
+    /**
+     * Delete the model from the database.
+     *
+     * @param int|\Illuminate\Database\Eloquent\Model $id
+     * @return bool|null|void
+     */
+    public function destroy($id)
+    {
+        return $this->delete($id);
+    }
+}

@@ -1,0 +1,73 @@
+<?php
+
+namespace {{ namespace }};
+
+use App\Repositories\Repository;
+// use App\Repositories\Concerns\WithTable;
+
+/**
+ * \{{ namespace }}\{{ class }}
+ *
+ * @property {{ model }} $model
+ *
+ * @method \Illuminate\Database\Eloquent\Builder|{{ model }} query()
+ * @method {{ model }} update(array $attributes, {{ model }} ${{ modelVariable }})
+ */
+class {{ class }} extends Repository
+{
+    // use WithTable;
+
+    /**
+     * Create a new repository instance.
+     *
+     * @param {{ model }} $model
+     */
+    public function __construct(protected {{ model }} $model)
+    {
+    }
+
+    /**
+     * Create a new instance of the given model.
+     *
+     * @param array $attributes
+     * @return {{ model }}
+     */
+    public function store($attributes)
+    {
+        return $this->create($attributes);
+    }
+
+    /**
+     * Update the model in the database.
+     *
+     * @param array $attributes
+     * @param {{ model }} ${{ modelVariable }}
+     * @return {{ model }}
+     */
+    public function edit($attributes, {{ model }} ${{ modelVariable }})
+    {
+        return $this->update($attributes, ${{ modelVariable }});
+    }
+
+    /**
+     * Delete the model from the database.
+     *
+     * @param {{ model }} ${{ modelVariable }}
+     * @return bool|null|void
+     */
+    public function destroy({{ model }} ${{ modelVariable }})
+    {
+        return $this->delete(${{ modelVariable }});
+    }
+
+    /**
+     * Delete the model(s) from the database.
+     *
+     * @param list<string> $keys
+     * @return bool|null|void
+     */
+    public function destroys(array $keys)
+    {
+        return $this->query()->whereIn('id', $keys)->delete();
+    }
+}
