@@ -3,30 +3,26 @@
 namespace App\Repositories;
 
 use App\Data\CustomerData;
+use App\Models\Customer;
 use App\Repositories\Concerns\WithTable;
-use App\Repositories\Repository;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
  * \App\Repositories\CustomerRepository
  *
- * @property \App\Models\Customer $model
+ * @property Customer $model
  *
  * @method \Illuminate\Database\Eloquent\Builder|\App\Models\Customer query()
  * @method \App\Models\Customer update(array $attributes, \App\Models\Customer $customer)
  */
 class CustomerRepository extends Repository
 {
-     use WithTable;
+    use WithTable;
 
     /**
      * Create a new repository instance.
-     *
-     * @param \App\Models\Customer $model
      */
-    public function __construct(protected \App\Models\Customer $model)
-    {
-    }
+    public function __construct(protected Customer $model) {}
 
     public function tableQuery()
     {
@@ -49,8 +45,8 @@ class CustomerRepository extends Repository
     /**
      * Create a new instance of the given model.
      *
-     * @param array $attributes
-     * @return \App\Models\Customer
+     * @param  array  $attributes
+     * @return Customer
      */
     public function store($attributes)
     {
@@ -60,11 +56,10 @@ class CustomerRepository extends Repository
     /**
      * Update the model in the database.
      *
-     * @param array $attributes
-     * @param \App\Models\Customer $customer
-     * @return \App\Models\Customer
+     * @param  array  $attributes
+     * @return Customer
      */
-    public function edit($attributes, \App\Models\Customer $customer)
+    public function edit($attributes, Customer $customer)
     {
         return $this->update($attributes, $customer);
     }
@@ -72,10 +67,9 @@ class CustomerRepository extends Repository
     /**
      * Delete the model from the database.
      *
-     * @param \App\Models\Customer $customer
      * @return bool|null|void
      */
-    public function destroy(\App\Models\Customer $customer)
+    public function destroy(Customer $customer)
     {
         return $this->delete($customer);
     }

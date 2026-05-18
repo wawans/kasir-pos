@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 import { type ColumnDef } from '@tanstack/react-table'
 import { cn } from '@/lib/utils'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -54,7 +55,9 @@ export const columns: ColumnDef<App.Data.BrandData>[] = [
       <DataTableColumnHeader column={column} title='Updated At' />
     ),
     cell: ({ row }) => (
-      <div className='w-fit ps-2 text-nowrap'>{row.getValue('updated_at')}</div>
+      <div className='w-fit ps-2 text-nowrap'>
+        {format(row.getValue('updated_at'), 'dd/MM/yyyy HH:mm:ss')}
+      </div>
     ),
   },
   {

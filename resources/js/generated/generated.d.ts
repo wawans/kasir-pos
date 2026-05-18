@@ -2,14 +2,16 @@ declare namespace App {
 namespace Data {
 export type BrandData = {
 id: number,
+created_at: string,
+updated_at: string,
 name: string,
-description: string,
+description: string | null,
 is_default: boolean,
-created_at: string | null,
-updated_at: string | null,
 };
 export type CustomerData = {
 id: number,
+created_at: string,
+updated_at: string,
 name: string,
 email: string | null,
 phone: string | null,
@@ -18,11 +20,11 @@ city: string | null,
 state: string | null,
 country: string | null,
 is_default: boolean,
-created_at: string | null,
-updated_at: string | null,
 };
 export type SupplierData = {
 id: number,
+created_at: string,
+updated_at: string,
 name: string,
 email: string | null,
 phone: string | null,
@@ -31,16 +33,14 @@ city: string | null,
 state: string | null,
 country: string | null,
 is_default: boolean,
-created_at: string | null,
-updated_at: string | null,
 };
 export type UserData = {
 id: number,
+email_verified_at: string,
+created_at: string,
+updated_at: string,
 name: string,
 email: string,
-email_verified_at: string | null,
-created_at: string | null,
-updated_at: string | null,
 };
 }
 }

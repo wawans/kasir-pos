@@ -6,8 +6,8 @@ use App\Data\CustomerData;
 use App\Models\Customer;
 use App\Repositories\CustomerRepository;
 use App\Support\Response\ApiResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
+
 // use Illuminate\Routing\Controllers\Middleware;
 
 class CustomerController extends Controller implements HasMiddleware
@@ -33,6 +33,7 @@ class CustomerController extends Controller implements HasMiddleware
     public function index()
     {
         $model = $this->repository->table();
+
         return ApiResponse::make($model);
     }
 
@@ -43,6 +44,7 @@ class CustomerController extends Controller implements HasMiddleware
     {
         $model = $this->repository->store($request->toArray());
         $data = $this->repository->toData($model);
+
         return ApiResponse::data($data);
     }
 
@@ -52,6 +54,7 @@ class CustomerController extends Controller implements HasMiddleware
     public function show(Customer $customer)
     {
         $data = $this->repository->toData($customer);
+
         return ApiResponse::data($data);
     }
 
@@ -62,6 +65,7 @@ class CustomerController extends Controller implements HasMiddleware
     {
         $model = $this->repository->edit($request->toArray(), $customer);
         $data = $this->repository->toData($model);
+
         return ApiResponse::data($data);
     }
 
@@ -71,6 +75,7 @@ class CustomerController extends Controller implements HasMiddleware
     public function destroy(Customer $customer)
     {
         $this->repository->destroy($customer);
+
         return ApiResponse::data();
     }
 }

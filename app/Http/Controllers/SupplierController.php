@@ -6,8 +6,8 @@ use App\Data\SupplierData;
 use App\Models\Supplier;
 use App\Repositories\SupplierRepository;
 use App\Support\Response\ApiResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
+
 // use Illuminate\Routing\Controllers\Middleware;
 
 class SupplierController extends Controller implements HasMiddleware
@@ -33,6 +33,7 @@ class SupplierController extends Controller implements HasMiddleware
     public function index()
     {
         $model = $this->repository->table();
+
         return ApiResponse::make($model);
     }
 
@@ -43,6 +44,7 @@ class SupplierController extends Controller implements HasMiddleware
     {
         $model = $this->repository->store($request->toArray());
         $data = $this->repository->toData($model);
+
         return ApiResponse::data($data);
     }
 
@@ -52,6 +54,7 @@ class SupplierController extends Controller implements HasMiddleware
     public function show(Supplier $supplier)
     {
         $data = $this->repository->toData($supplier);
+
         return ApiResponse::data($data);
     }
 
@@ -62,6 +65,7 @@ class SupplierController extends Controller implements HasMiddleware
     {
         $model = $this->repository->edit($request->toArray(), $supplier);
         $data = $this->repository->toData($model);
+
         return ApiResponse::data($data);
     }
 
@@ -71,6 +75,7 @@ class SupplierController extends Controller implements HasMiddleware
     public function destroy(Supplier $supplier)
     {
         $this->repository->destroy($supplier);
+
         return ApiResponse::data();
     }
 }

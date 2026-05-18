@@ -10,22 +10,22 @@ import { type LaravelValidationError } from '@/lib/axios'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Spinner } from '@/components/ui/spinner.tsx'
 import { ConfirmDialog } from '@/components/confirm-dialog'
-import { useDataProvider } from '@/components/data/data-provider.tsx'
+import { useDataProvider } from '@/components/data/data-provider'
 
-type UserMultiDeleteDialogProps<TData> = {
+const CONFIRM_WORD = 'DELETE'
+
+type DeleteBulkDialogProps<TData> = {
   open: boolean
   onOpenChange: (open: boolean) => void
   table: Table<TData>
 }
-
-const CONFIRM_WORD = 'DELETE'
-
-export function UsersMultiDeleteDialog<TData>({
+export function DeleteBulkDialog<TData>({
   open,
   onOpenChange,
   table,
-}: UserMultiDeleteDialogProps<TData>) {
+}: DeleteBulkDialogProps<TData>) {
   const [value, setValue] = useState('')
 
   const selectedRows = table.getFilteredSelectedRowModel().rows
@@ -34,7 +34,7 @@ export function UsersMultiDeleteDialog<TData>({
   const queryClient = useQueryClient()
   const { mutate, isPending } = useMutation({
     mutationFn: (values: typeof selectedRows) =>
-      destroyMany(values.map((f) => (f.original as App.Data.UserData).id)),
+      destroyMany(values.map((f) => (f.original as { id: number }).id)),
     onSuccess: () => {
       setValue('')
       table.resetRowSelection()
@@ -73,7 +73,7 @@ export function UsersMultiDeleteDialog<TData>({
     <ConfirmDialog
       open={open}
       onOpenChange={onOpenChange}
-      form='users-multi-delete-form'
+      form={`${entity}-multi-delete-form`}
       disabled={value.trim() !== CONFIRM_WORD}
       isLoading={isPending}
       title={
@@ -82,13 +82,12 @@ export function UsersMultiDeleteDialog<TData>({
             className='me-1 inline-block stroke-destructive'
             size={18}
           />{' '}
-          Delete {selectedRows.length}{' '}
-          {selectedRows.length > 1 ? 'users' : 'user'}
+          Delete {selectedRows.length} {entity}
         </span>
       }
       desc={
         <form
-          id='users-multi-delete-form'
+          id={`${entity}-multi-delete-form`}
           onSubmit={(e) => {
             e.preventDefault()
             handleDelete()
@@ -96,7 +95,7 @@ export function UsersMultiDeleteDialog<TData>({
           className='space-y-4'
         >
           <p className='mb-2'>
-            Are you sure you want to delete the selected users? <br />
+            Are you sure you want to delete the selected {entity}? <br />
             This action cannot be undone.
           </p>
 
@@ -118,7 +117,7 @@ export function UsersMultiDeleteDialog<TData>({
           </Alert>
         </form>
       }
-      confirmText='Delete'
+      confirmText={isPending ? <Spinner /> : 'Delete'}
       destructive
     />
   )

@@ -1,9 +1,10 @@
 'use client'
 
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { type AxiosError } from 'axios'
-import { type LaravelValidationError } from '@/lib/axios.ts'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { AlertTriangle } from 'lucide-react'
 import { toast } from 'sonner'
+import { type LaravelValidationError } from '@/lib/axios.ts'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Spinner } from '@/components/ui/spinner'
 import { ConfirmDialog } from '@/components/confirm-dialog'
@@ -16,17 +17,16 @@ type DeleteDialogProps = {
 }
 
 export function DeleteDialog({
-                               open,
-                               onOpenChange,
-                               currentRow,
-                             }: DeleteDialogProps) {
+  open,
+  onOpenChange,
+  currentRow,
+}: DeleteDialogProps) {
   const { entity, destroy } = useDataProvider()
   const queryClient = useQueryClient()
   const { mutate, isPending } = useMutation({
-    mutationFn: (value: DeleteDialogProps['currentRow']['id']) => destroy(value),
+    mutationFn: (value: DeleteDialogProps['currentRow']['id']) =>
+      destroy(value),
     onSuccess: () => {
-      setValue('')
-
       onOpenChange(false)
     },
     onSettled: () => {
@@ -53,40 +53,41 @@ export function DeleteDialog({
   }
 
   return (
-   <ConfirmDialog
-     open={open} onOpenChange={onOpenChange}
-     handleConfirm={handleDelete}
-     // form={`${entity}-delete-form`}
-     isLoading={isPending}
-     title={
-       <span className='text-destructive'>
+    <ConfirmDialog
+      open={open}
+      onOpenChange={onOpenChange}
+      handleConfirm={handleDelete}
+      // form={`${entity}-delete-form`}
+      isLoading={isPending}
+      title={
+        <span className='text-destructive'>
           <AlertTriangle
             className='me-1 mb-1 inline-block stroke-destructive'
             size={18}
           />{' '}
-         Delete this {entity}: {currentRow?.id} ?
+          Delete this {entity}: {currentRow?.id} ?
         </span>
-     }
-     desc={
-       <div className='space-y-4'>
-         <p className='mb-2'>
-           Are you sure you want to delete a {entity} with the ID{' '}
-           <span className='font-bold'>{currentRow?.id}</span>?
-           <br />
-           This action will permanently remove the {entity} with the associated
-           data from the system. This action cannot be undone.
-         </p>
+      }
+      desc={
+        <div className='space-y-4'>
+          <p className='mb-2'>
+            Are you sure you want to delete a {entity} with the ID{' '}
+            <span className='font-bold'>{currentRow?.id}</span>?
+            <br />
+            This action will permanently remove the {entity} with the associated
+            data from the system. This action cannot be undone.
+          </p>
 
-         <Alert variant='destructive'>
-           <AlertTitle>Warning!</AlertTitle>
-           <AlertDescription>
-             Please be careful, this operation can not be rolled back.
-           </AlertDescription>
-         </Alert>
-       </div>
-     }
-     confirmText={isPending ? <Spinner /> : 'Delete'}
-     destructive
-     />
+          <Alert variant='destructive'>
+            <AlertTitle>Warning!</AlertTitle>
+            <AlertDescription>
+              Please be careful, this operation can not be rolled back.
+            </AlertDescription>
+          </Alert>
+        </div>
+      }
+      confirmText={isPending ? <Spinner /> : 'Delete'}
+      destructive
+    />
   )
 }

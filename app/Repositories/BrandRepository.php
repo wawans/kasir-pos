@@ -3,30 +3,26 @@
 namespace App\Repositories;
 
 use App\Data\BrandData;
+use App\Models\Brand;
 use App\Repositories\Concerns\WithTable;
-use App\Repositories\Repository;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
  * \App\Repositories\BrandRepository
  *
- * @property \App\Models\Brand $model
+ * @property Brand $model
  *
  * @method \Illuminate\Database\Eloquent\Builder|\App\Models\Brand query()
  * @method \App\Models\Brand update(array $attributes, \App\Models\Brand $brand)
  */
 class BrandRepository extends Repository
 {
-     use WithTable;
+    use WithTable;
 
     /**
      * Create a new repository instance.
-     *
-     * @param \App\Models\Brand $model
      */
-    public function __construct(protected \App\Models\Brand $model)
-    {
-    }
+    public function __construct(protected Brand $model) {}
 
     public function tableQuery()
     {
@@ -49,8 +45,8 @@ class BrandRepository extends Repository
     /**
      * Create a new instance of the given model.
      *
-     * @param array $attributes
-     * @return \App\Models\Brand
+     * @param  array  $attributes
+     * @return Brand
      */
     public function store($attributes)
     {
@@ -60,11 +56,10 @@ class BrandRepository extends Repository
     /**
      * Update the model in the database.
      *
-     * @param array $attributes
-     * @param \App\Models\Brand $brand
-     * @return \App\Models\Brand
+     * @param  array  $attributes
+     * @return Brand
      */
-    public function edit($attributes, \App\Models\Brand $brand)
+    public function edit($attributes, Brand $brand)
     {
         return $this->update($attributes, $brand);
     }
@@ -72,10 +67,9 @@ class BrandRepository extends Repository
     /**
      * Delete the model from the database.
      *
-     * @param \App\Models\Brand $brand
      * @return bool|null|void
      */
-    public function destroy(\App\Models\Brand $brand)
+    public function destroy(Brand $brand)
     {
         return $this->delete($brand);
     }

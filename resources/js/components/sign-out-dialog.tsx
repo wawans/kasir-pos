@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { useNavigate, useLocation, useRouter } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { useAuth } from '@/context/auth-provider'
-import { ConfirmDialog } from '@/components/confirm-dialog'
 import { Spinner } from '@/components/ui/spinner'
+import { ConfirmDialog } from '@/components/confirm-dialog'
 
 interface SignOutDialogProps {
   open: boolean

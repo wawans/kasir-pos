@@ -7,7 +7,6 @@ use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Support\Response\ApiResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
 // use Illuminate\Routing\Controllers\Middleware;
@@ -79,5 +78,5 @@ class UserController extends Controller implements HasMiddleware
         $this->repository->destroy($user);
 
         return ApiResponse::data();
-    }    
+    }
 }

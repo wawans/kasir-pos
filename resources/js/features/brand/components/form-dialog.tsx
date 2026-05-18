@@ -29,12 +29,9 @@ import { Input } from '@/components/ui/input'
 import { Spinner } from '@/components/ui/spinner'
 import { useDataProvider } from '@/components/data/data-provider'
 
-
-const formSchema = z
-  .object({
-    name: z.string().min(1, 'name is required.'),
-  })
-
+const formSchema = z.object({
+  name: z.string().min(1, 'name is required.'),
+})
 
 type DataForm = z.infer<typeof formSchema>
 
@@ -44,25 +41,26 @@ type FormDialogProps = {
   onOpenChange: (open: boolean) => void
 }
 export function FormDialog({
-                             currentRow,
-                             open,
-                             onOpenChange,
-                           }: FormDialogProps) {
+  currentRow,
+  open,
+  onOpenChange,
+}: FormDialogProps) {
   const isEdit = !!currentRow
   const form = useForm<DataForm>({
     resolver: zodResolver(formSchema),
     defaultValues: isEdit
-    ? {
-      ...currentRow
-      } : {
-        name: '',
-      }
+      ? {
+          ...currentRow,
+        }
+      : {
+          name: '',
+        },
   })
 
   const { entity, create, update } = useDataProvider()
   const queryClient = useQueryClient()
   const { mutate, isPending } = useMutation({
-    mutationFn: (values: UserForm) =>
+    mutationFn: (values: DataForm) =>
       isEdit ? update(currentRow.id, values) : create(values),
     onSuccess: () => {
       form.reset()
@@ -134,20 +132,15 @@ export function FormDialog({
                 control={form.control}
                 name='name'
                 render={({ field }) => (
-                  <FormItem >
-                    <FormLabel >
-                      Name
-                    </FormLabel>
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                      />
+                      <Input {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
             </form>
           </Form>
         </div>
@@ -165,5 +158,4 @@ export function FormDialog({
       </DialogContent>
     </Dialog>
   )
-
 }

@@ -3,30 +3,26 @@
 namespace App\Repositories;
 
 use App\Data\SupplierData;
+use App\Models\Supplier;
 use App\Repositories\Concerns\WithTable;
-use App\Repositories\Repository;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
  * \App\Repositories\SupplierRepository
  *
- * @property \App\Models\Supplier $model
+ * @property Supplier $model
  *
  * @method \Illuminate\Database\Eloquent\Builder|\App\Models\Supplier query()
  * @method \App\Models\Supplier update(array $attributes, \App\Models\Supplier $supplier)
  */
 class SupplierRepository extends Repository
 {
-     use WithTable;
+    use WithTable;
 
     /**
      * Create a new repository instance.
-     *
-     * @param \App\Models\Supplier $model
      */
-    public function __construct(protected \App\Models\Supplier $model)
-    {
-    }
+    public function __construct(protected Supplier $model) {}
 
     public function tableQuery()
     {
@@ -49,8 +45,8 @@ class SupplierRepository extends Repository
     /**
      * Create a new instance of the given model.
      *
-     * @param array $attributes
-     * @return \App\Models\Supplier
+     * @param  array  $attributes
+     * @return Supplier
      */
     public function store($attributes)
     {
@@ -60,11 +56,10 @@ class SupplierRepository extends Repository
     /**
      * Update the model in the database.
      *
-     * @param array $attributes
-     * @param \App\Models\Supplier $supplier
-     * @return \App\Models\Supplier
+     * @param  array  $attributes
+     * @return Supplier
      */
-    public function edit($attributes, \App\Models\Supplier $supplier)
+    public function edit($attributes, Supplier $supplier)
     {
         return $this->update($attributes, $supplier);
     }
@@ -72,10 +67,9 @@ class SupplierRepository extends Repository
     /**
      * Delete the model from the database.
      *
-     * @param \App\Models\Supplier $supplier
      * @return bool|null|void
      */
-    public function destroy(\App\Models\Supplier $supplier)
+    public function destroy(Supplier $supplier)
     {
         return $this->delete($supplier);
     }

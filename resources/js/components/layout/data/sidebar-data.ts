@@ -20,6 +20,7 @@ import {
   MessagesSquare,
   ShieldCheck,
   BadgeCheck,
+  Ribbon,
   AudioWaveform,
   Command,
   GalleryVerticalEnd,
@@ -67,7 +68,7 @@ export const sidebarData: SidebarData = {
         {
           title: 'Brand',
           url: '/brand',
-          icon: Users,
+          icon: Ribbon,
         },
       ],
     },

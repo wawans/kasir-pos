@@ -1,15 +1,16 @@
+import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
-import { useDataProvider } from '@/components/data/data-provider'
+import { Trash2, PencilLine, Eye } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem, DropdownMenuSeparator,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Button } from '@/components/ui/button'
-import { DotsHorizontalIcon } from '@radix-ui/react-icons'
-import { Trash2, PencilLine, Eye } from 'lucide-react'
+import { useDataProvider } from '@/components/data/data-provider'
 
 type TableRowActionsProps = {
   row: Row<App.Data.BrandData>
