@@ -1,63 +1,93 @@
 declare namespace App {
-  namespace Data {
-    export type UserData = {
-      id: number | null
-      name: string
-      email: string
-      email_verified_at: string | null
-      created_at: string | null
-      updated_at: string | null
-    }
-  }
+namespace Data {
+export type BrandData = {
+id: number,
+name: string,
+description: string,
+is_default: boolean,
+created_at: string | null,
+updated_at: string | null,
+};
+export type CustomerData = {
+id: number,
+name: string,
+email: string | null,
+phone: string | null,
+address: string | null,
+city: string | null,
+state: string | null,
+country: string | null,
+is_default: boolean,
+created_at: string | null,
+updated_at: string | null,
+};
+export type SupplierData = {
+id: number,
+name: string,
+email: string | null,
+phone: string | null,
+address: string | null,
+city: string | null,
+state: string | null,
+country: string | null,
+is_default: boolean,
+created_at: string | null,
+updated_at: string | null,
+};
+export type UserData = {
+id: number,
+name: string,
+email: string,
+email_verified_at: string | null,
+created_at: string | null,
+updated_at: string | null,
+};
+}
 }
 declare namespace Illuminate {
-  export type CursorPaginator<TKey, TValue> = {
-    data: TKey extends string ? Record<TKey, TValue> : TValue[]
-    links: {
-      url: string | null
-      label: string
-      active: boolean
-    }[]
-    meta: {
-      path: string
-      per_page: number
-      next_cursor: string | null
-      next_page_url: string | null
-      prev_cursor: string | null
-      prev_page_url: string | null
-    }
-  }
-  export type CursorPaginatorInterface<TKey, TValue> =
-    Illuminate.CursorPaginator<TKey, TValue>
-  export type LengthAwarePaginator<TKey, TValue> = {
-    data: TKey extends string ? Record<TKey, TValue> : TValue[]
-    links: {
-      url: string | null
-      label: string
-      active: boolean
-    }[]
-    meta: {
-      total: number
-      current_page: number
-      first_page_url: string
-      from: number | null
-      last_page: number
-      last_page_url: string
-      next_page_url: string | null
-      path: string
-      per_page: number
-      prev_page_url: string | null
-      to: number | null
-    }
-  }
-  export type LengthAwarePaginatorInterface<TKey, TValue> =
-    Illuminate.LengthAwarePaginator<TKey, TValue>
+export type CursorPaginator<TKey, TValue> = {
+data: TKey extends string ? Record<TKey, TValue> : TValue[],
+links: {
+url: string | null,
+label: string,
+active: boolean,
+}[],
+meta: {
+path: string,
+per_page: number,
+next_cursor: string | null,
+next_page_url: string | null,
+prev_cursor: string | null,
+prev_page_url: string | null,
+},
+};
+export type CursorPaginatorInterface<TKey, TValue> = Illuminate.CursorPaginator<TKey, TValue>;
+export type LengthAwarePaginator<TKey, TValue> = {
+data: TKey extends string ? Record<TKey, TValue> : TValue[],
+links: {
+url: string | null,
+label: string,
+active: boolean,
+}[],
+meta: {
+total: number,
+current_page: number,
+first_page_url: string,
+from: number | null,
+last_page: number,
+last_page_url: string,
+next_page_url: string | null,
+path: string,
+per_page: number,
+prev_page_url: string | null,
+to: number | null,
+},
+};
+export type LengthAwarePaginatorInterface<TKey, TValue> = Illuminate.LengthAwarePaginator<TKey, TValue>;
 }
 declare namespace Spatie {
-  namespace LaravelData {
-    export type CursorPaginatedDataCollection<TKey, TValue> =
-      Illuminate.CursorPaginator<TKey, TValue>
-    export type PaginatedDataCollection<TKey, TValue> =
-      Illuminate.LengthAwarePaginator<TKey, TValue>
-  }
+namespace LaravelData {
+export type CursorPaginatedDataCollection<TKey, TValue> = Illuminate.CursorPaginator<TKey, TValue>;
+export type PaginatedDataCollection<TKey, TValue> = Illuminate.LengthAwarePaginator<TKey, TValue>;
+}
 }

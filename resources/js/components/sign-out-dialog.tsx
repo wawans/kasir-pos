@@ -3,6 +3,7 @@ import { useNavigate, useLocation, useRouter } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { useAuth } from '@/context/auth-provider'
 import { ConfirmDialog } from '@/components/confirm-dialog'
+import { Spinner } from '@/components/ui/spinner'
 
 interface SignOutDialogProps {
   open: boolean
@@ -46,7 +47,7 @@ export function SignOutDialog({ open, onOpenChange }: SignOutDialogProps) {
       isLoading={isLoading}
       title='Sign out'
       desc='Are you sure you want to sign out? You will need to sign in again to access your account.'
-      confirmText='Sign out'
+      confirmText={isLoading ? <Spinner /> : 'Sign out'}
       destructive
       handleConfirm={handleSignOut}
       className='sm:max-w-sm'

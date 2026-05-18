@@ -71,14 +71,4 @@ class {{ class }} extends Controller implements HasMiddleware
         // $this->repository->destroy(${{ modelVariable }});
         // return ApiResponse::data();
     }
-
-    /**
-     * Remove resource(s) from storage.
-     */
-    public function destroys(Request $request)
-    {
-        // $validated = $request->validate(['ids' => 'array']);
-        // $this->repository->destroys($validated['ids']);
-        // return ApiResponse::data();
-    }
 }

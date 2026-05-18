@@ -1,13 +1,13 @@
 'use client'
 
 import { z } from 'zod'
-import { AxiosError } from 'axios'
+import { type AxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Save } from 'lucide-react'
 import { toast } from 'sonner'
-import { LaravelValidationError } from '@/lib/axios.ts'
+import { type LaravelValidationError } from '@/lib/axios'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -29,7 +29,6 @@ import { Input } from '@/components/ui/input'
 import { Spinner } from '@/components/ui/spinner'
 import { useDataProvider } from '@/components/data/data-provider.tsx'
 import { PasswordInput } from '@/components/password-input'
-import { type User } from '../data/schema'
 
 const formSchema = z
   .object({
@@ -110,7 +109,7 @@ const formSchema = z
 type UserForm = z.infer<typeof formSchema>
 
 type UserActionDialogProps = {
-  currentRow?: User
+  currentRow?: App.Data.UserData
   open: boolean
   onOpenChange: (open: boolean) => void
 }

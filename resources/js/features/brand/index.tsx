@@ -1,0 +1,34 @@
+import { Data } from '@/components/data/data'
+import { DataTable } from '@/components/data/data-table.tsx'
+import { ActionButtons }  from './components/action-buttons'
+import { columns }  from './components/table-columns'
+import { TableBulkActions }  from './components/table-bulk-actions'
+import { ActionDialogs }  from './components/action-dialogs'
+
+export function Brand() {
+  return (
+    <Data
+      entity='Brand'
+      url='brand'
+      title='Brand'
+      description='Manage your brands and their information here.'
+      breadcrumbs={[
+        {
+          title: 'Dashboard',
+          href: '/',
+        },
+        {
+          title: 'Brand',
+          href: '/brand',
+        },
+      ]}
+      actions={<ActionButtons />}
+    >
+      <DataTable
+        columns={columns}
+        bulkActions={<TableBulkActions />}
+      />
+      <ActionDialogs />
+    </Data>
+  )
+}

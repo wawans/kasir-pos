@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\User\StoreUserRequest;
-use App\Http\Requests\User\UpdateUserRequest;
-use App\Models\User;
-use App\Repositories\UserRepository;
+use App\Data\SupplierData;
+use App\Models\Supplier;
+use App\Repositories\SupplierRepository;
 use App\Support\Response\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
-
 // use Illuminate\Routing\Controllers\Middleware;
 
-class UserController extends Controller implements HasMiddleware
+class SupplierController extends Controller implements HasMiddleware
 {
-    public function __construct(protected UserRepository $repository) {}
+    public function __construct(protected SupplierRepository $repository) {}
 
     /**
      * Get the middleware that should be assigned to the controller.
@@ -35,49 +33,44 @@ class UserController extends Controller implements HasMiddleware
     public function index()
     {
         $model = $this->repository->table();
-
         return ApiResponse::make($model);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserRequest $request)
+    public function store(SupplierData $request)
     {
-        $model = $this->repository->store($request->validated());
+        $model = $this->repository->store($request->toArray());
         $data = $this->repository->toData($model);
-
         return ApiResponse::data($data);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(Supplier $supplier)
     {
-        $model = $this->repository->toData($user);
-
-        return ApiResponse::data($model);
+        $data = $this->repository->toData($supplier);
+        return ApiResponse::data($data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(SupplierData $request, Supplier $supplier)
     {
-        $model = $this->repository->edit($request->validated(), $user);
+        $model = $this->repository->edit($request->toArray(), $supplier);
         $data = $this->repository->toData($model);
-
         return ApiResponse::data($data);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(Supplier $supplier)
     {
-        $this->repository->destroy($user);
-
+        $this->repository->destroy($supplier);
         return ApiResponse::data();
-    }    
+    }
 }
