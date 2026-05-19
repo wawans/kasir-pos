@@ -5,7 +5,7 @@ import { ActionDialogs } from './components/action-dialogs'
 import { TableBulkActions } from './components/table-bulk-actions'
 import { columns } from './components/table-columns'
 
-export function Supplier() {
+export function Suppliers() {
   return (
     <Data
       entity='Supplier'

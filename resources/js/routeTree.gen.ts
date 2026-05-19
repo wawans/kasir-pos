@@ -22,10 +22,10 @@ import { Route as authOtpRouteImport } from './routes/(auth)/otp'
 import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
 import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authenticated/users/index'
-import { Route as AuthenticatedSupplierIndexRouteImport } from './routes/_authenticated/supplier/index'
+import { Route as AuthenticatedSuppliersIndexRouteImport } from './routes/_authenticated/suppliers/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
-import { Route as AuthenticatedCustomerIndexRouteImport } from './routes/_authenticated/customer/index'
-import { Route as AuthenticatedBrandIndexRouteImport } from './routes/_authenticated/brand/index'
+import { Route as AuthenticatedCustomersIndexRouteImport } from './routes/_authenticated/customers/index'
+import { Route as AuthenticatedBrandsIndexRouteImport } from './routes/_authenticated/brands/index'
 import { Route as AuthenticatedSettingsPasswordRouteImport } from './routes/_authenticated/settings/password'
 import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_authenticated/settings/account'
 
@@ -94,10 +94,10 @@ const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexRouteImport.update({
   path: '/users/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedSupplierIndexRoute =
-  AuthenticatedSupplierIndexRouteImport.update({
-    id: '/supplier/',
-    path: '/supplier/',
+const AuthenticatedSuppliersIndexRoute =
+  AuthenticatedSuppliersIndexRouteImport.update({
+    id: '/suppliers/',
+    path: '/suppliers/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedSettingsIndexRoute =
@@ -106,17 +106,18 @@ const AuthenticatedSettingsIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
   } as any)
-const AuthenticatedCustomerIndexRoute =
-  AuthenticatedCustomerIndexRouteImport.update({
-    id: '/customer/',
-    path: '/customer/',
+const AuthenticatedCustomersIndexRoute =
+  AuthenticatedCustomersIndexRouteImport.update({
+    id: '/customers/',
+    path: '/customers/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedBrandIndexRoute = AuthenticatedBrandIndexRouteImport.update({
-  id: '/brand/',
-  path: '/brand/',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
+const AuthenticatedBrandsIndexRoute =
+  AuthenticatedBrandsIndexRouteImport.update({
+    id: '/brands/',
+    path: '/brands/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSettingsPasswordRoute =
   AuthenticatedSettingsPasswordRouteImport.update({
     id: '/password',
@@ -144,10 +145,10 @@ export interface FileRoutesByFullPath {
   '/503': typeof errors503Route
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/password': typeof AuthenticatedSettingsPasswordRoute
-  '/brand/': typeof AuthenticatedBrandIndexRoute
-  '/customer/': typeof AuthenticatedCustomerIndexRoute
+  '/brands/': typeof AuthenticatedBrandsIndexRoute
+  '/customers/': typeof AuthenticatedCustomersIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
-  '/supplier/': typeof AuthenticatedSupplierIndexRoute
+  '/suppliers/': typeof AuthenticatedSuppliersIndexRoute
   '/users/': typeof AuthenticatedUsersIndexRoute
 }
 export interface FileRoutesByTo {
@@ -163,10 +164,10 @@ export interface FileRoutesByTo {
   '/': typeof AuthenticatedIndexRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/password': typeof AuthenticatedSettingsPasswordRoute
-  '/brand': typeof AuthenticatedBrandIndexRoute
-  '/customer': typeof AuthenticatedCustomerIndexRoute
+  '/brands': typeof AuthenticatedBrandsIndexRoute
+  '/customers': typeof AuthenticatedCustomersIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
-  '/supplier': typeof AuthenticatedSupplierIndexRoute
+  '/suppliers': typeof AuthenticatedSuppliersIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
 }
 export interface FileRoutesById {
@@ -185,10 +186,10 @@ export interface FileRoutesById {
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/_authenticated/settings/password': typeof AuthenticatedSettingsPasswordRoute
-  '/_authenticated/brand/': typeof AuthenticatedBrandIndexRoute
-  '/_authenticated/customer/': typeof AuthenticatedCustomerIndexRoute
+  '/_authenticated/brands/': typeof AuthenticatedBrandsIndexRoute
+  '/_authenticated/customers/': typeof AuthenticatedCustomersIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
-  '/_authenticated/supplier/': typeof AuthenticatedSupplierIndexRoute
+  '/_authenticated/suppliers/': typeof AuthenticatedSuppliersIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
 }
 export interface FileRouteTypes {
@@ -207,10 +208,10 @@ export interface FileRouteTypes {
     | '/503'
     | '/settings/account'
     | '/settings/password'
-    | '/brand/'
-    | '/customer/'
+    | '/brands/'
+    | '/customers/'
     | '/settings/'
-    | '/supplier/'
+    | '/suppliers/'
     | '/users/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -226,10 +227,10 @@ export interface FileRouteTypes {
     | '/'
     | '/settings/account'
     | '/settings/password'
-    | '/brand'
-    | '/customer'
+    | '/brands'
+    | '/customers'
     | '/settings'
-    | '/supplier'
+    | '/suppliers'
     | '/users'
   id:
     | '__root__'
@@ -247,10 +248,10 @@ export interface FileRouteTypes {
     | '/_authenticated/'
     | '/_authenticated/settings/account'
     | '/_authenticated/settings/password'
-    | '/_authenticated/brand/'
-    | '/_authenticated/customer/'
+    | '/_authenticated/brands/'
+    | '/_authenticated/customers/'
     | '/_authenticated/settings/'
-    | '/_authenticated/supplier/'
+    | '/_authenticated/suppliers/'
     | '/_authenticated/users/'
   fileRoutesById: FileRoutesById
 }
@@ -360,11 +361,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUsersIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/supplier/': {
-      id: '/_authenticated/supplier/'
-      path: '/supplier'
-      fullPath: '/supplier/'
-      preLoaderRoute: typeof AuthenticatedSupplierIndexRouteImport
+    '/_authenticated/suppliers/': {
+      id: '/_authenticated/suppliers/'
+      path: '/suppliers'
+      fullPath: '/suppliers/'
+      preLoaderRoute: typeof AuthenticatedSuppliersIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/settings/': {
@@ -374,18 +375,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsIndexRouteImport
       parentRoute: typeof AuthenticatedSettingsRouteRoute
     }
-    '/_authenticated/customer/': {
-      id: '/_authenticated/customer/'
-      path: '/customer'
-      fullPath: '/customer/'
-      preLoaderRoute: typeof AuthenticatedCustomerIndexRouteImport
+    '/_authenticated/customers/': {
+      id: '/_authenticated/customers/'
+      path: '/customers'
+      fullPath: '/customers/'
+      preLoaderRoute: typeof AuthenticatedCustomersIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/brand/': {
-      id: '/_authenticated/brand/'
-      path: '/brand'
-      fullPath: '/brand/'
-      preLoaderRoute: typeof AuthenticatedBrandIndexRouteImport
+    '/_authenticated/brands/': {
+      id: '/_authenticated/brands/'
+      path: '/brands'
+      fullPath: '/brands/'
+      preLoaderRoute: typeof AuthenticatedBrandsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/settings/password': {
@@ -426,18 +427,18 @@ const AuthenticatedSettingsRouteRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
-  AuthenticatedBrandIndexRoute: typeof AuthenticatedBrandIndexRoute
-  AuthenticatedCustomerIndexRoute: typeof AuthenticatedCustomerIndexRoute
-  AuthenticatedSupplierIndexRoute: typeof AuthenticatedSupplierIndexRoute
+  AuthenticatedBrandsIndexRoute: typeof AuthenticatedBrandsIndexRoute
+  AuthenticatedCustomersIndexRoute: typeof AuthenticatedCustomersIndexRoute
+  AuthenticatedSuppliersIndexRoute: typeof AuthenticatedSuppliersIndexRoute
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
-  AuthenticatedBrandIndexRoute: AuthenticatedBrandIndexRoute,
-  AuthenticatedCustomerIndexRoute: AuthenticatedCustomerIndexRoute,
-  AuthenticatedSupplierIndexRoute: AuthenticatedSupplierIndexRoute,
+  AuthenticatedBrandsIndexRoute: AuthenticatedBrandsIndexRoute,
+  AuthenticatedCustomersIndexRoute: AuthenticatedCustomersIndexRoute,
+  AuthenticatedSuppliersIndexRoute: AuthenticatedSuppliersIndexRoute,
   AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
 }
 
