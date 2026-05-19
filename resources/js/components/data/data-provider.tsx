@@ -5,11 +5,13 @@ import { type Model } from '@/models'
 import axios from '@/lib/axios.ts'
 import useDialogState from '@/hooks/use-dialog-state'
 
-type Identifier = string | number
+export type Identifier = string | number
 
 type DataDialogType = 'create' | 'update' | 'delete' | 'detail'
 interface DataContextType<
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Entity extends Model = any,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   DataDialogContextType extends DataDialogType = any,
 > {
   entity: string

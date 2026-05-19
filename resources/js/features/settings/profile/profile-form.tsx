@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useAuth } from '@/context/auth-provider.tsx'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -27,15 +28,19 @@ const profileFormSchema = z.object({
 type ProfileFormValues = z.infer<typeof profileFormSchema>
 
 export function ProfileForm() {
+  const { user } = useAuth()
+
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      name: '',
-      email: '',
+      name: user?.name,
+      email: user?.email,
     },
     mode: 'onChange',
   })
 
+  // @ts-expect-error @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function onSubmit(data: ProfileFormValues) {
     // showSubmittedData(data)
   }

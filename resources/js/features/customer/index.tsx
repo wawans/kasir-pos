@@ -5,21 +5,21 @@ import { ActionDialogs } from './components/action-dialogs'
 import { TableBulkActions } from './components/table-bulk-actions'
 import { columns } from './components/table-columns'
 
-export function Brand() {
+export function Customer() {
   return (
     <Data
-      entity='Brand'
-      url='brand'
-      title='Brand'
-      description='Manage your brands and their information here.'
+      entity='Customer'
+      url='customer'
+      title='Customer'
+      description='Manage your customers and their information here.'
       breadcrumbs={[
         {
           title: 'Dashboard',
           href: '/',
         },
         {
-          title: 'Brand',
-          href: '/brand',
+          title: 'Customer',
+          href: '/customer',
         },
       ]}
       actions={<ActionButtons />}

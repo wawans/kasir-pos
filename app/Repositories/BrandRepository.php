@@ -13,6 +13,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  * @property Brand $model
  *
  * @method \Illuminate\Database\Eloquent\Builder|\App\Models\Brand query()
+ * @method \App\Models\Brand create(array $attributes)
  * @method \App\Models\Brand update(array $attributes, \App\Models\Brand $brand)
  */
 class BrandRepository extends Repository
@@ -27,8 +28,8 @@ class BrandRepository extends Repository
     public function tableQuery()
     {
         return QueryBuilder::for($this->query())
-            ->allowedFilters(...$this->model->getFillable())
-            ->allowedSorts(...$this->model->getFillable())
+            ->allowedFilters($this->model->getKeyName(), ...$this->model->getFillable())
+            ->allowedSorts($this->model->getKeyName(), ...$this->model->getFillable())
             ->defaultSort('-updated_at');
     }
 
@@ -50,7 +51,17 @@ class BrandRepository extends Repository
      */
     public function store($attributes)
     {
-        return $this->create($attributes);
+        $model = $this->create($attributes);
+
+        if ($model->is_default) {
+            $other = $this->model->where('is_default', 1)->whereNot('id', $model->id)->first();
+            if ($other) {
+                $other->update(['is_default' => 0]);
+                $other->saveQuietly();
+            }
+        }
+
+        return $model;
     }
 
     /**
@@ -61,7 +72,18 @@ class BrandRepository extends Repository
      */
     public function edit($attributes, Brand $brand)
     {
-        return $this->update($attributes, $brand);
+        $is_default_before = $brand->is_default;
+        $model = $this->update($attributes, $brand);
+
+        if ($model->is_default && ! $is_default_before) {
+            $other = $this->model->where('is_default', 1)->whereNot('id', $model->id)->first();
+            if ($other) {
+                $other->update(['is_default' => 0]);
+                $other->saveQuietly();
+            }
+        }
+
+        return $model;
     }
 
     /**
@@ -71,6 +93,8 @@ class BrandRepository extends Repository
      */
     public function destroy(Brand $brand)
     {
+        // @TODO: ensure brand don't have product(s)
+
         return $this->delete($brand);
     }
 }

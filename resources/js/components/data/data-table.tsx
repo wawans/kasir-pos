@@ -1,32 +1,21 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import type {
-  ColumnDef,
-  ColumnFiltersState,
-  PaginationState,
-  SortingState,
-  VisibilityState,
-  TableOptions,
-} from '@tanstack/react-table'
 import {
+  type ColumnDef,
+  type ColumnFiltersState,
   getCoreRowModel,
-  getFacetedMinMaxValues,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
+  type PaginationState,
+  type SortingState,
+  type TableOptions,
   useReactTable,
+  type VisibilityState,
 } from '@tanstack/react-table'
-import { type Model } from '@/models'
 import { cn } from '@/lib/utils.ts'
-import type { NavigateFn } from '@/hooks/use-table-url-state.ts'
 import {
-  DataTablePagination,
-  DataTableToolbar,
-  DataTableTable,
-  DataTableSkeleton,
   DataTableBulkActions,
+  DataTablePagination,
+  DataTableTable,
+  DataTableToolbar,
 } from '@/components/data-table'
 import { useDataProvider } from '@/components/data/data-provider.tsx'
 import { DataTableContext } from '@/components/data/data-table-provider.tsx'
@@ -43,6 +32,8 @@ export type filter = {
 
 interface DataTableProps<TData> {
   columns: ColumnDef<TData>[]
+  searchPlaceholder?: string
+  searchKey?: string
   filters?: filter[]
   toolbar?: React.ReactNode
   // search?: Record<string, unknown>
@@ -53,6 +44,9 @@ interface DataTableProps<TData> {
 }
 
 export function DataTable<TData>({
+  searchPlaceholder = 'Search ...',
+  searchKey,
+  filters = [],
   columns,
   toolbar,
   bulkActions,
@@ -76,7 +70,10 @@ export function DataTable<TData>({
 
   const { entity, getAll } = useDataProvider()
   const { data, isLoading } = useQuery({
-    queryKey: [entity, { sorting, globalFilter, columnFilters, pagination }],
+    queryKey: [
+      entity,
+      { getAll, sorting, globalFilter, columnFilters, pagination },
+    ],
     queryFn: () =>
       getAll({
         page: pagination.pageIndex + 1,
@@ -85,6 +82,7 @@ export function DataTable<TData>({
         ...(columnFilters.length
           ? {
               filter: columnFilters.reduce((acc, filter) => {
+                // @ts-expect-error no-explicit-any
                 acc[filter.id] = filter.value
                 return acc
               }, {}),
@@ -139,7 +137,12 @@ export function DataTable<TData>({
       )}
     >
       <DataTableContext value={table}>
-        <DataTableToolbar table={table} searchPlaceholder='Search ...'>
+        <DataTableToolbar
+          table={table}
+          searchPlaceholder={searchPlaceholder}
+          searchKey={searchKey}
+          filters={filters}
+        >
           {toolbar}
         </DataTableToolbar>
         <DataTableTable table={table} isLoading={isLoading} />

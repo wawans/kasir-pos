@@ -3,6 +3,7 @@
 namespace App\Data;
 
 use Carbon\CarbonImmutable;
+use Spatie\LaravelData\Attributes\Validation\Email;
 use Spatie\LaravelData\Attributes\WithoutValidation;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -21,6 +22,7 @@ class SupplierData extends Data
 
     public function __construct(
         public string $name,
+        #[Email]
         public ?string $email,
         public ?string $phone,
         public ?string $address,

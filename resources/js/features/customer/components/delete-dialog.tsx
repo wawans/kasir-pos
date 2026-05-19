@@ -1,37 +1,38 @@
 'use client'
 
-import { useState } from 'react'
 import { type AxiosError } from 'axios'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { AlertTriangle } from 'lucide-react'
 import { toast } from 'sonner'
 import { type LaravelValidationError } from '@/lib/axios.ts'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Spinner } from '@/components/ui/spinner'
 import { ConfirmDialog } from '@/components/confirm-dialog'
-import { useDataProvider } from '@/components/data/data-provider.tsx'
+import {
+  type Identifier,
+  useDataProvider,
+} from '@/components/data/data-provider'
 
-type UserDeleteDialogProps = {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  currentRow: App.Data.UserData
+type Row = {
+  id: Identifier
 }
 
-export function UsersDeleteDialog({
+type DeleteDialogProps<TData extends Row = Row> = {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  currentRow: TData
+}
+
+export function DeleteDialog<TData extends Row>({
   open,
   onOpenChange,
   currentRow,
-}: UserDeleteDialogProps) {
-  const [value, setValue] = useState('')
-
+}: DeleteDialogProps<TData>) {
   const { entity, destroy } = useDataProvider()
   const queryClient = useQueryClient()
   const { mutate, isPending } = useMutation({
-    mutationFn: (value: App.Data.UserData['id']) => destroy(value as number),
+    mutationFn: (value: Identifier) => destroy(value),
     onSuccess: () => {
-      setValue('')
-
       onOpenChange(false)
     },
     onSettled: () => {
@@ -54,53 +55,33 @@ export function UsersDeleteDialog({
   })
 
   const handleDelete = () => {
-    if (value.trim() !== currentRow.email) return
-
-    mutate(currentRow.id)
+    mutate(currentRow.id as Identifier)
   }
 
   return (
     <ConfirmDialog
       open={open}
       onOpenChange={onOpenChange}
-      form='users-delete-form'
-      disabled={value.trim() !== currentRow.email}
+      handleConfirm={handleDelete}
       isLoading={isPending}
       title={
         <span className='text-destructive'>
           <AlertTriangle
-            className='me-1 inline-block stroke-destructive'
+            className='me-1 mb-1 inline-block stroke-destructive'
             size={18}
           />{' '}
-          Delete User
+          Delete this {entity}: {currentRow?.id} ?
         </span>
       }
       desc={
-        <form
-          id='users-delete-form'
-          onSubmit={(e) => {
-            e.preventDefault()
-            handleDelete()
-          }}
-          className='space-y-4'
-        >
+        <div className='space-y-4'>
           <p className='mb-2'>
-            Are you sure you want to delete{' '}
-            <span className='font-bold'>{currentRow.email}</span>?
+            Are you sure you want to delete a {entity} with the ID{' '}
+            <span className='font-bold'>{currentRow?.id}</span>?
             <br />
-            This action will permanently remove the user from the system. This
-            cannot be undone.
+            This action will permanently remove the {entity} with the associated
+            data from the system. This action cannot be undone.
           </p>
-
-          <Label className='my-2'>
-            Email:
-            <Input
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              placeholder='Enter email to confirm deletion.'
-              autoFocus
-            />
-          </Label>
 
           <Alert variant='destructive'>
             <AlertTitle>Warning!</AlertTitle>
@@ -108,9 +89,9 @@ export function UsersDeleteDialog({
               Please be careful, this operation can not be rolled back.
             </AlertDescription>
           </Alert>
-        </form>
+        </div>
       }
-      confirmText='Delete'
+      confirmText={isPending ? <Spinner /> : 'Delete'}
       destructive
     />
   )

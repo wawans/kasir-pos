@@ -1,4 +1,4 @@
-import { User } from '@/models'
+import { type User } from '@/models'
 // import { TeamSwitcher } from './team-switcher'
 import { useAuth } from '@/context/auth-provider'
 import { useLayout } from '@/context/layout-provider'

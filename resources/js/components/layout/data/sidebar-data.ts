@@ -1,31 +1,18 @@
 import {
-  Construction,
-  LayoutDashboard,
-  Monitor,
-  Bug,
-  ListTodo,
-  FileX,
-  HelpCircle,
-  Lock,
-  Bell,
-  Package,
-  Palette,
-  ServerOff,
-  Settings,
-  KeyRound,
-  UserCog,
-  UserX,
-  Users,
-  User,
-  MessagesSquare,
-  ShieldCheck,
-  BadgeCheck,
-  Ribbon,
   AudioWaveform,
   Command,
   GalleryVerticalEnd,
+  KeyRound,
+  LayoutDashboard,
+  Package,
+  Ribbon,
+  RulerDimensionLine,
+  Settings,
+  Truck,
+  User,
+  UserCog,
+  Users,
 } from 'lucide-react'
-import { ClerkLogo } from '@/assets/clerk-logo'
 import { type SidebarData } from '../types'
 
 export const sidebarData: SidebarData = {
@@ -60,15 +47,37 @@ export const sidebarData: SidebarData = {
           url: '/',
           icon: LayoutDashboard,
         },
+
+        {
+          title: 'Products',
+          icon: Package,
+          items: [
+            {
+              title: 'Brand',
+              url: '/brand',
+              icon: Ribbon,
+            },
+            {
+              title: 'Unit',
+              url: '/unit',
+              icon: RulerDimensionLine,
+            },
+          ],
+        },
+        {
+          title: 'Customer',
+          url: '/customer',
+          icon: User,
+        },
+        {
+          title: 'Supplier',
+          url: '/supplier',
+          icon: Truck,
+        },
         {
           title: 'Users',
           url: '/users',
           icon: Users,
-        },
-        {
-          title: 'Brand',
-          url: '/brand',
-          icon: Ribbon,
         },
       ],
     },

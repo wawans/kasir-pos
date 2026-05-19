@@ -3,34 +3,41 @@
 import { useState } from 'react'
 import { type AxiosError } from 'axios'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { type Table } from '@tanstack/react-table'
 import { AlertTriangle } from 'lucide-react'
 import { toast } from 'sonner'
-import { type LaravelValidationError } from '@/lib/axios.ts'
+import { type LaravelValidationError } from '@/lib/axios'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Spinner } from '@/components/ui/spinner.tsx'
 import { ConfirmDialog } from '@/components/confirm-dialog'
-import { useDataProvider } from '@/components/data/data-provider.tsx'
+import { useDataProvider } from '@/components/data/data-provider'
 
-type UserDeleteDialogProps = {
+const CONFIRM_WORD = 'DELETE'
+
+type DeleteBulkDialogProps<TData> = {
   open: boolean
   onOpenChange: (open: boolean) => void
-  currentRow: App.Data.UserData
+  table: Table<TData>
 }
-
-export function UsersDeleteDialog({
+export function DeleteBulkDialog<TData>({
   open,
   onOpenChange,
-  currentRow,
-}: UserDeleteDialogProps) {
+  table,
+}: DeleteBulkDialogProps<TData>) {
   const [value, setValue] = useState('')
 
-  const { entity, destroy } = useDataProvider()
+  const selectedRows = table.getFilteredSelectedRowModel().rows
+
+  const { entity, destroyMany } = useDataProvider()
   const queryClient = useQueryClient()
   const { mutate, isPending } = useMutation({
-    mutationFn: (value: App.Data.UserData['id']) => destroy(value as number),
+    mutationFn: (values: typeof selectedRows) =>
+      destroyMany(values.map((f) => (f.original as { id: number }).id)),
     onSuccess: () => {
       setValue('')
+      table.resetRowSelection()
 
       onOpenChange(false)
     },
@@ -54,17 +61,20 @@ export function UsersDeleteDialog({
   })
 
   const handleDelete = () => {
-    if (value.trim() !== currentRow.email) return
+    if (value.trim() !== CONFIRM_WORD) {
+      toast.error(`Please type "${CONFIRM_WORD}" to confirm.`)
+      return
+    }
 
-    mutate(currentRow.id)
+    mutate(selectedRows)
   }
 
   return (
     <ConfirmDialog
       open={open}
       onOpenChange={onOpenChange}
-      form='users-delete-form'
-      disabled={value.trim() !== currentRow.email}
+      form={`${entity}-multi-delete-form`}
+      disabled={value.trim() !== CONFIRM_WORD}
       isLoading={isPending}
       title={
         <span className='text-destructive'>
@@ -72,12 +82,12 @@ export function UsersDeleteDialog({
             className='me-1 inline-block stroke-destructive'
             size={18}
           />{' '}
-          Delete User
+          Delete {selectedRows.length} {entity}
         </span>
       }
       desc={
         <form
-          id='users-delete-form'
+          id={`${entity}-multi-delete-form`}
           onSubmit={(e) => {
             e.preventDefault()
             handleDelete()
@@ -85,19 +95,16 @@ export function UsersDeleteDialog({
           className='space-y-4'
         >
           <p className='mb-2'>
-            Are you sure you want to delete{' '}
-            <span className='font-bold'>{currentRow.email}</span>?
-            <br />
-            This action will permanently remove the user from the system. This
-            cannot be undone.
+            Are you sure you want to delete the selected {entity}? <br />
+            This action cannot be undone.
           </p>
 
-          <Label className='my-2'>
-            Email:
+          <Label className='my-4 flex flex-col items-start gap-1.5'>
+            <span className=''>Confirm by typing "{CONFIRM_WORD}":</span>
             <Input
               value={value}
               onChange={(e) => setValue(e.target.value)}
-              placeholder='Enter email to confirm deletion.'
+              placeholder={`Type "${CONFIRM_WORD}" to confirm.`}
               autoFocus
             />
           </Label>
@@ -110,7 +117,7 @@ export function UsersDeleteDialog({
           </Alert>
         </form>
       }
-      confirmText='Delete'
+      confirmText={isPending ? <Spinner /> : 'Delete'}
       destructive
     />
   )

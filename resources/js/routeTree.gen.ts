@@ -22,7 +22,9 @@ import { Route as authOtpRouteImport } from './routes/(auth)/otp'
 import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
 import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authenticated/users/index'
+import { Route as AuthenticatedSupplierIndexRouteImport } from './routes/_authenticated/supplier/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
+import { Route as AuthenticatedCustomerIndexRouteImport } from './routes/_authenticated/customer/index'
 import { Route as AuthenticatedBrandIndexRouteImport } from './routes/_authenticated/brand/index'
 import { Route as AuthenticatedSettingsPasswordRouteImport } from './routes/_authenticated/settings/password'
 import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_authenticated/settings/account'
@@ -92,11 +94,23 @@ const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexRouteImport.update({
   path: '/users/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSupplierIndexRoute =
+  AuthenticatedSupplierIndexRouteImport.update({
+    id: '/supplier/',
+    path: '/supplier/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSettingsIndexRoute =
   AuthenticatedSettingsIndexRouteImport.update({
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
+  } as any)
+const AuthenticatedCustomerIndexRoute =
+  AuthenticatedCustomerIndexRouteImport.update({
+    id: '/customer/',
+    path: '/customer/',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedBrandIndexRoute = AuthenticatedBrandIndexRouteImport.update({
   id: '/brand/',
@@ -131,7 +145,9 @@ export interface FileRoutesByFullPath {
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/password': typeof AuthenticatedSettingsPasswordRoute
   '/brand/': typeof AuthenticatedBrandIndexRoute
+  '/customer/': typeof AuthenticatedCustomerIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/supplier/': typeof AuthenticatedSupplierIndexRoute
   '/users/': typeof AuthenticatedUsersIndexRoute
 }
 export interface FileRoutesByTo {
@@ -148,7 +164,9 @@ export interface FileRoutesByTo {
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/password': typeof AuthenticatedSettingsPasswordRoute
   '/brand': typeof AuthenticatedBrandIndexRoute
+  '/customer': typeof AuthenticatedCustomerIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
+  '/supplier': typeof AuthenticatedSupplierIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
 }
 export interface FileRoutesById {
@@ -168,7 +186,9 @@ export interface FileRoutesById {
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/_authenticated/settings/password': typeof AuthenticatedSettingsPasswordRoute
   '/_authenticated/brand/': typeof AuthenticatedBrandIndexRoute
+  '/_authenticated/customer/': typeof AuthenticatedCustomerIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/_authenticated/supplier/': typeof AuthenticatedSupplierIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
 }
 export interface FileRouteTypes {
@@ -188,7 +208,9 @@ export interface FileRouteTypes {
     | '/settings/account'
     | '/settings/password'
     | '/brand/'
+    | '/customer/'
     | '/settings/'
+    | '/supplier/'
     | '/users/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -205,7 +227,9 @@ export interface FileRouteTypes {
     | '/settings/account'
     | '/settings/password'
     | '/brand'
+    | '/customer'
     | '/settings'
+    | '/supplier'
     | '/users'
   id:
     | '__root__'
@@ -224,7 +248,9 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/account'
     | '/_authenticated/settings/password'
     | '/_authenticated/brand/'
+    | '/_authenticated/customer/'
     | '/_authenticated/settings/'
+    | '/_authenticated/supplier/'
     | '/_authenticated/users/'
   fileRoutesById: FileRoutesById
 }
@@ -334,12 +360,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUsersIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/supplier/': {
+      id: '/_authenticated/supplier/'
+      path: '/supplier'
+      fullPath: '/supplier/'
+      preLoaderRoute: typeof AuthenticatedSupplierIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings/': {
       id: '/_authenticated/settings/'
       path: '/'
       fullPath: '/settings/'
       preLoaderRoute: typeof AuthenticatedSettingsIndexRouteImport
       parentRoute: typeof AuthenticatedSettingsRouteRoute
+    }
+    '/_authenticated/customer/': {
+      id: '/_authenticated/customer/'
+      path: '/customer'
+      fullPath: '/customer/'
+      preLoaderRoute: typeof AuthenticatedCustomerIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/brand/': {
       id: '/_authenticated/brand/'
@@ -387,6 +427,8 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedBrandIndexRoute: typeof AuthenticatedBrandIndexRoute
+  AuthenticatedCustomerIndexRoute: typeof AuthenticatedCustomerIndexRoute
+  AuthenticatedSupplierIndexRoute: typeof AuthenticatedSupplierIndexRoute
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
 }
 
@@ -394,6 +436,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedBrandIndexRoute: AuthenticatedBrandIndexRoute,
+  AuthenticatedCustomerIndexRoute: AuthenticatedCustomerIndexRoute,
+  AuthenticatedSupplierIndexRoute: AuthenticatedSupplierIndexRoute,
   AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
 }
 

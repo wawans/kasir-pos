@@ -12,18 +12,6 @@ import {
 } from '@/components/ui/form'
 import { PasswordInput } from '@/components/password-input'
 
-const languages = [
-  { label: 'English', value: 'en' },
-  { label: 'French', value: 'fr' },
-  { label: 'German', value: 'de' },
-  { label: 'Spanish', value: 'es' },
-  { label: 'Portuguese', value: 'pt' },
-  { label: 'Russian', value: 'ru' },
-  { label: 'Japanese', value: 'ja' },
-  { label: 'Korean', value: 'ko' },
-  { label: 'Chinese', value: 'zh' },
-] as const
-
 const accountFormSchema = z
   .object({
     password: z
@@ -48,6 +36,8 @@ export function AccountForm() {
     },
   })
 
+  // @ts-expect-error @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function onSubmit(data: AccountFormValues) {
     // showSubmittedData(data)
   }
@@ -82,7 +72,7 @@ export function AccountForm() {
           )}
         />
 
-        <Button type='submit'>Update account</Button>
+        <Button type='submit'>Update password</Button>
       </form>
     </Form>
   )

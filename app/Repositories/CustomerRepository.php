@@ -27,8 +27,8 @@ class CustomerRepository extends Repository
     public function tableQuery()
     {
         return QueryBuilder::for($this->query())
-            ->allowedFilters(...$this->model->getFillable())
-            ->allowedSorts(...$this->model->getFillable())
+            ->allowedFilters($this->model->getKeyName(), ...$this->model->getFillable())
+            ->allowedSorts($this->model->getKeyName(), ...$this->model->getFillable())
             ->defaultSort('-updated_at');
     }
 
@@ -50,7 +50,17 @@ class CustomerRepository extends Repository
      */
     public function store($attributes)
     {
-        return $this->create($attributes);
+        $model = $this->create($attributes);
+
+        if ($model->is_default) {
+            $other = $this->model->where('is_default', 1)->whereNot('id', $model->id)->first();
+            if ($other) {
+                $other->update(['is_default' => 0]);
+                $other->saveQuietly();
+            }
+        }
+
+        return $model;
     }
 
     /**
@@ -61,7 +71,18 @@ class CustomerRepository extends Repository
      */
     public function edit($attributes, Customer $customer)
     {
-        return $this->update($attributes, $customer);
+        $is_default_before = $customer->is_default;
+        $model = $this->update($attributes, $customer);
+
+        if ($model->is_default && ! $is_default_before) {
+            $other = $this->model->where('is_default', 1)->whereNot('id', $model->id)->first();
+            if ($other) {
+                $other->update(['is_default' => 0]);
+                $other->saveQuietly();
+            }
+        }
+
+        return $model;
     }
 
     /**
@@ -71,6 +92,8 @@ class CustomerRepository extends Repository
      */
     public function destroy(Customer $customer)
     {
+        // @TODO: ensure customer dont have sale(s).
+
         return $this->delete($customer);
     }
 }

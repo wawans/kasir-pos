@@ -41,6 +41,8 @@ export function OtpForm({ className, ...props }: OtpFormProps) {
   // eslint-disable-next-line react-hooks/incompatible-library
   const otp = form.watch('otp')
 
+  // @ts-expect-error @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function onSubmit(data: z.infer<typeof formSchema>) {
     setIsLoading(true)
     // showSubmittedData(data)

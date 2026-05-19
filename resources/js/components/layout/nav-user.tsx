@@ -1,15 +1,6 @@
 import { Link } from '@tanstack/react-router'
-import { User } from '@/models'
-import {
-  BadgeCheck,
-  Bell,
-  ChevronsUpDown,
-  CreditCard,
-  KeyRound,
-  LogOut,
-  UserIcon,
-  Sparkles,
-} from 'lucide-react'
+import { type User } from '@/models'
+import { BadgeCheck, ChevronsUpDown, KeyRound, LogOut } from 'lucide-react'
 import { getDisplayNameInitials } from '@/lib/utils'
 import useDialogState from '@/hooks/use-dialog-state'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'

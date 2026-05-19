@@ -33,14 +33,19 @@ import { useDataProvider } from '@/components/data/data-provider'
 
 const formSchema = z.object({
   name: z.string().min(1, 'name is required.'),
-  description: z.string().optional(),
+  email: z.string().optional(),
+  phone: z.string().optional(),
+  address: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  country: z.string().optional(),
   is_default: z.boolean().default(false).optional(),
 })
 
 type DataForm = z.infer<typeof formSchema>
 
 type FormDialogProps = {
-  currentRow?: App.Data.BrandData
+  currentRow?: App.Data.SupplierData
   open: boolean
   onOpenChange: (open: boolean) => void
 }
@@ -52,17 +57,17 @@ export function FormDialog({
   const isEdit = !!currentRow
   const form = useForm<DataForm>({
     resolver: zodResolver(formSchema),
-    mode: 'onChange',
-    defaultValues: isEdit
-      ? {
-          ...currentRow,
-          description: currentRow?.description || '',
-        }
-      : {
-          name: '',
-          description: '',
-          is_default: false,
-        },
+    defaultValues: {
+      ...(isEdit ? currentRow : {}),
+      name: isEdit ? currentRow.name || '' : '',
+      email: isEdit ? currentRow.email || '' : '',
+      phone: isEdit ? currentRow.phone || '' : '',
+      address: isEdit ? currentRow.address || '' : '',
+      city: isEdit ? currentRow.city || '' : '',
+      state: isEdit ? currentRow.state || '' : '',
+      country: isEdit ? currentRow.country || '' : '',
+      is_default: isEdit ? currentRow?.is_default : false,
+    },
   })
 
   const { entity, create, update } = useDataProvider()
@@ -109,6 +114,23 @@ export function FormDialog({
     mutate(values)
   }
 
+  const fields1: {
+    name: Partial<keyof Omit<DataForm, 'is_default'>>
+    label: string
+  }[] = [
+    { name: 'name', label: 'Name' },
+    { name: 'email', label: 'Email' },
+    { name: 'phone', label: 'Phone' },
+  ]
+  const fields2: {
+    name: Partial<keyof Omit<DataForm, 'is_default'>>
+    label: string
+  }[] = [
+    { name: 'city', label: 'City' },
+    { name: 'state', label: 'State' },
+    { name: 'country', label: 'Country' },
+  ]
+
   return (
     <Dialog
       open={open}
@@ -129,32 +151,35 @@ export function FormDialog({
             Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
-        <div className='h-105 w-[calc(100%+0.75rem)] overflow-y-auto py-1 pe-3'>
+        <div className='min-h-105 w-[calc(100%+0.75rem)] overflow-y-auto py-1 pe-3'>
           <Form {...form}>
             <form
               id={`${entity}-form`}
               onSubmit={form.handleSubmit(onSubmit)}
               className='space-y-4 px-0.5'
             >
+              {fields1.map(({ name, label }) => (
+                <FormField
+                  key={name}
+                  control={form.control}
+                  name={name}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{label}</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ))}
               <FormField
                 control={form.control}
-                name='name'
+                name='address'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='description'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>Address</FormLabel>
                     <FormControl>
                       <Textarea className='resize-none' {...field} />
                     </FormControl>
@@ -162,6 +187,22 @@ export function FormDialog({
                   </FormItem>
                 )}
               />
+              {fields2.map(({ name, label }) => (
+                <FormField
+                  key={name}
+                  control={form.control}
+                  name={name}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{label}</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ))}
               <FormField
                 control={form.control}
                 name='is_default'

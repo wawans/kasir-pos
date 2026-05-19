@@ -27,8 +27,8 @@ class SupplierRepository extends Repository
     public function tableQuery()
     {
         return QueryBuilder::for($this->query())
-            ->allowedFilters(...$this->model->getFillable())
-            ->allowedSorts(...$this->model->getFillable())
+            ->allowedFilters($this->model->getKeyName(), ...$this->model->getFillable())
+            ->allowedSorts($this->model->getKeyName(), ...$this->model->getFillable())
             ->defaultSort('-updated_at');
     }
 
@@ -50,7 +50,17 @@ class SupplierRepository extends Repository
      */
     public function store($attributes)
     {
-        return $this->create($attributes);
+        $model = $this->create($attributes);
+
+        if ($model->is_default) {
+            $other = $this->model->where('is_default', 1)->whereNot('id', $model->id)->first();
+            if ($other) {
+                $other->update(['is_default' => 0]);
+                $other->saveQuietly();
+            }
+        }
+
+        return $model;
     }
 
     /**
@@ -61,7 +71,18 @@ class SupplierRepository extends Repository
      */
     public function edit($attributes, Supplier $supplier)
     {
-        return $this->update($attributes, $supplier);
+        $is_default_before = $supplier->is_default;
+        $model = $this->update($attributes, $supplier);
+
+        if ($model->is_default && ! $is_default_before) {
+            $other = $this->model->where('is_default', 1)->whereNot('id', $model->id)->first();
+            if ($other) {
+                $other->update(['is_default' => 0]);
+                $other->saveQuietly();
+            }
+        }
+
+        return $model;
     }
 
     /**
@@ -71,6 +92,8 @@ class SupplierRepository extends Repository
      */
     public function destroy(Supplier $supplier)
     {
+        // @TODO: ensure supplier dont have purchase(s).
+
         return $this->delete($supplier);
     }
 }
