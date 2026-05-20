@@ -6,6 +6,7 @@ import {
   getCoreRowModel,
   type PaginationState,
   type SortingState,
+  // type Table,
   type TableOptions,
   useReactTable,
   type VisibilityState,
@@ -137,7 +138,7 @@ export function DataTable<TData>({
       )}
     >
       <DataTableContext value={table}>
-        <DataTableToolbar
+        <DataTableToolbar<TData>
           table={table}
           searchPlaceholder={searchPlaceholder}
           searchKey={searchKey}
@@ -145,9 +146,9 @@ export function DataTable<TData>({
         >
           {toolbar}
         </DataTableToolbar>
-        <DataTableTable table={table} isLoading={isLoading} />
-        <DataTablePagination table={table} className='mt-auto' />
-        <DataTableBulkActions
+        <DataTableTable<TData> table={table} isLoading={isLoading} />
+        <DataTablePagination<TData> table={table} className='mt-auto' />
+        <DataTableBulkActions<TData>
           table={table}
           entityName={entity}
           children={bulkActions}

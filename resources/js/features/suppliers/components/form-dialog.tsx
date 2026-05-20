@@ -31,16 +31,28 @@ import { Spinner } from '@/components/ui/spinner'
 import { Textarea } from '@/components/ui/textarea.tsx'
 import { useDataProvider } from '@/components/data/data-provider'
 
-const formSchema = z.object({
-  name: z.string().min(1, 'name is required.'),
-  email: z.string().optional(),
-  phone: z.string().optional(),
-  address: z.string().optional(),
-  city: z.string().optional(),
-  state: z.string().optional(),
-  country: z.string().optional(),
-  is_default: z.boolean().default(false).optional(),
-})
+const formSchema = z
+  .object({
+    name: z.string().min(1, 'name is required.'),
+    email: z.string().optional(),
+    phone: z.string().optional(),
+    address: z.string().optional(),
+    city: z.string().optional(),
+    state: z.string().optional(),
+    country: z.string().optional(),
+    is_active: z.boolean().default(true).optional(),
+    is_default: z.boolean().default(false).optional(),
+    note: z.string().optional(),
+  })
+  .refine(
+    ({ is_active, is_default }) => {
+      return !(is_default && !is_active)
+    },
+    {
+      message: 'Set as Active is required.',
+      path: ['is_active'],
+    }
+  )
 
 type DataForm = z.infer<typeof formSchema>
 
@@ -66,6 +78,8 @@ export function FormDialog({
       city: isEdit ? currentRow.city || '' : '',
       state: isEdit ? currentRow.state || '' : '',
       country: isEdit ? currentRow.country || '' : '',
+      note: isEdit ? currentRow?.note || '' : '',
+      is_active: isEdit ? currentRow?.is_active : true,
       is_default: isEdit ? currentRow?.is_default : false,
     },
   })
@@ -115,7 +129,7 @@ export function FormDialog({
   }
 
   const fields1: {
-    name: Partial<keyof Omit<DataForm, 'is_default'>>
+    name: Partial<keyof Omit<DataForm, 'is_default' | 'is_active'>>
     label: string
   }[] = [
     { name: 'name', label: 'Name' },
@@ -123,7 +137,7 @@ export function FormDialog({
     { name: 'phone', label: 'Phone' },
   ]
   const fields2: {
-    name: Partial<keyof Omit<DataForm, 'is_default'>>
+    name: Partial<keyof Omit<DataForm, 'is_default' | 'is_active'>>
     label: string
   }[] = [
     { name: 'city', label: 'City' },
@@ -205,21 +219,59 @@ export function FormDialog({
               ))}
               <FormField
                 control={form.control}
-                name='is_default'
+                name='note'
                 render={({ field }) => (
-                  <FormItem className='relative flex flex-row items-center'>
+                  <FormItem>
+                    <FormLabel>Note</FormLabel>
                     <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
+                      <Textarea className='resize-none' {...field} />
                     </FormControl>
-                    <div className='space-y-1 leading-none'>
-                      <FormLabel>Set as Default</FormLabel>
-                    </div>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
+              <div className='relative flex flex-row items-start justify-between pe-2'>
+                <FormField
+                  control={form.control}
+                  name='is_default'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className='relative flex flex-row items-center justify-end gap-2'>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                          <div className='space-y-1 leading-none'>
+                            <FormLabel>Set as Default</FormLabel>
+                          </div>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='is_active'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className='relative flex flex-row items-center justify-end gap-2'>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                          <div className='space-y-1 leading-none'>
+                            <FormLabel>Set as Active</FormLabel>
+                          </div>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </form>
           </Form>
         </div>

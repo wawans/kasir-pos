@@ -29,6 +29,8 @@ class CustomerData extends Data
         public ?string $city,
         public ?string $state,
         public ?string $country,
+        public ?string $note,
+        public bool $is_active = true,
         public bool $is_default = false,
     ) {}
 }

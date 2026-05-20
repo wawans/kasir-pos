@@ -21,7 +21,8 @@ class BrandData extends Data
 
     public function __construct(
         public string $name,
-        public ?string $description,
+        public ?string $note,
+        public bool $is_active = true,
         public bool $is_default = false,
     ) {}
 }

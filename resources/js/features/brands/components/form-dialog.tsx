@@ -31,11 +31,22 @@ import { Spinner } from '@/components/ui/spinner'
 import { Textarea } from '@/components/ui/textarea.tsx'
 import { useDataProvider } from '@/components/data/data-provider'
 
-const formSchema = z.object({
-  name: z.string().min(1, 'name is required.'),
-  description: z.string().optional(),
-  is_default: z.boolean().default(false).optional(),
-})
+const formSchema = z
+  .object({
+    name: z.string().min(1, 'name is required.'),
+    note: z.string().optional(),
+    is_active: z.boolean().default(true).optional(),
+    is_default: z.boolean().default(false).optional(),
+  })
+  .refine(
+    ({ is_active, is_default }) => {
+      return !(is_default && !is_active)
+    },
+    {
+      message: 'Set as Active is required.',
+      path: ['is_active'],
+    }
+  )
 
 type DataForm = z.infer<typeof formSchema>
 
@@ -56,11 +67,12 @@ export function FormDialog({
     defaultValues: isEdit
       ? {
           ...currentRow,
-          description: currentRow?.description || '',
+          note: currentRow?.note || '',
         }
       : {
           name: '',
-          description: '',
+          note: '',
+          is_active: true,
           is_default: false,
         },
   })
@@ -151,10 +163,10 @@ export function FormDialog({
               />
               <FormField
                 control={form.control}
-                name='description'
+                name='note'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>Note</FormLabel>
                     <FormControl>
                       <Textarea className='resize-none' {...field} />
                     </FormControl>
@@ -162,23 +174,48 @@ export function FormDialog({
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name='is_default'
-                render={({ field }) => (
-                  <FormItem className='relative flex flex-row items-center'>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className='space-y-1 leading-none'>
-                      <FormLabel>Set as Default</FormLabel>
-                    </div>
-                  </FormItem>
-                )}
-              />
+              <div className='relative flex flex-row items-start justify-between pe-2'>
+                <FormField
+                  control={form.control}
+                  name='is_default'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className='relative flex flex-row items-center justify-end gap-2'>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                          <div className='space-y-1 leading-none'>
+                            <FormLabel>Set as Default</FormLabel>
+                          </div>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='is_active'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className='relative flex flex-row items-center justify-end gap-2'>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                          <div className='space-y-1 leading-none'>
+                            <FormLabel>Set as Active</FormLabel>
+                          </div>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </form>
           </Form>
         </div>

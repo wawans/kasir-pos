@@ -1,16 +1,16 @@
 import { Data } from '@/components/data/data'
 import { DataTable } from '@/components/data/data-table.tsx'
-import { DataTableBulkActions } from './components/data-table-bulk-actions'
-import { usersColumns } from './components/users-columns'
-import { UsersDialogs } from './components/users-dialogs'
-import { UsersPrimaryButtons } from './components/users-primary-buttons'
+import { ActionButtons } from './components/action-buttons'
+import { ActionDialogs } from './components/action-dialogs'
+import { TableBulkActions } from './components/table-bulk-actions'
+import { columns } from './components/table-columns'
 
 export function Users() {
   return (
     <Data
       entity='User'
       url='user'
-      title='User'
+      title='Users'
       description='Manage your users and their information here.'
       breadcrumbs={[
         {
@@ -22,13 +22,13 @@ export function Users() {
           href: '/users',
         },
       ]}
-      actions={<UsersPrimaryButtons />}
+      actions={<ActionButtons />}
     >
-      <DataTable
-        columns={usersColumns}
-        bulkActions={<DataTableBulkActions />}
+      <DataTable<App.Data.UserData>
+        columns={columns}
+        bulkActions={<TableBulkActions />}
       />
-      <UsersDialogs />
+      <ActionDialogs />
     </Data>
   )
 }

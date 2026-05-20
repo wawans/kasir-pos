@@ -12,7 +12,7 @@ class Brand extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'name', 'description', 'is_default',
+        'name', 'note', 'is_active', 'is_default',
     ];
 
     /**
@@ -23,6 +23,7 @@ class Brand extends Model
     protected function casts(): array
     {
         return [
+            'is_active' => 'boolean',
             'is_default' => 'boolean',
         ];
     }

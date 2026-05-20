@@ -1,5 +1,5 @@
 import { useDataProvider } from '@/components/data/data-provider'
-import { DeleteDialog } from './delete-dialog'
+import { DeleteDialog } from '@/components/data/delete-dialog'
 import { FormDialog } from './form-dialog'
 
 export function ActionDialogs() {

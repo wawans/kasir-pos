@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge.tsx'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
+import { LongText } from '@/components/long-text.tsx'
 import { TableRowActions } from './table-row-actions'
 
 export const columns: ColumnDef<App.Data.CustomerData>[] = [
@@ -64,7 +65,7 @@ export const columns: ColumnDef<App.Data.CustomerData>[] = [
       </div>
     ),
     meta: {
-      className: 'max-w-0 w-2/6',
+      className: 'max-w-2/6',
     },
     enableSorting: false,
     enableColumnFilter: false,
@@ -84,17 +85,34 @@ export const columns: ColumnDef<App.Data.CustomerData>[] = [
     enableColumnFilter: false,
   },
   {
-    accessorKey: 'is_default',
+    accessorKey: 'note',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Note' />
+    ),
+    cell: ({ row }) => (
+      <LongText className='max-w-48 ps-2 lg:max-w-72'>
+        {row.getValue('note')}
+      </LongText>
+    ),
+    meta: {
+      className: 'max-w-2/6',
+    },
+  },
+  {
+    id: 'status',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Status' />
     ),
-    cell: ({ row }) => (
-      <div className='w-fit ps-2 text-nowrap'>
-        {row.getValue('is_default') ? (
-          <Badge variant='success'>default</Badge>
-        ) : null}
+    cell: ({ row: { original } }) => (
+      <div className='w-fit space-x-2 ps-2 text-nowrap'>
+        <Badge variant={original.is_active ? 'info' : 'neutral'}>
+          {original.is_active ? 'active' : 'inactive'}
+        </Badge>
+        {original.is_default ? <Badge variant='success'>default</Badge> : null}
       </div>
     ),
+    enableColumnFilter: false,
+    enableSorting: false,
   },
   {
     accessorKey: 'updated_at',

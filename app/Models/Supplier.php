@@ -12,7 +12,7 @@ class Supplier extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'name', 'email', 'phone', 'address', 'city', 'state', 'country', 'is_default',
+        'name', 'email', 'phone', 'address', 'city', 'state', 'country', 'note', 'is_active', 'is_default',
     ];
 
     /**
@@ -23,6 +23,7 @@ class Supplier extends Model
     protected function casts(): array
     {
         return [
+            'is_active' => 'boolean',
             'is_default' => 'boolean',
         ];
     }

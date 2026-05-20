@@ -1,11 +1,31 @@
 declare namespace App {
 namespace Data {
+export type AdjustmentData = {
+id: number,
+created_at: string,
+updated_at: string,
+};
+export type AdjustmentItemData = {
+id: number,
+created_at: string,
+updated_at: string,
+};
 export type BrandData = {
 id: number,
 created_at: string,
 updated_at: string,
 name: string,
-description: string | null,
+note: string | null,
+is_active: boolean,
+is_default: boolean,
+};
+export type CategoryData = {
+id: number,
+created_at: string,
+updated_at: string,
+name: string,
+note: string | null,
+is_active: boolean,
 is_default: boolean,
 };
 export type CustomerData = {
@@ -19,7 +39,93 @@ address: string | null,
 city: string | null,
 state: string | null,
 country: string | null,
+note: string | null,
+is_active: boolean,
 is_default: boolean,
+};
+export type ExpenseData = {
+id: number,
+created_at: string,
+updated_at: string,
+};
+export type ExpenseItemData = {
+id: number,
+created_at: string,
+updated_at: string,
+};
+export type HoldData = {
+id: number,
+created_at: string,
+updated_at: string,
+};
+export type HoldItemData = {
+id: number,
+created_at: string,
+updated_at: string,
+};
+export type PaymentData = {
+id: number,
+created_at: string,
+updated_at: string,
+};
+export type PaymentMethodData = {
+id: number,
+created_at: string,
+updated_at: string,
+name: string,
+note: string | null,
+is_active: boolean,
+is_default: boolean,
+};
+export type PosData = {
+id: number,
+created_at: string,
+updated_at: string,
+};
+export type ProductData = {
+id: number,
+created_at: string,
+updated_at: string,
+};
+export type PurchaseData = {
+id: number,
+created_at: string,
+updated_at: string,
+};
+export type PurchaseItemData = {
+id: number,
+created_at: string,
+updated_at: string,
+};
+export type PurchaseReturnData = {
+id: number,
+created_at: string,
+updated_at: string,
+};
+export type PurchaseReturnItemData = {
+id: number,
+created_at: string,
+updated_at: string,
+};
+export type SaleData = {
+id: number,
+created_at: string,
+updated_at: string,
+};
+export type SaleItemData = {
+id: number,
+created_at: string,
+updated_at: string,
+};
+export type SaleReturnData = {
+id: number,
+created_at: string,
+updated_at: string,
+};
+export type SaleReturnItemData = {
+id: number,
+created_at: string,
+updated_at: string,
 };
 export type SupplierData = {
 id: number,
@@ -32,6 +138,18 @@ address: string | null,
 city: string | null,
 state: string | null,
 country: string | null,
+note: string | null,
+is_active: boolean,
+is_default: boolean,
+};
+export type UnitData = {
+id: number,
+created_at: string,
+updated_at: string,
+name: string,
+alias: string | null,
+note: string | null,
+is_active: boolean,
 is_default: boolean,
 };
 export type UserData = {
