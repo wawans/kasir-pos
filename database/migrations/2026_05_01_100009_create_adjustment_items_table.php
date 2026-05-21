@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('adjustment_items', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('adjustment_id')->constrained('adjustments')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('product_id')->constrained('products')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unsignedTinyInteger('adjustment_item_type');
+            $table->double('quantity');            
             $table->timestamps();
         });
     }

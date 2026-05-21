@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('adjustments', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
+            $table->unsignedTinyInteger('adjustment_type');
+            $table->string('reference')->nullable();
+            $table->unsignedBigInteger('total_products')->nullable();
+            $table->text('note')->nullable();
             $table->timestamps();
         });
     }

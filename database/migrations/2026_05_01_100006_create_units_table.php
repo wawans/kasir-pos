@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('alias')->nullable();
+            $table->unsignedBigInteger('unit_parent_id')->nullable()->index();
+            $table->string('conversion_operator', 1)->nullable();
+            $table->double('conversion_value')->nullable();
             $table->text('note')->nullable();
             $table->boolean('is_active')->default(true);
             $table->boolean('is_default')->default(false);

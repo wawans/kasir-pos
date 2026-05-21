@@ -13,6 +13,20 @@ return new class extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
+            $table->string('reference')->nullable();
+            $table->foreignId('supplier_id')->constrained('suppliers')->cascadeOnDelete()->cascadeOnUpdate();            
+            $table->double('cost')->default(0);            
+            $table->double('tax')->default(0);
+            $table->double('discount')->default(0);
+            $table->double('shipping')->default(0);
+            $table->double('total')->default(0);
+            $table->double('payment_amount')->default(0);
+            $table->date('payment_date')->nullable();
+            $table->foreignId('payment_method_id')->constrained('payment_methods')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unsignedTinyInteger('payment_status')->default(1);
+            $table->text('note')->nullable();
+            $table->unsignedTinyInteger('status')->default(0);
             $table->timestamps();
         });
     }
