@@ -18,6 +18,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class CategoryRepository extends Repository
 {
+    use Concerns\EnsureHasDefault;
     use WithTable;
 
     /**
@@ -49,7 +50,15 @@ class CategoryRepository extends Repository
      */
     public function store($attributes)
     {
-        return $this->create($attributes);
+        $model = $this->create($attributes);
+        if ($model->is_default) {
+            $this->ensureOneDefault($model);
+        }
+        if (! $model->is_default) {
+            $this->ensureHasDefault();
+        }
+
+        return $model;
     }
 
     /**
@@ -60,7 +69,16 @@ class CategoryRepository extends Repository
      */
     public function edit($attributes, Category $category)
     {
-        return $this->update($attributes, $category);
+        $is_default = $category->is_default;
+        $model = $this->update($attributes, $category);
+        if ($model->is_default && ! $is_default) {
+            $this->ensureOneDefault($model);
+        }
+        if (! $model->is_default) {
+            $this->ensureHasDefault();
+        }
+
+        return $model;
     }
 
     /**
@@ -70,6 +88,12 @@ class CategoryRepository extends Repository
      */
     public function destroy(Category $category)
     {
-        return $this->delete($category);
+        $is_default = $category->is_default;
+        $this->delete($category);
+        if ($is_default) {
+            $this->ensureHasDefault();
+        }
+
+        return true;
     }
 }

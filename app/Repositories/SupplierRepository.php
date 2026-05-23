@@ -17,6 +17,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class SupplierRepository extends Repository
 {
+    use Concerns\EnsureHasDefault;
     use WithTable;
 
     /**
@@ -53,11 +54,10 @@ class SupplierRepository extends Repository
         $model = $this->create($attributes);
 
         if ($model->is_default) {
-            $other = $this->model->where('is_default', 1)->whereNot('id', $model->id)->first();
-            if ($other) {
-                $other->update(['is_default' => 0]);
-                $other->saveQuietly();
-            }
+            $this->ensureOneDefault($model);
+        }
+        if (! $model->is_default) {
+            $this->ensureHasDefault();
         }
 
         return $model;
@@ -71,15 +71,13 @@ class SupplierRepository extends Repository
      */
     public function edit($attributes, Supplier $supplier)
     {
-        $is_default_before = $supplier->is_default;
+        $is_default = $supplier->is_default;
         $model = $this->update($attributes, $supplier);
-
-        if ($model->is_default && ! $is_default_before) {
-            $other = $this->model->where('is_default', 1)->whereNot('id', $model->id)->first();
-            if ($other) {
-                $other->update(['is_default' => 0]);
-                $other->saveQuietly();
-            }
+        if ($model->is_default && ! $is_default) {
+            $this->ensureOneDefault($model);
+        }
+        if (! $model->is_default) {
+            $this->ensureHasDefault();
         }
 
         return $model;
@@ -94,6 +92,12 @@ class SupplierRepository extends Repository
     {
         // @TODO: ensure supplier dont have purchase(s).
 
-        return $this->delete($supplier);
+        $is_default = $supplier->is_default;
+        $this->delete($supplier);
+        if ($is_default) {
+            $this->ensureHasDefault();
+        }
+
+        return true;
     }
 }

@@ -18,6 +18,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class UnitRepository extends Repository
 {
+    use Concerns\EnsureHasDefault;
     use WithTable;
 
     /**
@@ -49,7 +50,15 @@ class UnitRepository extends Repository
      */
     public function store($attributes)
     {
-        return $this->create($attributes);
+        $model = $this->create($attributes);
+        if ($model->is_default) {
+            $this->ensureOneDefault($model);
+        }
+        if (! $model->is_default) {
+            $this->ensureHasDefault();
+        }
+
+        return $model;
     }
 
     /**
@@ -60,7 +69,16 @@ class UnitRepository extends Repository
      */
     public function edit($attributes, Unit $unit)
     {
-        return $this->update($attributes, $unit);
+        $is_default = $unit->is_default;
+        $model = $this->update($attributes, $unit);
+        if ($model->is_default && ! $is_default) {
+            $this->ensureOneDefault($model);
+        }
+        if (! $model->is_default) {
+            $this->ensureHasDefault();
+        }
+
+        return $model;
     }
 
     /**
@@ -70,6 +88,12 @@ class UnitRepository extends Repository
      */
     public function destroy(Unit $unit)
     {
-        return $this->delete($unit);
+        $is_default = $unit->is_default;
+        $this->delete($unit);
+        if ($is_default) {
+            $this->ensureHasDefault();
+        }
+
+        return true;
     }
 }

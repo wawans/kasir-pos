@@ -18,6 +18,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class BrandRepository extends Repository
 {
+    use Concerns\EnsureHasDefault;
     use WithTable;
 
     /**
@@ -54,11 +55,10 @@ class BrandRepository extends Repository
         $model = $this->create($attributes);
 
         if ($model->is_default) {
-            $other = $this->model->where('is_default', 1)->whereNot('id', $model->id)->first();
-            if ($other) {
-                $other->update(['is_default' => 0]);
-                $other->saveQuietly();
-            }
+            $this->ensureOneDefault($model);
+        }
+        if (! $model->is_default) {
+            $this->ensureHasDefault();
         }
 
         return $model;
@@ -72,15 +72,14 @@ class BrandRepository extends Repository
      */
     public function edit($attributes, Brand $brand)
     {
-        $is_default_before = $brand->is_default;
+        $is_default = $brand->is_default;
         $model = $this->update($attributes, $brand);
 
-        if ($model->is_default && ! $is_default_before) {
-            $other = $this->model->where('is_default', 1)->whereNot('id', $model->id)->first();
-            if ($other) {
-                $other->update(['is_default' => 0]);
-                $other->saveQuietly();
-            }
+        if ($model->is_default && ! $is_default) {
+            $this->ensureOneDefault($model);
+        }
+        if (! $model->is_default) {
+            $this->ensureHasDefault();
         }
 
         return $model;
@@ -95,6 +94,12 @@ class BrandRepository extends Repository
     {
         // @TODO: ensure brand don't have product(s)
 
-        return $this->delete($brand);
+        $is_default = $brand->is_default;
+        $this->delete($brand);
+        if ($is_default) {
+            $this->ensureHasDefault();
+        }
+
+        return true;
     }
 }

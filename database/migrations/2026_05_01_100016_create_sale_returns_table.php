@@ -13,6 +13,21 @@ return new class extends Migration
     {
         Schema::create('sale_returns', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('sale_id')->constrained('sales')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->date('date');
+            $table->string('reference')->nullable();
+            $table->foreignId('customer_id')->constrained('customers')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->double('price')->default(0);
+            $table->double('tax')->default(0);
+            $table->double('discount')->default(0);
+            $table->double('shipping')->default(0);
+            $table->double('total')->default(0);
+            $table->foreignId('payment_method_id')->constrained('payment_methods')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->double('payment_amount')->default(0);
+            $table->date('payment_date')->nullable();
+            $table->unsignedTinyInteger('payment_status')->default(1);
+            $table->text('note')->nullable();
+            $table->unsignedTinyInteger('status')->default(0);
             $table->timestamps();
         });
     }

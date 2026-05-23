@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdjustmentCategoryController;
 use App\Http\Controllers\AdjustmentController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
@@ -14,6 +15,8 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\PurchaseReturnController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SaleReturnController;
+use App\Http\Controllers\StockController;
+use App\Http\Controllers\StockLogController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
@@ -26,6 +29,7 @@ Route::get('/auth/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('adjustment', AdjustmentController::class);
+    Route::apiResource('adjustment-category', AdjustmentCategoryController::class)->parameter('adjustment-category', 'adjustmentCategory');
     Route::apiResource('brand', BrandController::class);
     Route::apiResource('category', CategoryController::class);
     Route::apiResource('customer', CustomerController::class);
@@ -39,6 +43,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('purchase-return', PurchaseReturnController::class)->parameter('purchase-return', 'purchaseReturn');
     Route::apiResource('sale', SaleController::class);
     Route::apiResource('sale-return', SaleReturnController::class)->parameter('sale-return', 'saleReturn');
+    Route::apiResource('stock', StockController::class);
+    Route::apiResource('stock-log', StockLogController::class);
     Route::apiResource('supplier', SupplierController::class);
     Route::apiResource('unit', UnitController::class);
     Route::apiResource('user', UserController::class);

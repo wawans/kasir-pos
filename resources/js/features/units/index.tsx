@@ -18,6 +18,10 @@ export function Units() {
           href: '/',
         },
         {
+          title: 'Products',
+          href: '/products',
+        },
+        {
           title: 'Units',
           href: '/units',
         },

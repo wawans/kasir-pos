@@ -17,6 +17,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class CustomerRepository extends Repository
 {
+    use Concerns\EnsureHasDefault;
     use WithTable;
 
     /**
@@ -53,11 +54,10 @@ class CustomerRepository extends Repository
         $model = $this->create($attributes);
 
         if ($model->is_default) {
-            $other = $this->model->where('is_default', 1)->whereNot('id', $model->id)->first();
-            if ($other) {
-                $other->update(['is_default' => 0]);
-                $other->saveQuietly();
-            }
+            $this->ensureOneDefault($model);
+        }
+        if (! $model->is_default) {
+            $this->ensureHasDefault();
         }
 
         return $model;
@@ -71,15 +71,13 @@ class CustomerRepository extends Repository
      */
     public function edit($attributes, Customer $customer)
     {
-        $is_default_before = $customer->is_default;
+        $is_default = $customer->is_default;
         $model = $this->update($attributes, $customer);
-
-        if ($model->is_default && ! $is_default_before) {
-            $other = $this->model->where('is_default', 1)->whereNot('id', $model->id)->first();
-            if ($other) {
-                $other->update(['is_default' => 0]);
-                $other->saveQuietly();
-            }
+        if ($model->is_default && ! $is_default) {
+            $this->ensureOneDefault($model);
+        }
+        if (! $model->is_default) {
+            $this->ensureHasDefault();
         }
 
         return $model;
@@ -94,6 +92,12 @@ class CustomerRepository extends Repository
     {
         // @TODO: ensure customer dont have sale(s).
 
-        return $this->delete($customer);
+        $is_default = $customer->is_default;
+        $this->delete($customer);
+        if ($is_default) {
+            $this->ensureHasDefault();
+        }
+
+        return true;
     }
 }

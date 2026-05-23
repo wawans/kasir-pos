@@ -18,8 +18,12 @@ export function Brands() {
           href: '/',
         },
         {
-          title: 'Brand',
-          href: '/brand',
+          title: 'Products',
+          href: '/products',
+        },
+        {
+          title: 'Brands',
+          href: '/brands',
         },
       ]}
       actions={<ActionButtons />}

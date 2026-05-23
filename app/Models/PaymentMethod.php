@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class PaymentMethod extends Model
 {
+    use Concerns\ActiveScope;
+    use Concerns\DefaultScope;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -27,4 +30,14 @@ class PaymentMethod extends Model
             'is_default' => 'boolean',
         ];
     }
+
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = [
+        'is_active' => true,
+        'is_default' => false,
+    ];
 }

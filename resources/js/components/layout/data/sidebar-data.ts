@@ -25,6 +25,10 @@ import {
   SwatchBook,
   Boxes,
   Keyboard,
+  Milestone,
+  TimerReset,
+  ClockFading,
+  Settings,
 } from 'lucide-react'
 import { type SidebarData } from '../types'
 
@@ -110,6 +114,16 @@ export const sidebarData: SidebarData = {
               url: '/adjustments',
               icon: Signpost,
             },
+            {
+              title: 'Adjustments Categories',
+              url: '/adjustments-categories',
+              icon: Milestone,
+            },
+            {
+              title: 'Stocks Logs',
+              url: '/stocks-logs',
+              icon: TimerReset,
+            },
           ],
         },
         {
@@ -147,6 +161,11 @@ export const sidebarData: SidebarData = {
               url: '/sales-holds',
               icon: Hand,
             },
+            {
+              title: 'POS',
+              url: '/sales-pos',
+              icon: ClockFading,
+            },
           ],
         },
         {
@@ -170,8 +189,8 @@ export const sidebarData: SidebarData = {
       title: 'Settings',
       items: [
         {
-          title: 'Stores',
-          icon: Store,
+          title: 'Umum',
+          icon: Settings,
           items: [
             {
               title: 'Stores',

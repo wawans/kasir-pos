@@ -18,6 +18,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class PaymentMethodRepository extends Repository
 {
+    use Concerns\EnsureHasDefault;
     use WithTable;
 
     /**
@@ -49,7 +50,15 @@ class PaymentMethodRepository extends Repository
      */
     public function store($attributes)
     {
-        return $this->create($attributes);
+        $model = $this->create($attributes);
+        if ($model->is_default) {
+            $this->ensureOneDefault($model);
+        }
+        if (! $model->is_default) {
+            $this->ensureHasDefault();
+        }
+
+        return $model;
     }
 
     /**
@@ -60,7 +69,16 @@ class PaymentMethodRepository extends Repository
      */
     public function edit($attributes, PaymentMethod $paymentMethod)
     {
-        return $this->update($attributes, $paymentMethod);
+        $is_default = $paymentMethod->is_default;
+        $model = $this->update($attributes, $paymentMethod);
+        if ($model->is_default && ! $is_default) {
+            $this->ensureOneDefault($model);
+        }
+        if (! $model->is_default) {
+            $this->ensureHasDefault();
+        }
+
+        return $model;
     }
 
     /**
@@ -70,6 +88,12 @@ class PaymentMethodRepository extends Repository
      */
     public function destroy(PaymentMethod $paymentMethod)
     {
-        return $this->delete($paymentMethod);
+        $is_default = $paymentMethod->is_default;
+        $this->delete($paymentMethod);
+        if ($is_default) {
+            $this->ensureHasDefault();
+        }
+
+        return true;
     }
 }

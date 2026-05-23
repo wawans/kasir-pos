@@ -18,7 +18,11 @@ export function ProductsCategories() {
           href: '/',
         },
         {
-          title: 'Products Categories',
+          title: 'Products',
+          href: '/products',
+        },
+        {
+          title: 'Categories',
           href: '/products-categories',
         },
       ]}

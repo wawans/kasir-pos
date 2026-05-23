@@ -18,8 +18,8 @@ export function Products() {
           href: '/',
         },
         {
-          title: 'Product',
-          href: '/product',
+          title: 'Products',
+          href: '/products',
         },
       ]}
       actions={<ActionButtons />}

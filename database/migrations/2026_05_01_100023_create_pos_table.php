@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('pos', function (Blueprint $table) {
             $table->id();
+            $table->timestamp('opened_at')->nullable();
+            $table->foreignId('opened_by')->constrained('users', 'id')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->timestamp('closed_at')->nullable();
+            $table->foreignId('closed_by')->constrained('users', 'id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

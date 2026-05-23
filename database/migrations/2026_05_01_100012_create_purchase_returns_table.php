@@ -13,18 +13,19 @@ return new class extends Migration
     {
         Schema::create('purchase_returns', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('purchase_id')->constrained('purchases')->cascadeOnDelete()->cascadeOnUpdate();
             $table->date('date');
             $table->string('reference')->nullable();
-            $table->foreignId('supplier_id')->constrained('suppliers')->cascadeOnDelete()->cascadeOnUpdate();            
-            $table->double('cost')->default(0);            
+            $table->foreignId('supplier_id')->constrained('suppliers')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->double('price')->default(0);
             $table->double('tax')->default(0);
             $table->double('discount')->default(0);
             $table->double('shipping')->default(0);
             $table->double('total')->default(0);
-            $table->double('received_amount')->default(0);
-            $table->date('received_date')->nullable();
-            $table->foreignId('received_method_id')->constrained('payment_methods')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->unsignedTinyInteger('received_status')->default(1);
+            $table->foreignId('payment_method_id')->constrained('payment_methods')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->double('payment_amount')->default(0);
+            $table->date('payment_date')->nullable();
+            $table->unsignedTinyInteger('payment_status')->default(1);
             $table->text('note')->nullable();
             $table->unsignedTinyInteger('status')->default(0);
             $table->timestamps();

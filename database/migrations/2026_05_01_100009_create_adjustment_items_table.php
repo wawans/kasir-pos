@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('adjustment_id')->constrained('adjustments')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('product_id')->constrained('products')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('unit_id')->constrained('units')->cascadeOnDelete()->cascadeOnUpdate();
             $table->unsignedTinyInteger('adjustment_item_type');
-            $table->double('quantity');            
+            $table->double('quantity');
             $table->timestamps();
         });
     }

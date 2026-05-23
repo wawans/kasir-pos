@@ -3,9 +3,12 @@
 namespace App\Data;
 
 use Carbon\CarbonImmutable;
+use Spatie\LaravelData\Attributes\Validation\Max;
 use Spatie\LaravelData\Attributes\WithoutValidation;
 use Spatie\LaravelData\Data;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
+#[TypeScript]
 class CategoryData extends Data
 {
     #[WithoutValidation]
@@ -18,7 +21,9 @@ class CategoryData extends Data
     public CarbonImmutable $updated_at;
 
     public function __construct(
+        #[Max(30)]
         public string $name,
+        #[Max(250)]
         public ?string $note,
         public bool $is_active = true,
         public bool $is_default = false,

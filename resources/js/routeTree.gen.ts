@@ -26,9 +26,11 @@ import { Route as AuthenticatedUnitsIndexRouteImport } from './routes/_authentic
 import { Route as AuthenticatedSuppliersIndexRouteImport } from './routes/_authenticated/suppliers/index'
 import { Route as AuthenticatedStoresIndexRouteImport } from './routes/_authenticated/stores/index'
 import { Route as AuthenticatedStocksIndexRouteImport } from './routes/_authenticated/stocks/index'
+import { Route as AuthenticatedStocksLogsIndexRouteImport } from './routes/_authenticated/stocks-logs/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedSalesIndexRouteImport } from './routes/_authenticated/sales/index'
 import { Route as AuthenticatedSalesReturnsIndexRouteImport } from './routes/_authenticated/sales-returns/index'
+import { Route as AuthenticatedSalesPosIndexRouteImport } from './routes/_authenticated/sales-pos/index'
 import { Route as AuthenticatedSalesHoldsIndexRouteImport } from './routes/_authenticated/sales-holds/index'
 import { Route as AuthenticatedReportsIndexRouteImport } from './routes/_authenticated/reports/index'
 import { Route as AuthenticatedPurchasesIndexRouteImport } from './routes/_authenticated/purchases/index'
@@ -41,6 +43,7 @@ import { Route as AuthenticatedPaymentMethodsIndexRouteImport } from './routes/_
 import { Route as AuthenticatedCustomersIndexRouteImport } from './routes/_authenticated/customers/index'
 import { Route as AuthenticatedBrandsIndexRouteImport } from './routes/_authenticated/brands/index'
 import { Route as AuthenticatedAdjustmentsIndexRouteImport } from './routes/_authenticated/adjustments/index'
+import { Route as AuthenticatedAdjustmentsCategoriesIndexRouteImport } from './routes/_authenticated/adjustments-categories/index'
 import { Route as AuthenticatedSettingsPasswordRouteImport } from './routes/_authenticated/settings/password'
 import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_authenticated/settings/account'
 
@@ -132,6 +135,12 @@ const AuthenticatedStocksIndexRoute =
     path: '/stocks/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedStocksLogsIndexRoute =
+  AuthenticatedStocksLogsIndexRouteImport.update({
+    id: '/stocks-logs/',
+    path: '/stocks-logs/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSettingsIndexRoute =
   AuthenticatedSettingsIndexRouteImport.update({
     id: '/',
@@ -147,6 +156,12 @@ const AuthenticatedSalesReturnsIndexRoute =
   AuthenticatedSalesReturnsIndexRouteImport.update({
     id: '/sales-returns/',
     path: '/sales-returns/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSalesPosIndexRoute =
+  AuthenticatedSalesPosIndexRouteImport.update({
+    id: '/sales-pos/',
+    path: '/sales-pos/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedSalesHoldsIndexRoute =
@@ -220,6 +235,12 @@ const AuthenticatedAdjustmentsIndexRoute =
     path: '/adjustments/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAdjustmentsCategoriesIndexRoute =
+  AuthenticatedAdjustmentsCategoriesIndexRouteImport.update({
+    id: '/adjustments-categories/',
+    path: '/adjustments-categories/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSettingsPasswordRoute =
   AuthenticatedSettingsPasswordRouteImport.update({
     id: '/password',
@@ -247,6 +268,7 @@ export interface FileRoutesByFullPath {
   '/503': typeof errors503Route
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/password': typeof AuthenticatedSettingsPasswordRoute
+  '/adjustments-categories/': typeof AuthenticatedAdjustmentsCategoriesIndexRoute
   '/adjustments/': typeof AuthenticatedAdjustmentsIndexRoute
   '/brands/': typeof AuthenticatedBrandsIndexRoute
   '/customers/': typeof AuthenticatedCustomersIndexRoute
@@ -259,9 +281,11 @@ export interface FileRoutesByFullPath {
   '/purchases/': typeof AuthenticatedPurchasesIndexRoute
   '/reports/': typeof AuthenticatedReportsIndexRoute
   '/sales-holds/': typeof AuthenticatedSalesHoldsIndexRoute
+  '/sales-pos/': typeof AuthenticatedSalesPosIndexRoute
   '/sales-returns/': typeof AuthenticatedSalesReturnsIndexRoute
   '/sales/': typeof AuthenticatedSalesIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/stocks-logs/': typeof AuthenticatedStocksLogsIndexRoute
   '/stocks/': typeof AuthenticatedStocksIndexRoute
   '/stores/': typeof AuthenticatedStoresIndexRoute
   '/suppliers/': typeof AuthenticatedSuppliersIndexRoute
@@ -281,6 +305,7 @@ export interface FileRoutesByTo {
   '/': typeof AuthenticatedIndexRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/password': typeof AuthenticatedSettingsPasswordRoute
+  '/adjustments-categories': typeof AuthenticatedAdjustmentsCategoriesIndexRoute
   '/adjustments': typeof AuthenticatedAdjustmentsIndexRoute
   '/brands': typeof AuthenticatedBrandsIndexRoute
   '/customers': typeof AuthenticatedCustomersIndexRoute
@@ -293,9 +318,11 @@ export interface FileRoutesByTo {
   '/purchases': typeof AuthenticatedPurchasesIndexRoute
   '/reports': typeof AuthenticatedReportsIndexRoute
   '/sales-holds': typeof AuthenticatedSalesHoldsIndexRoute
+  '/sales-pos': typeof AuthenticatedSalesPosIndexRoute
   '/sales-returns': typeof AuthenticatedSalesReturnsIndexRoute
   '/sales': typeof AuthenticatedSalesIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
+  '/stocks-logs': typeof AuthenticatedStocksLogsIndexRoute
   '/stocks': typeof AuthenticatedStocksIndexRoute
   '/stores': typeof AuthenticatedStoresIndexRoute
   '/suppliers': typeof AuthenticatedSuppliersIndexRoute
@@ -318,6 +345,7 @@ export interface FileRoutesById {
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/_authenticated/settings/password': typeof AuthenticatedSettingsPasswordRoute
+  '/_authenticated/adjustments-categories/': typeof AuthenticatedAdjustmentsCategoriesIndexRoute
   '/_authenticated/adjustments/': typeof AuthenticatedAdjustmentsIndexRoute
   '/_authenticated/brands/': typeof AuthenticatedBrandsIndexRoute
   '/_authenticated/customers/': typeof AuthenticatedCustomersIndexRoute
@@ -330,9 +358,11 @@ export interface FileRoutesById {
   '/_authenticated/purchases/': typeof AuthenticatedPurchasesIndexRoute
   '/_authenticated/reports/': typeof AuthenticatedReportsIndexRoute
   '/_authenticated/sales-holds/': typeof AuthenticatedSalesHoldsIndexRoute
+  '/_authenticated/sales-pos/': typeof AuthenticatedSalesPosIndexRoute
   '/_authenticated/sales-returns/': typeof AuthenticatedSalesReturnsIndexRoute
   '/_authenticated/sales/': typeof AuthenticatedSalesIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/_authenticated/stocks-logs/': typeof AuthenticatedStocksLogsIndexRoute
   '/_authenticated/stocks/': typeof AuthenticatedStocksIndexRoute
   '/_authenticated/stores/': typeof AuthenticatedStoresIndexRoute
   '/_authenticated/suppliers/': typeof AuthenticatedSuppliersIndexRoute
@@ -355,6 +385,7 @@ export interface FileRouteTypes {
     | '/503'
     | '/settings/account'
     | '/settings/password'
+    | '/adjustments-categories/'
     | '/adjustments/'
     | '/brands/'
     | '/customers/'
@@ -367,9 +398,11 @@ export interface FileRouteTypes {
     | '/purchases/'
     | '/reports/'
     | '/sales-holds/'
+    | '/sales-pos/'
     | '/sales-returns/'
     | '/sales/'
     | '/settings/'
+    | '/stocks-logs/'
     | '/stocks/'
     | '/stores/'
     | '/suppliers/'
@@ -389,6 +422,7 @@ export interface FileRouteTypes {
     | '/'
     | '/settings/account'
     | '/settings/password'
+    | '/adjustments-categories'
     | '/adjustments'
     | '/brands'
     | '/customers'
@@ -401,9 +435,11 @@ export interface FileRouteTypes {
     | '/purchases'
     | '/reports'
     | '/sales-holds'
+    | '/sales-pos'
     | '/sales-returns'
     | '/sales'
     | '/settings'
+    | '/stocks-logs'
     | '/stocks'
     | '/stores'
     | '/suppliers'
@@ -425,6 +461,7 @@ export interface FileRouteTypes {
     | '/_authenticated/'
     | '/_authenticated/settings/account'
     | '/_authenticated/settings/password'
+    | '/_authenticated/adjustments-categories/'
     | '/_authenticated/adjustments/'
     | '/_authenticated/brands/'
     | '/_authenticated/customers/'
@@ -437,9 +474,11 @@ export interface FileRouteTypes {
     | '/_authenticated/purchases/'
     | '/_authenticated/reports/'
     | '/_authenticated/sales-holds/'
+    | '/_authenticated/sales-pos/'
     | '/_authenticated/sales-returns/'
     | '/_authenticated/sales/'
     | '/_authenticated/settings/'
+    | '/_authenticated/stocks-logs/'
     | '/_authenticated/stocks/'
     | '/_authenticated/stores/'
     | '/_authenticated/suppliers/'
@@ -581,6 +620,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedStocksIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/stocks-logs/': {
+      id: '/_authenticated/stocks-logs/'
+      path: '/stocks-logs'
+      fullPath: '/stocks-logs/'
+      preLoaderRoute: typeof AuthenticatedStocksLogsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings/': {
       id: '/_authenticated/settings/'
       path: '/'
@@ -600,6 +646,13 @@ declare module '@tanstack/react-router' {
       path: '/sales-returns'
       fullPath: '/sales-returns/'
       preLoaderRoute: typeof AuthenticatedSalesReturnsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/sales-pos/': {
+      id: '/_authenticated/sales-pos/'
+      path: '/sales-pos'
+      fullPath: '/sales-pos/'
+      preLoaderRoute: typeof AuthenticatedSalesPosIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/sales-holds/': {
@@ -686,6 +739,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdjustmentsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/adjustments-categories/': {
+      id: '/_authenticated/adjustments-categories/'
+      path: '/adjustments-categories'
+      fullPath: '/adjustments-categories/'
+      preLoaderRoute: typeof AuthenticatedAdjustmentsCategoriesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings/password': {
       id: '/_authenticated/settings/password'
       path: '/password'
@@ -724,6 +784,7 @@ const AuthenticatedSettingsRouteRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedAdjustmentsCategoriesIndexRoute: typeof AuthenticatedAdjustmentsCategoriesIndexRoute
   AuthenticatedAdjustmentsIndexRoute: typeof AuthenticatedAdjustmentsIndexRoute
   AuthenticatedBrandsIndexRoute: typeof AuthenticatedBrandsIndexRoute
   AuthenticatedCustomersIndexRoute: typeof AuthenticatedCustomersIndexRoute
@@ -736,8 +797,10 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedPurchasesIndexRoute: typeof AuthenticatedPurchasesIndexRoute
   AuthenticatedReportsIndexRoute: typeof AuthenticatedReportsIndexRoute
   AuthenticatedSalesHoldsIndexRoute: typeof AuthenticatedSalesHoldsIndexRoute
+  AuthenticatedSalesPosIndexRoute: typeof AuthenticatedSalesPosIndexRoute
   AuthenticatedSalesReturnsIndexRoute: typeof AuthenticatedSalesReturnsIndexRoute
   AuthenticatedSalesIndexRoute: typeof AuthenticatedSalesIndexRoute
+  AuthenticatedStocksLogsIndexRoute: typeof AuthenticatedStocksLogsIndexRoute
   AuthenticatedStocksIndexRoute: typeof AuthenticatedStocksIndexRoute
   AuthenticatedStoresIndexRoute: typeof AuthenticatedStoresIndexRoute
   AuthenticatedSuppliersIndexRoute: typeof AuthenticatedSuppliersIndexRoute
@@ -748,6 +811,8 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedAdjustmentsCategoriesIndexRoute:
+    AuthenticatedAdjustmentsCategoriesIndexRoute,
   AuthenticatedAdjustmentsIndexRoute: AuthenticatedAdjustmentsIndexRoute,
   AuthenticatedBrandsIndexRoute: AuthenticatedBrandsIndexRoute,
   AuthenticatedCustomersIndexRoute: AuthenticatedCustomersIndexRoute,
@@ -763,8 +828,10 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedPurchasesIndexRoute: AuthenticatedPurchasesIndexRoute,
   AuthenticatedReportsIndexRoute: AuthenticatedReportsIndexRoute,
   AuthenticatedSalesHoldsIndexRoute: AuthenticatedSalesHoldsIndexRoute,
+  AuthenticatedSalesPosIndexRoute: AuthenticatedSalesPosIndexRoute,
   AuthenticatedSalesReturnsIndexRoute: AuthenticatedSalesReturnsIndexRoute,
   AuthenticatedSalesIndexRoute: AuthenticatedSalesIndexRoute,
+  AuthenticatedStocksLogsIndexRoute: AuthenticatedStocksLogsIndexRoute,
   AuthenticatedStocksIndexRoute: AuthenticatedStocksIndexRoute,
   AuthenticatedStoresIndexRoute: AuthenticatedStoresIndexRoute,
   AuthenticatedSuppliersIndexRoute: AuthenticatedSuppliersIndexRoute,

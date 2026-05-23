@@ -7,6 +7,8 @@ use App\Models\Brand;
 use App\Repositories\BrandRepository;
 use App\Support\Response\ApiResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 // use Illuminate\Routing\Controllers\Middleware;
 
@@ -63,6 +65,12 @@ class BrandController extends Controller implements HasMiddleware
      */
     public function update(BrandData $request, Brand $brand)
     {
+        Validator::make($request->toArray(), [
+            'name' => [
+                Rule::unique(Brand::class)->ignore($brand->id),
+            ],
+        ])->validate();
+
         $model = $this->repository->edit($request->toArray(), $brand);
         $data = $this->repository->toData($model);
 
