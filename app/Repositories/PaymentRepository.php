@@ -28,6 +28,8 @@ class PaymentRepository extends Repository
     public function tableQuery()
     {
         return QueryBuilder::for($this->query())
+            ->allowedFilters($this->model->getKeyName(), ...$this->model->getFillable())
+            ->allowedSorts($this->model->getKeyName(), ...$this->model->getFillable())
             ->defaultSort('-updated_at');
     }
 
