@@ -6,12 +6,14 @@ use App\Enums\PaymentStatusType;
 use App\Enums\StatusType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SaleReturn extends Model
 {
     use Concerns\BelongsToCustomer;
     use Concerns\BelongsToPaymentMethod;
     use Concerns\MorphManyPayment;
+    use Concerns\MorphManyStockLog;
 
     /**
      * The attributes that are mass assignable.
@@ -54,5 +56,10 @@ class SaleReturn extends Model
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Sale::class);
+    }
+
+    public function items(): HasMany
+    {
+        return $this->hasMany(SaleReturnItem::class);
     }
 }

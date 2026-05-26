@@ -21,11 +21,11 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements HasMedia
 {
     use Concerns\AvatarAttribute;
-
     use HasApiTokens;
 
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+
     use HasRoles;
     use InteractsWithMedia;
 

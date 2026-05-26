@@ -10,6 +10,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class Product extends Model implements HasMedia
 {
     use Concerns\BelongsToUnit;
+    use Concerns\MorphManyStockLog;
     use InteractsWithMedia;
 
     /**

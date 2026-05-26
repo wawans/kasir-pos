@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Data\StockData;
+use App\Models\Product;
 use App\Models\Stock;
 use App\Repositories\Concerns\WithTable;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -41,6 +42,16 @@ class StockRepository extends Repository
     public function toData($model)
     {
         return StockData::from($model);
+    }
+
+    public function firstOrCreateProduct(Product $product, $quantity = 0)
+    {
+        return $this->model->firstOrCreate(['product_id' => $product->id], [
+            'quantity' => $quantity,
+            'unit_id' => $product->unit_id,
+            'stock_alert_quantity' => $product->stock_alert_quantity,
+            'stock_limit_quantity' => $product->stock_limit_quantity,
+        ]);
     }
 
     /**

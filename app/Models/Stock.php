@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Appends;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Appends(['on_alert', 'on_limit'])]
 class Stock extends Model
@@ -41,5 +42,15 @@ class Stock extends Model
     public function onLimit(): Attribute
     {
         return Attribute::get(fn () => $this->quantity <= $this->stock_limit_quantity);
+    }
+
+    public function logs(): HasMany
+    {
+        return $this->hasMany(StockLog::class);
+    }
+
+    public function sumLogsQuantity()
+    {
+        return $this->logs()->sum('quantity');
     }
 }

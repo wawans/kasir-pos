@@ -1,6 +1,12 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
-import { Trash2, PencilLine, Eye } from 'lucide-react'
+import {
+  Trash2,
+  PencilLine,
+  Eye,
+  AlarmClock,
+  CircleDollarSign,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -51,6 +57,29 @@ export function TableRowActions<TData>({ row }: TableRowActionsProps<TData>) {
             Edit
             <DropdownMenuShortcut>
               <PencilLine size={16} />
+            </DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={() => {
+              setCurrentRow(row.original)
+              setOpen('update-price')
+            }}
+          >
+            Price
+            <DropdownMenuShortcut>
+              <CircleDollarSign size={16} />
+            </DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              setCurrentRow(row.original)
+              setOpen('update-stock')
+            }}
+          >
+            Stock Alert
+            <DropdownMenuShortcut>
+              <AlarmClock size={16} />
             </DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuSeparator />

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\ProductData;
 use App\Models\Product;
 use App\Repositories\ProductRepository;
 use App\Support\Response\ApiResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 // use Illuminate\Routing\Controllers\Middleware;
 
@@ -40,9 +42,19 @@ class ProductController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductData $request)
     {
-        $model = $this->repository->store($request->validated());
+        Validator::make($request->toArray(), [
+            'name' => [
+                Rule::unique(Product::class),
+            ],
+            'code' => [
+                'sometimes', 'nullable', 'string',
+                Rule::unique(Product::class),
+            ],
+        ])->validate();
+
+        $model = $this->repository->store($request->toArray());
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);
@@ -61,9 +73,19 @@ class ProductController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductData $request, Product $product)
     {
-        $model = $this->repository->edit($request->validated(), $product);
+        Validator::make($request->toArray(), [
+            'name' => [
+                Rule::unique(Product::class)->ignore($product->id),
+            ],
+            'code' => [
+                'sometimes', 'nullable', 'string',
+                Rule::unique(Product::class)->ignore($product->id),
+            ],
+        ])->validate();
+
+        $model = $this->repository->edit($request->toArray(), $product);
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);

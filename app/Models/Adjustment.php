@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Adjustment extends Model
 {
+    use Concerns\MorphManyStockLog;
+
     /**
      * The attributes that are mass assignable.
      *

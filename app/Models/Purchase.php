@@ -12,6 +12,7 @@ class Purchase extends Model
     use Concerns\BelongsToPaymentMethod;
     use Concerns\BelongsToSupplier;
     use Concerns\MorphManyPayment;
+    use Concerns\MorphManyStockLog;
 
     /**
      * The attributes that are mass assignable.

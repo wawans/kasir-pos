@@ -12,6 +12,7 @@ class Sale extends Model
     use Concerns\BelongsToCustomer;
     use Concerns\BelongsToPaymentMethod;
     use Concerns\MorphManyPayment;
+    use Concerns\MorphManyStockLog;
 
     /**
      * The attributes that are mass assignable.
