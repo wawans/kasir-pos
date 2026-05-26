@@ -12,7 +12,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  *
  * @property Customer $model
  *
- * @method \Illuminate\Database\Eloquent\Builder|\App\Models\Customer query()
+ * @method \Illuminate\Database\Eloquent\Builder<\App\Models\Customer> query()
  * @method \App\Models\Customer update(array $attributes, \App\Models\Customer $customer)
  */
 class CustomerRepository extends Repository

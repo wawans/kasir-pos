@@ -12,7 +12,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  *
  * @property {{ model }} $model
  *
- * @method \Illuminate\Database\Eloquent\Builder|{{ model }} query()
+ * @method \Illuminate\Database\Eloquent\Builder<{{ model }}> query()
  * @method {{ model }} create(array $attributes)
  * @method {{ model }} update(array $attributes, {{ model }} ${{ modelVariable }})
  */

@@ -12,7 +12,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 
 class StockController extends Controller implements HasMiddleware
 {
-    // public function __construct(protected StockRepository $repository) {}
+    public function __construct(protected StockRepository $repository) {}
 
     /**
      * Get the middleware that should be assigned to the controller.
@@ -32,8 +32,9 @@ class StockController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        // $model = $this->repository->table();
-        // return ApiResponse::make($model);
+        $model = $this->repository->table();
+
+        return ApiResponse::make($model);
     }
 
     /**
@@ -41,6 +42,7 @@ class StockController extends Controller implements HasMiddleware
      */
     public function store(Request $request)
     {
+        abort(404);
         // $model = $this->repository->store($request->validated());
         // $data = $this->repository->toData($model);
         // return ApiResponse::data($data);
@@ -51,6 +53,7 @@ class StockController extends Controller implements HasMiddleware
      */
     public function show(Stock $stock)
     {
+        abort(404);
         // $data = $this->repository->toData($stock);
         // return ApiResponse::data($data);
     }
@@ -60,6 +63,7 @@ class StockController extends Controller implements HasMiddleware
      */
     public function update(Request $request, Stock $stock)
     {
+        abort(404);
         // $model = $this->repository->edit($request->validated(), $stock);
         // $data = $this->repository->toData($model);
         // return ApiResponse::data($data);
@@ -70,6 +74,7 @@ class StockController extends Controller implements HasMiddleware
      */
     public function destroy(Stock $stock)
     {
+        abort(404);
         // $this->repository->destroy($stock);
         // return ApiResponse::data();
     }

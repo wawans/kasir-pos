@@ -2,52 +2,53 @@
 
 namespace App\Repositories;
 
-use App\Data\PaymentData;
-use App\Models\Payment;
+use App\Data\StockLogData;
+use App\Models\StockLog;
 use App\Repositories\Concerns\WithTable;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
- * \App\Repositories\PaymentRepository
+ * \App\Repositories\StockLogRepository
  *
- * @property Payment $model
+ * @property StockLog $model
  *
- * @method \Illuminate\Database\Eloquent\Builder<\App\Models\Payment> query()
- * @method \App\Models\Payment create(array $attributes)
- * @method \App\Models\Payment update(array $attributes, \App\Models\Payment $payment)
+ * @method \Illuminate\Database\Eloquent\Builder<\App\Models\StockLog> query()
+ * @method \App\Models\StockLog create(array $attributes)
+ * @method \App\Models\StockLog update(array $attributes, \App\Models\StockLog $stockLog)
  */
-class PaymentRepository extends Repository
+class StockLogRepository extends Repository
 {
     use WithTable;
 
     /**
      * Create a new repository instance.
      */
-    public function __construct(protected Payment $model) {}
+    public function __construct(protected StockLog $model) {}
 
     public function tableQuery()
     {
         return QueryBuilder::for($this->query())
             ->allowedFilters($this->model->getKeyName(), ...$this->model->getFillable())
             ->allowedSorts($this->model->getKeyName(), ...$this->model->getFillable())
+            ->allowedIncludes('product', 'unit')
             ->defaultSort('-updated_at');
     }
 
     public function toCollection($data)
     {
-        return PaymentData::collect($data);
+        return StockLogData::collect($data);
     }
 
     public function toData($model)
     {
-        return PaymentData::from($model);
+        return StockLogData::from($model);
     }
 
     /**
      * Create a new instance of the given model.
      *
      * @param  array  $attributes
-     * @return Payment
+     * @return StockLog
      */
     public function store($attributes)
     {
@@ -58,11 +59,11 @@ class PaymentRepository extends Repository
      * Update the model in the database.
      *
      * @param  array  $attributes
-     * @return Payment
+     * @return StockLog
      */
-    public function edit($attributes, Payment $payment)
+    public function edit($attributes, StockLog $stockLog)
     {
-        return $this->update($attributes, $payment);
+        return $this->update($attributes, $stockLog);
     }
 
     /**
@@ -70,8 +71,8 @@ class PaymentRepository extends Repository
      *
      * @return bool|null|void
      */
-    public function destroy(Payment $payment)
+    public function destroy(StockLog $stockLog)
     {
-        return $this->delete($payment);
+        return $this->delete($stockLog);
     }
 }

@@ -28,6 +28,12 @@ class PurchaseData extends Data
     #[WithoutValidation]
     public CarbonImmutable $updated_at;
 
+    #[WithoutValidation]
+    public ?SupplierData $supplier;
+
+    #[WithoutValidation]
+    public ?PaymentMethodData $paymentMethod;
+
     public function __construct(
         #[Exists(Supplier::class, 'id')]
         public int $supplier_id,

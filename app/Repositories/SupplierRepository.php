@@ -12,7 +12,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  *
  * @property Supplier $model
  *
- * @method \Illuminate\Database\Eloquent\Builder|\App\Models\Supplier query()
+ * @method \Illuminate\Database\Eloquent\Builder<\App\Models\Supplier> query()
  * @method \App\Models\Supplier update(array $attributes, \App\Models\Supplier $supplier)
  */
 class SupplierRepository extends Repository

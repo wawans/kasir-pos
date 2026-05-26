@@ -12,7 +12,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  *
  * @property AdjustmentCategory $model
  *
- * @method \Illuminate\Database\Eloquent\Builder|\App\Models\AdjustmentCategory query()
+ * @method \Illuminate\Database\Eloquent\Builder<\App\Models\AdjustmentCategory> query()
  * @method \App\Models\AdjustmentCategory create(array $attributes)
  * @method \App\Models\AdjustmentCategory update(array $attributes, \App\Models\AdjustmentCategory $adjustmentCategory)
  */

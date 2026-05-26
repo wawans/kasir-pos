@@ -12,7 +12,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  *
  * @property SaleItem $model
  *
- * @method \Illuminate\Database\Eloquent\Builder|\App\Models\SaleItem query()
+ * @method \Illuminate\Database\Eloquent\Builder<\App\Models\SaleItem> query()
  * @method \App\Models\SaleItem create(array $attributes)
  * @method \App\Models\SaleItem update(array $attributes, \App\Models\SaleItem $saleItem)
  */

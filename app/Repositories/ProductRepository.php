@@ -12,7 +12,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  *
  * @property Product $model
  *
- * @method \Illuminate\Database\Eloquent\Builder|\App\Models\Product query()
+ * @method \Illuminate\Database\Eloquent\Builder<\App\Models\Product> query()
  * @method \App\Models\Product create(array $attributes)
  * @method \App\Models\Product update(array $attributes, \App\Models\Product $product)
  */
@@ -30,6 +30,7 @@ class ProductRepository extends Repository
         return QueryBuilder::for($this->query())
             ->allowedFilters($this->model->getKeyName(), ...$this->model->getFillable())
             ->allowedSorts($this->model->getKeyName(), ...$this->model->getFillable())
+            ->allowedIncludes('stock', 'stock.unit', 'stockLog', 'stockLogs')
             ->defaultSort('-updated_at');
     }
 

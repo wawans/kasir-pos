@@ -29,6 +29,15 @@ class SaleReturnData extends Data
     #[WithoutValidation]
     public CarbonImmutable $updated_at;
 
+    #[WithoutValidation]
+    public ?SaleData $sale;
+
+    #[WithoutValidation]
+    public ?CustomerData $customer;
+
+    #[WithoutValidation]
+    public ?PaymentMethodData $paymentMethod;
+
     public function __construct(
         #[Exists(Sale::class, 'id')]
         public int $sale_id,

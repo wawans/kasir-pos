@@ -27,6 +27,9 @@ class ExpenseData extends Data
     #[WithoutValidation]
     public CarbonImmutable $updated_at;
 
+    #[WithoutValidation]
+    public ?PaymentMethodData $paymentMethod;
+
     public function __construct(
         #[Exists(PaymentMethod::class, 'id')]
         public int $payment_method_id,

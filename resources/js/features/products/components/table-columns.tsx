@@ -7,7 +7,7 @@ import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text.tsx'
 import { TableRowActions } from './table-row-actions'
 
-export const columns: ColumnDef<App.Data.BrandData>[] = [
+export const columns: ColumnDef<App.Data.ProductData>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -52,27 +52,26 @@ export const columns: ColumnDef<App.Data.BrandData>[] = [
     ),
   },
   {
-    accessorKey: 'description',
+    id: 'stock',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Description' />
+      <DataTableColumnHeader column={column} title='Stock' />
     ),
-    cell: ({ row }) => (
-      <LongText className='ps-2'>{row.getValue('description')}</LongText>
+    cell: ({ row: { original } }) => (
+      <div className='w-fit ps-2 text-nowrap'>
+        {original?.stock?.quantity} {original?.stock?.unit?.alias}
+      </div>
     ),
-    meta: {
-      className: 'max-w-2/6',
-    },
   },
   {
-    accessorKey: 'is_default',
+    accessorKey: 'is_active',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Status' />
     ),
-    cell: ({ row }) => (
+    cell: ({ getValue }) => (
       <div className='w-fit ps-2 text-nowrap'>
-        {row.getValue('is_default') ? (
-          <Badge variant='success'>default</Badge>
-        ) : null}
+        <Badge variant={getValue() ? 'success' : 'danger'}>
+          {getValue() ? 'active' : 'inactive'}
+        </Badge>
       </div>
     ),
   },

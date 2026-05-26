@@ -29,6 +29,15 @@ class PurchaseReturnData extends Data
     #[WithoutValidation]
     public CarbonImmutable $updated_at;
 
+    #[WithoutValidation]
+    public ?PurchaseData $purchase;
+
+    #[WithoutValidation]
+    public ?SupplierData $supplier;
+
+    #[WithoutValidation]
+    public ?PaymentMethodData $paymentMethod;
+
     public function __construct(
         #[Exists(Purchase::class, 'id')]
         public int $purchase_id,

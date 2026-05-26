@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\StockLog;
-use App\Repositories\StocksLogRepository;
+use App\Repositories\StockLogRepository;
 use App\Support\Response\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -12,7 +12,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 
 class StockLogController extends Controller implements HasMiddleware
 {
-    // public function __construct(protected StocksLogRepository $repository) {}
+    public function __construct(protected StockLogRepository $repository) {}
 
     /**
      * Get the middleware that should be assigned to the controller.
@@ -32,8 +32,9 @@ class StockLogController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        // $model = $this->repository->table();
-        // return ApiResponse::make($model);
+        $model = $this->repository->table();
+
+        return ApiResponse::make($model);
     }
 
     /**
@@ -41,6 +42,7 @@ class StockLogController extends Controller implements HasMiddleware
      */
     public function store(Request $request)
     {
+        abort(404);
         // $model = $this->repository->store($request->validated());
         // $data = $this->repository->toData($model);
         // return ApiResponse::data($data);
@@ -51,6 +53,7 @@ class StockLogController extends Controller implements HasMiddleware
      */
     public function show(StockLog $stocksLog)
     {
+        abort(404);
         // $data = $this->repository->toData($stocksLog);
         // return ApiResponse::data($data);
     }
@@ -60,6 +63,7 @@ class StockLogController extends Controller implements HasMiddleware
      */
     public function update(Request $request, StockLog $stocksLog)
     {
+        abort(404);
         // $model = $this->repository->edit($request->validated(), $stocksLog);
         // $data = $this->repository->toData($model);
         // return ApiResponse::data($data);
@@ -70,6 +74,7 @@ class StockLogController extends Controller implements HasMiddleware
      */
     public function destroy(StockLog $stocksLog)
     {
+        abort(404);
         // $this->repository->destroy($stocksLog);
         // return ApiResponse::data();
     }

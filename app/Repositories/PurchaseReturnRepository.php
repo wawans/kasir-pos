@@ -12,7 +12,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  *
  * @property PurchaseReturn $model
  *
- * @method \Illuminate\Database\Eloquent\Builder|\App\Models\PurchaseReturn query()
+ * @method \Illuminate\Database\Eloquent\Builder<\App\Models\PurchaseReturn> query()
  * @method \App\Models\PurchaseReturn create(array $attributes)
  * @method \App\Models\PurchaseReturn update(array $attributes, \App\Models\PurchaseReturn $purchaseReturn)
  */

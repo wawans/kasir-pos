@@ -12,7 +12,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  *
  * @property Hold $model
  *
- * @method \Illuminate\Database\Eloquent\Builder|\App\Models\Hold query()
+ * @method \Illuminate\Database\Eloquent\Builder<\App\Models\Hold> query()
  * @method \App\Models\Hold create(array $attributes)
  * @method \App\Models\Hold update(array $attributes, \App\Models\Hold $hold)
  */

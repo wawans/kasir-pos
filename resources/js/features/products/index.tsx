@@ -28,6 +28,7 @@ export function Products() {
         columns={columns}
         bulkActions={<TableBulkActions />}
         searchKey='name'
+        include='stock.unit'
       />
       <ActionDialogs />
     </Data>

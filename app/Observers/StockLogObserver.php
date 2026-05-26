@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Models\Product;
 use App\Models\StockLog;
 use App\Repositories\StockRepository;
 
@@ -16,7 +17,7 @@ class StockLogObserver
     {
         $stock = $this->stock->firstOrCreateProduct($stockLog->product, $stockLog->quantity);
 
-        $stock->update(['quantity' => $stock->sumLogsQuantity()]);
+        $stock->updateSumLogsQuantity();
     }
 
     /**
@@ -24,7 +25,9 @@ class StockLogObserver
      */
     public function updated(StockLog $stockLog): void
     {
-        //
+        $stock = $this->stock->firstOrCreateProduct($stockLog->product, $stockLog->quantity);
+
+        $stock->updateSumLogsQuantity();
     }
 
     /**
@@ -32,7 +35,13 @@ class StockLogObserver
      */
     public function deleted(StockLog $stockLog): void
     {
-        //
+        $product = Product::find($stockLog->product_id);
+
+        if ($product) {
+            $stock = $this->stock->firstOrCreateProduct($stockLog->product, $stockLog->quantity);
+
+            $stock->updateSumLogsQuantity();
+        }
     }
 
     /**
@@ -40,7 +49,9 @@ class StockLogObserver
      */
     public function restored(StockLog $stockLog): void
     {
-        //
+        $stock = $this->stock->firstOrCreateProduct($stockLog->product, $stockLog->quantity);
+
+        $stock->updateSumLogsQuantity();
     }
 
     /**
@@ -48,6 +59,12 @@ class StockLogObserver
      */
     public function forceDeleted(StockLog $stockLog): void
     {
-        //
+        $product = Product::find($stockLog->product_id);
+
+        if ($product) {
+            $stock = $this->stock->firstOrCreateProduct($stockLog->product, $stockLog->quantity);
+
+            $stock->updateSumLogsQuantity();
+        }
     }
 }

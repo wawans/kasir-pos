@@ -26,6 +26,9 @@ class AdjustmentData extends Data
     #[WithoutValidation]
     public CarbonImmutable $updated_at;
 
+    #[WithoutValidation]
+    public ?AdjustmentCategoryData $adjustmentCategory;
+
     public function __construct(
         #[DateFormat('Y-m-d')]
         public Carbon $date,

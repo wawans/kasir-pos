@@ -26,6 +26,15 @@ class AdjustmentItemData extends Data
     #[WithoutValidation]
     public CarbonImmutable $updated_at;
 
+    #[WithoutValidation]
+    public ?AdjustmentData $adjustment;
+
+    #[WithoutValidation]
+    public ?ProductData $product;
+
+    #[WithoutValidation]
+    public ?UnitData $unit;
+
     public function __construct(
         #[Exists(Adjustment::class, 'id')]
         public int $adjustment_id,

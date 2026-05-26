@@ -24,6 +24,12 @@ class SaleItemData extends Data
     #[WithoutValidation]
     public CarbonImmutable $updated_at;
 
+    #[WithoutValidation]
+    public ?ProductData $product;
+
+    #[WithoutValidation]
+    public ?UnitData $unit;
+
     public function __construct(
         #[Exists(Product::class, 'id')]
         public int $product_id,

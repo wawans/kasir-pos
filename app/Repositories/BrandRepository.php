@@ -12,7 +12,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  *
  * @property Brand $model
  *
- * @method \Illuminate\Database\Eloquent\Builder|\App\Models\Brand query()
+ * @method \Illuminate\Database\Eloquent\Builder<\App\Models\Brand> query()
  * @method \App\Models\Brand create(array $attributes)
  * @method \App\Models\Brand update(array $attributes, \App\Models\Brand $brand)
  */

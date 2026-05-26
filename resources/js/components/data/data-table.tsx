@@ -36,6 +36,7 @@ interface DataTableProps<TData> {
   searchPlaceholder?: string
   searchKey?: string
   filters?: filter[]
+  include?: string | string[]
   toolbar?: React.ReactNode
   // search?: Record<string, unknown>
   // navigate?: NavigateFn
@@ -48,6 +49,7 @@ export function DataTable<TData>({
   searchPlaceholder = 'Search ...',
   searchKey,
   filters = [],
+  include,
   columns,
   toolbar,
   bulkActions,
@@ -73,7 +75,7 @@ export function DataTable<TData>({
   const { data, isLoading } = useQuery({
     queryKey: [
       entity,
-      { getAll, sorting, globalFilter, columnFilters, pagination },
+      { getAll, sorting, globalFilter, columnFilters, pagination, include },
     ],
     queryFn: () =>
       getAll({
@@ -91,6 +93,9 @@ export function DataTable<TData>({
           : {}),
         ...(sorting.length
           ? { sort: sorting.map((s) => (s.desc ? `-${s.id}` : s.id)).join(',') }
+          : {}),
+        ...(include
+          ? { include: Array.isArray(include) ? include.join(',') : include }
           : {}),
       }),
   })

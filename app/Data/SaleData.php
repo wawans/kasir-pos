@@ -28,6 +28,12 @@ class SaleData extends Data
     #[WithoutValidation]
     public CarbonImmutable $updated_at;
 
+    #[WithoutValidation]
+    public ?CustomerData $customer;
+
+    #[WithoutValidation]
+    public ?PaymentMethodData $paymentMethod;
+
     public function __construct(
         #[DateFormat('Y-m-d', 'Y-m-d H:i:s')]
         public Carbon $date,

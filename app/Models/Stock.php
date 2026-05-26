@@ -46,11 +46,16 @@ class Stock extends Model
 
     public function logs(): HasMany
     {
-        return $this->hasMany(StockLog::class);
+        return $this->hasMany(StockLog::class, 'product_id', 'product_id');
     }
 
     public function sumLogsQuantity()
     {
         return $this->logs()->sum('quantity');
+    }
+
+    public function updateSumLogsQuantity()
+    {
+        return $this->update(['quantity' => $this->sumLogsQuantity()]);
     }
 }

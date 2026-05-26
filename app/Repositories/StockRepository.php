@@ -13,7 +13,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  *
  * @property Stock $model
  *
- * @method \Illuminate\Database\Eloquent\Builder|\App\Models\Stock query()
+ * @method \Illuminate\Database\Eloquent\Builder<\App\Models\Stock> query()
  * @method \App\Models\Stock create(array $attributes)
  * @method \App\Models\Stock update(array $attributes, \App\Models\Stock $stock)
  */
@@ -31,6 +31,7 @@ class StockRepository extends Repository
         return QueryBuilder::for($this->query())
             ->allowedFilters($this->model->getKeyName(), ...$this->model->getFillable())
             ->allowedSorts($this->model->getKeyName(), ...$this->model->getFillable())
+            ->allowedIncludes('product', 'unit')
             ->defaultSort('-updated_at');
     }
 

@@ -12,7 +12,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  *
  * @property Expense $model
  *
- * @method \Illuminate\Database\Eloquent\Builder|\App\Models\Expense query()
+ * @method \Illuminate\Database\Eloquent\Builder<\App\Models\Expense> query()
  * @method \App\Models\Expense create(array $attributes)
  * @method \App\Models\Expense update(array $attributes, \App\Models\Expense $expense)
  */

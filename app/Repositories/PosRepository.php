@@ -12,7 +12,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  *
  * @property Pos $model
  *
- * @method \Illuminate\Database\Eloquent\Builder|\App\Models\Pos query()
+ * @method \Illuminate\Database\Eloquent\Builder<\App\Models\Pos> query()
  * @method \App\Models\Pos create(array $attributes)
  * @method \App\Models\Pos update(array $attributes, \App\Models\Pos $pos)
  */

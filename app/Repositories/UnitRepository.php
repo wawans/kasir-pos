@@ -12,7 +12,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  *
  * @property Unit $model
  *
- * @method \Illuminate\Database\Eloquent\Builder|\App\Models\Unit query()
+ * @method \Illuminate\Database\Eloquent\Builder<\App\Models\Unit> query()
  * @method \App\Models\Unit create(array $attributes)
  * @method \App\Models\Unit update(array $attributes, \App\Models\Unit $unit)
  */

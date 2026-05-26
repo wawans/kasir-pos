@@ -26,6 +26,18 @@ class ProductData extends Data
     #[WithoutValidation]
     public CarbonImmutable $updated_at;
 
+    #[WithoutValidation]
+    public ?CategoryData $category;
+
+    #[WithoutValidation]
+    public ?BrandData $brand;
+
+    #[WithoutValidation]
+    public ?UnitData $unit;
+
+    #[WithoutValidation]
+    public ?StockData $stock;
+
     public function __construct(
         #[Exists(Category::class, 'id')]
         public int $category_id,

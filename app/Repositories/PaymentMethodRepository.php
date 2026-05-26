@@ -12,7 +12,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  *
  * @property PaymentMethod $model
  *
- * @method \Illuminate\Database\Eloquent\Builder|\App\Models\PaymentMethod query()
+ * @method \Illuminate\Database\Eloquent\Builder<\App\Models\PaymentMethod> query()
  * @method \App\Models\PaymentMethod create(array $attributes)
  * @method \App\Models\PaymentMethod update(array $attributes, \App\Models\PaymentMethod $paymentMethod)
  */

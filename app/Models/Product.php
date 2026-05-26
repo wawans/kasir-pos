@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
+use App\Observers\ProductObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
+#[ObservedBy([ProductObserver::class])]
 class Product extends Model implements HasMedia
 {
     use Concerns\BelongsToUnit;
-    use Concerns\MorphManyStockLog;
     use InteractsWithMedia;
 
     /**
@@ -59,5 +61,20 @@ class Product extends Model implements HasMedia
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function stock()
+    {
+        return $this->hasOne(Stock::class);
+    }
+
+    public function stockLog()
+    {
+        return $this->morphOne(StockLog::class, 'model');
+    }
+
+    public function stockLogs()
+    {
+        return $this->hasMany(StockLog::class);
     }
 }

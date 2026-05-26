@@ -13,7 +13,7 @@ use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class PurchaseItemData extends Data
+class StockLogData extends Data
 {
     #[WithoutValidation]
     public int $id;
@@ -40,12 +40,6 @@ class PurchaseItemData extends Data
         public float $quantity,
         #[Min(0)]
         #[MaxDigits(15)]
-        public int $discount = 0,
-        #[Min(0)]
-        #[MaxDigits(15)]
-        public int $price = 0,
-        #[Min(0)]
-        #[MaxDigits(15)]
-        public int $subtotal = 0,
+        public int $remaining_quantity = 0,
     ) {}
 }
