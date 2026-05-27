@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\PosData;
 use App\Models\Pos;
 use App\Repositories\PosRepository;
 use App\Support\Response\ApiResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
 // use Illuminate\Routing\Controllers\Middleware;
@@ -40,9 +40,9 @@ class PosController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PosData $request)
     {
-        $model = $this->repository->store($request->validated());
+        $model = $this->repository->store($request->toArray());
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);
@@ -61,9 +61,9 @@ class PosController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Pos $pos)
+    public function update(PosData $request, Pos $pos)
     {
-        $model = $this->repository->edit($request->validated(), $pos);
+        $model = $this->repository->edit($request->toArray(), $pos);
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);
@@ -74,8 +74,9 @@ class PosController extends Controller implements HasMiddleware
      */
     public function destroy(Pos $pos)
     {
-        $this->repository->destroy($pos);
+        abort(404);
+        // $this->repository->destroy($pos);
 
-        return ApiResponse::data();
+        // return ApiResponse::data();
     }
 }

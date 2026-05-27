@@ -3,6 +3,7 @@
 namespace App\Data;
 
 use Carbon\CarbonImmutable;
+use Spatie\LaravelData\Attributes\LoadRelation;
 use Spatie\LaravelData\Attributes\Validation\Email;
 use Spatie\LaravelData\Attributes\Validation\Max;
 use Spatie\LaravelData\Attributes\WithoutValidation;
@@ -20,6 +21,17 @@ class CustomerData extends Data
 
     #[WithoutValidation]
     public CarbonImmutable $updated_at;
+
+    #[WithoutValidation]
+    #[LoadRelation]
+    public ?UserActorData $createdBy;
+
+    #[WithoutValidation]
+    #[LoadRelation]
+    public ?UserActorData $updatedBy;
+
+    #[WithoutValidation]
+    public ?string $avatar;
 
     public function __construct(
         public string $name,

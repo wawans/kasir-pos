@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\ExpenseData;
 use App\Models\Expense;
 use App\Repositories\ExpenseRepository;
 use App\Support\Response\ApiResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
 // use Illuminate\Routing\Controllers\Middleware;
@@ -40,9 +40,9 @@ class ExpenseController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ExpenseData $request)
     {
-        $model = $this->repository->store($request->validated());
+        $model = $this->repository->store($request->toArray());
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);
@@ -61,9 +61,9 @@ class ExpenseController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Expense $expense)
+    public function update(ExpenseData $request, Expense $expense)
     {
-        $model = $this->repository->edit($request->validated(), $expense);
+        $model = $this->repository->edit($request->toArray(), $expense);
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->dateTime('date');
             $table->double('amount');
             $table->timestamps();
+            $table->foreignId('created_by')->nullable()->constrained('users', 'id');
+            $table->foreignId('updated_by')->nullable()->constrained('users', 'id');
         });
     }
 

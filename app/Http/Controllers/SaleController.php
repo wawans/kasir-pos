@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\SaleData;
 use App\Models\Sale;
 use App\Repositories\SaleRepository;
 use App\Support\Response\ApiResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
 // use Illuminate\Routing\Controllers\Middleware;
@@ -40,9 +40,9 @@ class SaleController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SaleData $request)
     {
-        $model = $this->repository->store($request->validated());
+        $model = $this->repository->store($request->toArray());
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);
@@ -61,9 +61,9 @@ class SaleController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Sale $sale)
+    public function update(SaleData $request, Sale $sale)
     {
-        $model = $this->repository->edit($request->validated(), $sale);
+        $model = $this->repository->edit($request->toArray(), $sale);
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);

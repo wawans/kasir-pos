@@ -8,10 +8,18 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Brand extends Model implements HasMedia
 {
-    use Concerns\ActiveScope;
-    use Concerns\AvatarAttribute;
-    use Concerns\DefaultScope;
+    use Concerns\ActiveScope,
+        Concerns\AvatarAttribute,
+        Concerns\DefaultScope,
+        Concerns\HasUserstamps;
     use InteractsWithMedia;
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['createdBy', 'updatedBy'];
 
     /**
      * The attributes that are mass assignable.

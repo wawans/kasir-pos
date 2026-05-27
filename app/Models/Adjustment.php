@@ -8,7 +8,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Adjustment extends Model
 {
-    use Concerns\MorphManyStockLog;
+    use Concerns\HasUserstamps,
+        Concerns\MorphManyStockLog;
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['createdBy', 'updatedBy'];
 
     /**
      * The attributes that are mass assignable.

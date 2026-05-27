@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\AdjustmentData;
 use App\Models\Adjustment;
 use App\Repositories\AdjustmentRepository;
 use App\Support\Response\ApiResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
 // use Illuminate\Routing\Controllers\Middleware;
@@ -40,9 +40,9 @@ class AdjustmentController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AdjustmentData $request)
     {
-        $model = $this->repository->store($request->validated());
+        $model = $this->repository->store($request->toArray());
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);
@@ -61,9 +61,9 @@ class AdjustmentController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Adjustment $adjustment)
+    public function update(AdjustmentData $request, Adjustment $adjustment)
     {
-        $model = $this->repository->edit($request->validated(), $adjustment);
+        $model = $this->repository->edit($request->toArray(), $adjustment);
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);

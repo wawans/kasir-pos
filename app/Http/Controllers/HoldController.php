@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\HoldData;
 use App\Models\Hold;
 use App\Repositories\HoldRepository;
 use App\Support\Response\ApiResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
 // use Illuminate\Routing\Controllers\Middleware;
@@ -40,9 +40,9 @@ class HoldController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(HoldData $request)
     {
-        $model = $this->repository->store($request->validated());
+        $model = $this->repository->store($request->toArray());
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);
@@ -61,9 +61,9 @@ class HoldController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Hold $hold)
+    public function update(HoldData $request, Hold $hold)
     {
-        $model = $this->repository->edit($request->validated(), $hold);
+        $model = $this->repository->edit($request->toArray(), $hold);
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);

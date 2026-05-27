@@ -18,6 +18,8 @@ return new class extends Migration
             $table->timestamp('closed_at')->nullable();
             $table->foreignId('closed_by')->constrained('users', 'id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
+            $table->foreignId('created_by')->nullable()->constrained('users', 'id');
+            $table->foreignId('updated_by')->nullable()->constrained('users', 'id');
         });
     }
 

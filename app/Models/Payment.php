@@ -7,7 +7,15 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Payment extends Model
 {
-    use Concerns\BelongsToPaymentMethod;
+    use Concerns\BelongsToPaymentMethod,
+        Concerns\HasUserstamps;
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['createdBy', 'updatedBy'];
 
     /**
      * The attributes that are mass assignable.

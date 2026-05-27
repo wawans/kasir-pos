@@ -27,6 +27,8 @@ return new class extends Migration
             $table->unsignedInteger('order_column')->nullable()->index();
 
             $table->nullableTimestamps();
+            $table->foreignId('created_by')->nullable()->constrained('users', 'id');
+            $table->foreignId('updated_by')->nullable()->constrained('users', 'id');
         });
     }
 };

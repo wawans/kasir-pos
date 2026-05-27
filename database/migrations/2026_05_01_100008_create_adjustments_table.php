@@ -19,6 +19,8 @@ return new class extends Migration
             $table->double('adjustment_total_quantity')->default(0);
             $table->text('note')->nullable();
             $table->timestamps();
+            $table->foreignId('created_by')->nullable()->constrained('users', 'id');
+            $table->foreignId('updated_by')->nullable()->constrained('users', 'id');
         });
     }
 

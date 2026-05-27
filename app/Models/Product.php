@@ -12,8 +12,16 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 #[ObservedBy([ProductObserver::class])]
 class Product extends Model implements HasMedia
 {
-    use Concerns\BelongsToUnit;
+    use Concerns\BelongsToUnit,
+        Concerns\HasUserstamps;
     use InteractsWithMedia;
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['createdBy', 'updatedBy'];
 
     /**
      * The attributes that are mass assignable.

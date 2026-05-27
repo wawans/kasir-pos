@@ -19,6 +19,8 @@ return new class extends Migration
             $table->double('quantity')->default(0);
             $table->double('remaining_quantity')->default(0);
             $table->timestamps();
+            $table->foreignId('created_by')->nullable()->constrained('users', 'id');
+            $table->foreignId('updated_by')->nullable()->constrained('users', 'id');
         });
     }
 

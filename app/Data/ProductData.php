@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Unit;
 use Carbon\CarbonImmutable;
+use Spatie\LaravelData\Attributes\LoadRelation;
 use Spatie\LaravelData\Attributes\Validation\Exists;
 use Spatie\LaravelData\Attributes\Validation\Max;
 use Spatie\LaravelData\Attributes\Validation\MaxDigits;
@@ -25,6 +26,14 @@ class ProductData extends Data
 
     #[WithoutValidation]
     public CarbonImmutable $updated_at;
+
+    #[WithoutValidation]
+    #[LoadRelation]
+    public ?UserActorData $createdBy;
+
+    #[WithoutValidation]
+    #[LoadRelation]
+    public ?UserActorData $updatedBy;
 
     #[WithoutValidation]
     public ?CategoryData $category;

@@ -10,8 +10,16 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 #[ObservedBy([StockLogObserver::class])]
 class StockLog extends Model
 {
-    use Concerns\BelongsToProduct;
-    use Concerns\BelongsToUnit;
+    use Concerns\BelongsToProduct,
+        Concerns\BelongsToUnit,
+        Concerns\HasUserstamps;
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['createdBy', 'updatedBy'];
 
     /**
      * The attributes that are mass assignable.

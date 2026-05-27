@@ -3,13 +3,12 @@
 namespace App\Data;
 
 use Carbon\CarbonImmutable;
-use Spatie\LaravelData\Attributes\LoadRelation;
 use Spatie\LaravelData\Attributes\WithoutValidation;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class UserData extends Data
+class UserActorData extends Data
 {
     #[WithoutValidation]
     public int $id;
@@ -22,14 +21,6 @@ class UserData extends Data
 
     #[WithoutValidation]
     public CarbonImmutable $updated_at;
-
-    #[WithoutValidation]
-    #[LoadRelation]
-    public ?UserActorData $createdBy;
-
-    #[WithoutValidation]
-    #[LoadRelation]
-    public ?UserActorData $updatedBy;
 
     #[WithoutValidation]
     public ?string $avatar;

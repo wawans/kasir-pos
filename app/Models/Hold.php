@@ -9,9 +9,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Hold extends Model
 {
-    use Concerns\BelongsToCustomer;
-    use Concerns\BelongsToPaymentMethod;
-    use Concerns\MorphManyPayment;
+    use Concerns\BelongsToCustomer,
+        Concerns\BelongsToPaymentMethod,
+        Concerns\HasUserstamps,
+        Concerns\MorphManyPayment;
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['createdBy', 'updatedBy'];
 
     /**
      * The attributes that are mass assignable.

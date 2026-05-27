@@ -27,6 +27,8 @@ return new class extends Migration
             $table->text('note')->nullable();
             $table->unsignedTinyInteger('status')->default(0);
             $table->timestamps();
+            $table->foreignId('created_by')->nullable()->constrained('users', 'id');
+            $table->foreignId('updated_by')->nullable()->constrained('users', 'id');
         });
     }
 

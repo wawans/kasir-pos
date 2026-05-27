@@ -20,7 +20,8 @@ use Spatie\Permission\Traits\HasRoles;
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable implements HasMedia
 {
-    use Concerns\AvatarAttribute;
+    use Concerns\AvatarAttribute,
+        Concerns\HasUserstamps;
     use HasApiTokens;
 
     /** @use HasFactory<UserFactory> */
@@ -28,6 +29,13 @@ class User extends Authenticatable implements HasMedia
 
     use HasRoles;
     use InteractsWithMedia;
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['createdBy', 'updatedBy'];
 
     /**
      * Get the attributes that should be cast.

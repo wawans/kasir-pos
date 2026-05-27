@@ -5,6 +5,7 @@ namespace App\Data;
 use App\Models\Product;
 use App\Models\Unit;
 use Carbon\CarbonImmutable;
+use Spatie\LaravelData\Attributes\LoadRelation;
 use Spatie\LaravelData\Attributes\Validation\Exists;
 use Spatie\LaravelData\Attributes\Validation\MaxDigits;
 use Spatie\LaravelData\Attributes\Validation\Min;
@@ -23,6 +24,14 @@ class StockData extends Data
 
     #[WithoutValidation]
     public CarbonImmutable $updated_at;
+
+    #[WithoutValidation]
+    #[LoadRelation]
+    public ?UserActorData $createdBy;
+
+    #[WithoutValidation]
+    #[LoadRelation]
+    public ?UserActorData $updatedBy;
 
     #[WithoutValidation]
     public ?ProductData $product;

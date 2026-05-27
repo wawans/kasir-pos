@@ -1,6 +1,6 @@
-import { format } from 'date-fns'
 import { type ColumnDef } from '@tanstack/react-table'
 import { DataTableColumnHeader } from '@/components/data-table'
+import { UserTimestampCell } from '@/components/data-table/shared/user-timestamp-cell.tsx'
 
 export const columns: ColumnDef<App.Data.StockData>[] = [
   {
@@ -31,14 +31,10 @@ export const columns: ColumnDef<App.Data.StockData>[] = [
     ),
   },
   {
-    accessorKey: 'updated_at',
+    id: 'by',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Updated At' />
+      <DataTableColumnHeader column={column} title='By' />
     ),
-    cell: ({ row }) => (
-      <div className='w-fit ps-2 text-nowrap'>
-        {format(row.getValue('updated_at'), 'dd/MM/yyyy HH:mm:ss')}
-      </div>
-    ),
+    cell: UserTimestampCell,
   },
 ]

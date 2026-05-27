@@ -5,6 +5,7 @@ namespace App\Data;
 use App\Models\PaymentMethod;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Carbon;
+use Spatie\LaravelData\Attributes\LoadRelation;
 use Spatie\LaravelData\Attributes\Validation\DateFormat;
 use Spatie\LaravelData\Attributes\Validation\Exists;
 use Spatie\LaravelData\Attributes\Validation\Max;
@@ -25,6 +26,14 @@ class PaymentData extends Data
 
     #[WithoutValidation]
     public CarbonImmutable $updated_at;
+
+    #[WithoutValidation]
+    #[LoadRelation]
+    public ?UserActorData $createdBy;
+
+    #[WithoutValidation]
+    #[LoadRelation]
+    public ?UserActorData $updatedBy;
 
     #[WithoutValidation]
     public ?PaymentMethodData $paymentMethod;

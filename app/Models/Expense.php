@@ -9,8 +9,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Expense extends Model
 {
-    use Concerns\BelongsToPaymentMethod;
-    use Concerns\MorphManyPayment;
+    use Concerns\BelongsToPaymentMethod,
+        Concerns\HasUserstamps,
+        Concerns\MorphManyPayment;
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['createdBy', 'updatedBy'];
 
     /**
      * The attributes that are mass assignable.

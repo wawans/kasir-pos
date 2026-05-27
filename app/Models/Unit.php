@@ -7,8 +7,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Unit extends Model
 {
-    use Concerns\ActiveScope;
-    use Concerns\DefaultScope;
+    use Concerns\ActiveScope,
+        Concerns\DefaultScope,
+        Concerns\HasUserstamps;
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['createdBy', 'updatedBy'];
 
     /**
      * The attributes that are mass assignable.

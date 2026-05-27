@@ -42,10 +42,11 @@ class PaymentController extends Controller implements HasMiddleware
      */
     public function store(Request $request)
     {
-        $model = $this->repository->store($request->validated());
-        $data = $this->repository->toData($model);
+        abort(404);
+        // $model = $this->repository->store($request->validated());
+        // $data = $this->repository->toData($model);
 
-        return ApiResponse::data($data);
+        // return ApiResponse::data($data);
     }
 
     /**
@@ -63,10 +64,11 @@ class PaymentController extends Controller implements HasMiddleware
      */
     public function update(Request $request, Payment $payment)
     {
-        $model = $this->repository->edit($request->validated(), $payment);
-        $data = $this->repository->toData($model);
+        abort(404);
+        // $model = $this->repository->edit($request->validated(), $payment);
+        // $data = $this->repository->toData($model);
 
-        return ApiResponse::data($data);
+        // return ApiResponse::data($data);
     }
 
     /**
@@ -74,8 +76,9 @@ class PaymentController extends Controller implements HasMiddleware
      */
     public function destroy(Payment $payment)
     {
-        $this->repository->destroy($payment);
+        abort(404);
+        // $this->repository->destroy($payment);
 
-        return ApiResponse::data();
+        // return ApiResponse::data();
     }
 }

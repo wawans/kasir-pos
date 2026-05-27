@@ -1,10 +1,9 @@
-import { format } from 'date-fns'
 import { type ColumnDef } from '@tanstack/react-table'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge.tsx'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
-import { LongText } from '@/components/long-text.tsx'
+import { UserTimestampCell } from '@/components/data-table/shared/user-timestamp-cell.tsx'
 import { TableRowActions } from './table-row-actions'
 
 export const columns: ColumnDef<App.Data.ProductData>[] = [
@@ -76,15 +75,11 @@ export const columns: ColumnDef<App.Data.ProductData>[] = [
     ),
   },
   {
-    accessorKey: 'updated_at',
+    id: 'by',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Updated At' />
+      <DataTableColumnHeader column={column} title='By' />
     ),
-    cell: ({ row }) => (
-      <div className='w-fit ps-2 text-nowrap'>
-        {format(row.getValue('updated_at'), 'dd/MM/yyyy HH:mm:ss')}
-      </div>
-    ),
+    cell: UserTimestampCell,
   },
   {
     id: 'actions',

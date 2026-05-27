@@ -9,10 +9,18 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Purchase extends Model
 {
-    use Concerns\BelongsToPaymentMethod;
-    use Concerns\BelongsToSupplier;
-    use Concerns\MorphManyPayment;
-    use Concerns\MorphManyStockLog;
+    use Concerns\BelongsToPaymentMethod,
+        Concerns\BelongsToSupplier,
+        Concerns\HasUserstamps,
+        Concerns\MorphManyPayment,
+        Concerns\MorphManyStockLog;
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['createdBy', 'updatedBy'];
 
     /**
      * The attributes that are mass assignable.

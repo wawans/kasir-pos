@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\PurchaseData;
 use App\Models\Purchase;
 use App\Repositories\PurchaseRepository;
 use App\Support\Response\ApiResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
 // use Illuminate\Routing\Controllers\Middleware;
@@ -40,9 +40,9 @@ class PurchaseController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PurchaseData $request)
     {
-        $model = $this->repository->store($request->validated());
+        $model = $this->repository->store($request->toArray());
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);
@@ -61,9 +61,9 @@ class PurchaseController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Purchase $purchase)
+    public function update(PurchaseData $request, Purchase $purchase)
     {
-        $model = $this->repository->edit($request->validated(), $purchase);
+        $model = $this->repository->edit($request->toArray(), $purchase);
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);

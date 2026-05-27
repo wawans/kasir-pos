@@ -4,6 +4,7 @@ namespace App\Data;
 
 use App\Models\Unit;
 use Carbon\CarbonImmutable;
+use Spatie\LaravelData\Attributes\LoadRelation;
 use Spatie\LaravelData\Attributes\Validation\Exists;
 use Spatie\LaravelData\Attributes\Validation\Max;
 use Spatie\LaravelData\Attributes\Validation\MaxDigits;
@@ -22,6 +23,14 @@ class UnitData extends Data
 
     #[WithoutValidation]
     public CarbonImmutable $updated_at;
+
+    #[WithoutValidation]
+    #[LoadRelation]
+    public ?UserActorData $createdBy;
+
+    #[WithoutValidation]
+    #[LoadRelation]
+    public ?UserActorData $updatedBy;
 
     public function __construct(
         #[Max(30)]
