@@ -30,7 +30,7 @@ class ProductRepository extends Repository
         return QueryBuilder::for($this->query())
             ->allowedFilters($this->model->getKeyName(), ...$this->model->getFillable())
             ->allowedSorts($this->model->getKeyName(), ...$this->model->getFillable())
-            ->allowedIncludes('stock', 'stock.unit', 'stockLog', 'stockLogs')
+            ->allowedIncludes('brand','category','unit', 'stock', 'stock.unit', 'stockLog', 'stockLogs')
             ->defaultSort('-updated_at');
     }
 

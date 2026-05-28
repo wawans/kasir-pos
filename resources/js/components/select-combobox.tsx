@@ -35,6 +35,7 @@ export type SelectComboboxProps = {
   valueBy?: string
   labelBy?: string
   manualFiltering?: boolean
+  className?: string
 }
 export function SelectCombobox({
   data = [],
@@ -46,6 +47,7 @@ export function SelectCombobox({
   labelBy = 'label',
   isLoading = false,
   manualFiltering = false,
+  className,
 }: SelectComboboxProps) {
   return (
     <Popover>
@@ -56,7 +58,8 @@ export function SelectCombobox({
             role='combobox'
             className={cn(
               'w-auto justify-between',
-              !value && 'text-muted-foreground'
+              !value && 'text-muted-foreground',
+              className
             )}
           >
             {value

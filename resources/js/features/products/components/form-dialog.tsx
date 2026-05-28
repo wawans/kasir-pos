@@ -6,11 +6,14 @@ import { type AxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Save } from 'lucide-react'
+import { faker } from '@faker-js/faker'
+import { Save, Dices } from 'lucide-react'
 import { toast } from 'sonner'
 import axios, { type LaravelValidationError } from '@/lib/axios'
 import { cn } from '@/lib/utils'
+import { useQueryApi } from '@/hooks/use-query-api'
 import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
 import { Checkbox } from '@/components/ui/checkbox.tsx'
 import {
   Dialog,
@@ -30,14 +33,25 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from '@/components/ui/input-group'
 import { Spinner } from '@/components/ui/spinner'
 import { Textarea } from '@/components/ui/textarea.tsx'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { useDataProvider } from '@/components/data/data-provider'
 import { SelectCombobox } from '@/components/select-combobox.tsx'
 
 const formSchema = z.object({
   name: z.string().min(1, 'name is required.'),
-  code: z.string().max(30, 'max 30 characters length').optional(),
+  code: z.string().max(30, 'max 30 characters length'),
   reference: z.string().max(30, 'max 30 characters length').optional(),
   category_id: z.coerce.number().min(1, 'required'),
   brand_id: z.coerce.number().min(1, 'required'),
@@ -72,21 +86,6 @@ type FormDialogProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
 }
-
-const useApi = (entity: string, url: string, search: string) =>
-  useQuery({
-    queryKey: [entity, { url, search }],
-    queryFn: () =>
-      axios
-        .get(`/api/${url}`, {
-          params: {
-            perPage: 100,
-            filter: { name: search },
-          },
-        })
-        .then((r) => r.data?.data || []),
-    gcTime: 1000 * 60 * 5,
-  })
 
 export function FormDialog({
   currentRow,
@@ -130,19 +129,19 @@ export function FormDialog({
   }, [currentRow, form, form.reset, isEdit])
 
   const [catsValue, setCatsValue] = useState<string>('')
-  const { data: cats, isLoading: isCatsLoading } = useApi(
+  const { data: cats, isLoading: isCatsLoading } = useQueryApi(
     'Category',
     'category',
     catsValue
   )
   const [searchUnit, setSearchUnit] = useState<string>('')
-  const { data: units, isLoading: isUnitsLoading } = useApi(
+  const { data: units, isLoading: isUnitsLoading } = useQueryApi(
     'Unit',
     'unit',
     searchUnit
   )
   const [searchBrand, setSearchBrand] = useState<string>('')
-  const { data: brands, isLoading: isBrandsLoading } = useApi(
+  const { data: brands, isLoading: isBrandsLoading } = useQueryApi(
     'Brand',
     'brand',
     searchBrand
@@ -192,8 +191,15 @@ export function FormDialog({
     mutate(values)
   }
 
+  const generate = () => {
+    form.setValue(
+      'code',
+      faker.string.alphanumeric({ length: 8, casing: 'upper' })
+    )
+  }
+
   const fields1: InputField[] = [
-    { name: 'code', label: 'SKU/Code' },
+    // { name: 'code', label: 'SKU/Code' },
     { name: 'reference', label: 'No./Ref.' },
   ]
 
@@ -257,6 +263,38 @@ export function FormDialog({
                     </FormLabel>
                     <FormControl>
                       <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='code'
+                render={({ field }) => (
+                  <FormItem className='h-fit items-start'>
+                    <FormLabel>
+                      SKU/Code<span className='text-destructive'>*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <ButtonGroup className='w-full'>
+                        <InputGroup>
+                          <InputGroupInput {...field} />
+                          <InputGroupAddon align='inline-end'>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <InputGroupButton
+                                  onClick={() => generate()}
+                                  size='icon-xs'
+                                >
+                                  <Dices />
+                                </InputGroupButton>
+                              </TooltipTrigger>
+                              <TooltipContent>Generate SKU/Code</TooltipContent>
+                            </Tooltip>
+                          </InputGroupAddon>
+                        </InputGroup>
+                      </ButtonGroup>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
