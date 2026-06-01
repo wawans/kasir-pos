@@ -1,10 +1,10 @@
 import { format } from 'date-fns'
 import { type ColumnDef } from '@tanstack/react-table'
 import { cn } from '@/lib/utils'
-import { Badge } from '@/components/ui/badge.tsx'
+import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
-import { LongText } from '@/components/long-text.tsx'
+import { LongText } from '@/components/long-text'
 import { TableRowActions } from './table-row-actions'
 
 export const columns: ColumnDef<App.Data.BrandData>[] = [

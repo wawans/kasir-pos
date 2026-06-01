@@ -11,15 +11,15 @@ import {
   useReactTable,
   type VisibilityState,
 } from '@tanstack/react-table'
-import { cn } from '@/lib/utils.ts'
+import { cn } from '@/lib/utils'
 import {
   DataTableBulkActions,
   DataTablePagination,
   DataTableTable,
   DataTableToolbar,
 } from '@/components/data-table'
-import { useDataProvider } from '@/components/data/data-provider.tsx'
-import { DataTableContext } from '@/components/data/data-table-provider.tsx'
+import { useDataProvider } from '@/components/data/data-provider'
+import { DataTableContext } from '@/components/data/data-table-provider'
 
 export type filter = {
   columnId: string

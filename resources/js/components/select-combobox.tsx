@@ -1,8 +1,8 @@
 import { type ComponentProps } from 'react'
 import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
 import { type Command as CommandPrimitive } from 'cmdk'
-import { cn } from '@/lib/utils.ts'
-import { Button } from '@/components/ui/button.tsx'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
 import {
   Command,
   CommandEmpty,
@@ -11,14 +11,14 @@ import {
   CommandItem,
   CommandList,
   CommandLoading,
-} from '@/components/ui/command.tsx'
-import { FormControl } from '@/components/ui/form.tsx'
+} from '@/components/ui/command'
+import { FormControl } from '@/components/ui/form'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover.tsx'
-import { Spinner } from '@/components/ui/spinner.tsx'
+} from '@/components/ui/popover'
+import { Spinner } from '@/components/ui/spinner'
 
 interface DataItem {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

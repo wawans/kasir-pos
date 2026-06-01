@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useAuth } from '@/context/auth-provider.tsx'
+import { useAuth } from '@/context/auth-provider'
 import { Button } from '@/components/ui/button'
 import {
   Form,

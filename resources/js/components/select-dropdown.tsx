@@ -10,13 +10,23 @@ import {
 } from '@/components/ui/select'
 
 type SelectDropdownProps = {
-  onValueChange?: (value: string) => void
-  defaultValue: string | undefined
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onValueChange?: (value: any) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  defaultValue: any | undefined
   placeholder?: string
   isPending?: boolean
-  items: { label: string; value: string }[] | undefined
+  items:
+    | {
+        // label: string; value: string
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        [key: string]: any
+      }[]
+    | undefined
   disabled?: boolean
   className?: string
+  valueBy?: string
+  labelBy?: string
   isControlled?: boolean
 }
 
@@ -28,6 +38,8 @@ export function SelectDropdown({
   placeholder,
   disabled,
   className = '',
+  valueBy = 'value',
+  labelBy = 'label',
   isControlled = false,
 }: SelectDropdownProps) {
   const defaultState = isControlled
@@ -50,9 +62,9 @@ export function SelectDropdown({
             </div>
           </SelectItem>
         ) : (
-          items?.map(({ label, value }) => (
-            <SelectItem key={value} value={value}>
-              {label}
+          items?.map((f) => (
+            <SelectItem key={f[labelBy] + f[valueBy]} value={f[valueBy]}>
+              {f[labelBy]}
             </SelectItem>
           ))
         )}

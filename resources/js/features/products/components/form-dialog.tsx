@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils'
 import { useQueryApi } from '@/hooks/use-query-api'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
-import { Checkbox } from '@/components/ui/checkbox.tsx'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   Dialog,
   DialogContent,
@@ -40,14 +40,14 @@ import {
   InputGroupInput,
 } from '@/components/ui/input-group'
 import { Spinner } from '@/components/ui/spinner'
-import { Textarea } from '@/components/ui/textarea.tsx'
+import { Textarea } from '@/components/ui/textarea'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { useDataProvider } from '@/components/data/data-provider'
-import { SelectCombobox } from '@/components/select-combobox.tsx'
+import { SelectCombobox } from '@/components/select-combobox'
 
 const formSchema = z.object({
   name: z.string().min(1, 'name is required.'),

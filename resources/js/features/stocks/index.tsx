@@ -1,5 +1,5 @@
 import { Data } from '@/components/data/data'
-import { DataTable } from '@/components/data/data-table.tsx'
+import { DataTable } from '@/components/data/data-table'
 import { columns } from './components/table-columns'
 
 export function Stocks() {

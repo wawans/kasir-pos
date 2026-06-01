@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react'
 import { type AxiosRequestConfig } from 'axios'
-import { API_URL } from '@/config/app.ts'
+import { API_URL } from '@/config/app'
 import { type Model } from '@/models'
-import axios from '@/lib/axios.ts'
+import axios from '@/lib/axios'
 import useDialogState from '@/hooks/use-dialog-state'
 
 export type Identifier = string | number

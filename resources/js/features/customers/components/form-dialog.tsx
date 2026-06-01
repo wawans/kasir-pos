@@ -9,7 +9,7 @@ import { Save } from 'lucide-react'
 import { toast } from 'sonner'
 import { type LaravelValidationError } from '@/lib/axios'
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox.tsx'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   Dialog,
   DialogContent,
@@ -28,7 +28,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Spinner } from '@/components/ui/spinner'
-import { Textarea } from '@/components/ui/textarea.tsx'
+import { Textarea } from '@/components/ui/textarea'
 import { useDataProvider } from '@/components/data/data-provider'
 
 const formSchema = z

@@ -1,6 +1,6 @@
 import { type Table as ReactTable, flexRender } from '@tanstack/react-table'
 import { cn } from '@/lib/utils'
-import { Skeleton } from '@/components/ui/skeleton.tsx'
+import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
   TableBody,

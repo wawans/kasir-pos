@@ -1,7 +1,7 @@
 import { format } from 'date-fns'
 import type { Row } from '@tanstack/react-table'
-import { getDisplayNameInitials } from '@/lib/utils.ts'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx'
+import { getDisplayNameInitials } from '@/lib/utils'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 type UserstampCellProps<TData> = {
   row: Row<TData>

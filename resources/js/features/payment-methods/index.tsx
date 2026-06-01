@@ -1,5 +1,5 @@
 import { Data } from '@/components/data/data'
-import { DataTable } from '@/components/data/data-table.tsx'
+import { DataTable } from '@/components/data/data-table'
 import { ActionButtons } from './components/action-buttons'
 import { ActionDialogs } from './components/action-dialogs'
 import { TableBulkActions } from './components/table-bulk-actions'

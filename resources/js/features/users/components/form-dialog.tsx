@@ -28,7 +28,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Spinner } from '@/components/ui/spinner'
 import { useDataProvider } from '@/components/data/data-provider'
-import { PasswordInput } from '@/components/password-input.tsx'
+import { PasswordInput } from '@/components/password-input'
 
 const formSchema = z
   .object({

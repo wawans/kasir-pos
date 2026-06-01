@@ -1,11 +1,11 @@
 import type { AxiosRequestConfig } from 'axios'
 import { useQuery } from '@tanstack/react-query'
-import axios from '@/lib/axios.ts'
+import axios from '@/lib/axios'
 
 export const useQueryApi = (
   entity: string,
   url: string,
-  search: string,
+  search?: string,
   params: AxiosRequestConfig['params'] = {}
 ) =>
   useQuery({
@@ -15,7 +15,7 @@ export const useQueryApi = (
         .get(`/api/${url}`, {
           params: {
             perPage: 100,
-            filter: { name: search },
+            ...(search ? { filter: { name: search } } : {}),
             ...params,
           },
         })
