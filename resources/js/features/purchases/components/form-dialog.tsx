@@ -9,7 +9,15 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { PaymentStatuses } from '@/types'
 import { faker } from '@faker-js/faker'
-import { Dices, MinusIcon, PlusIcon, Save, Trash2 } from 'lucide-react'
+import {
+  Dices,
+  MinusIcon,
+  PlusIcon,
+  Save,
+  SparkleIcon,
+  SparklesIcon,
+  Trash2,
+} from 'lucide-react'
 import { toast } from 'sonner'
 import { type LaravelValidationError } from '@/lib/axios'
 import { cn } from '@/lib/utils'
@@ -311,6 +319,12 @@ export function FormDialog({ currentRow }: FormDialogProps) {
     )
   }
 
+  const pay = () => {
+    form.setValue('payment_amount', form.getValues('total'), {
+      shouldValidate: false,
+    })
+  }
+
   return (
     <Card>
       <CardHeader className='text-start'>
@@ -326,11 +340,7 @@ export function FormDialog({ currentRow }: FormDialogProps) {
         <Form {...form}>
           <form
             id={`${entity}-form`}
-            onSubmit={form.handleSubmit(onSubmit, (errors) => {
-              toast.error('Error!', {
-                description: JSON.stringify(errors, null, 2),
-              })
-            })}
+            onSubmit={form.handleSubmit(onSubmit)}
             className='grid gap-x-4 gap-y-2.5 px-0.5 sm:grid-cols-6 lg:grid-cols-12'
           >
             <FormField
@@ -409,6 +419,7 @@ export function FormDialog({ currentRow }: FormDialogProps) {
               <ButtonGroup className='w-full'>
                 <ButtonGroup>
                   <Button
+                    type='button'
                     variant='outline'
                     size='icon'
                     onClick={() => addItem(productId)}
@@ -499,6 +510,7 @@ export function FormDialog({ currentRow }: FormDialogProps) {
                             <FormItem className='justify-end'>
                               <ButtonGroup className=''>
                                 <Button
+                                  type='button'
                                   variant='outline'
                                   size='icon'
                                   onClick={() => {
@@ -524,6 +536,7 @@ export function FormDialog({ currentRow }: FormDialogProps) {
                                 </FormControl>
 
                                 <Button
+                                  type='button'
                                   variant='outline'
                                   size='icon'
                                   onClick={() => {
@@ -581,6 +594,7 @@ export function FormDialog({ currentRow }: FormDialogProps) {
                       <TableCell className='h-fit items-start text-end'>
                         <Button
                           className='text-red-500!'
+                          type='button'
                           variant='outline'
                           size='icon'
                           onClick={() => remove(index)}
@@ -787,19 +801,29 @@ export function FormDialog({ currentRow }: FormDialogProps) {
                     render={({ field: { ref, onChange, ...rest } }) => (
                       <FormItem className='h-fit items-start'>
                         <FormLabel>Payment Amount</FormLabel>
-                        <FormControl>
-                          <NumberInput
-                            maxLength={12}
-                            className='text-end'
-                            {...rest}
-                            getInputRef={ref}
-                            thousandSeparator={true}
-                            allowNegative={false}
-                            onValueChange={(v) => {
-                              onChange(v.floatValue)
-                            }}
-                          />
-                        </FormControl>
+                        <ButtonGroup className='w-full'>
+                          <Button
+                            type='button'
+                            variant='outline'
+                            size='icon'
+                            onClick={() => pay()}
+                          >
+                            <SparklesIcon />
+                          </Button>
+                          <FormControl>
+                            <NumberInput
+                              maxLength={12}
+                              className='text-end'
+                              {...rest}
+                              getInputRef={ref}
+                              thousandSeparator={true}
+                              allowNegative={false}
+                              onValueChange={(v) => {
+                                onChange(v.floatValue)
+                              }}
+                            />
+                          </FormControl>
+                        </ButtonGroup>
                         <FormMessage />
                       </FormItem>
                     )}

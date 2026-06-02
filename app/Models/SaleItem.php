@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SaleItem extends Model
 {
-    use Concerns\BelongsToProduct;
-    use Concerns\BelongsToUnit;
+    use Concerns\BelongsToProduct,
+        Concerns\BelongsToProductStock,
+        Concerns\BelongsToUnit;
 
     /**
      * The attributes that are mass assignable.

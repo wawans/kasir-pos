@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Observers\StockLogObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 #[ObservedBy([StockLogObserver::class])]
@@ -50,5 +51,10 @@ class StockLog extends Model
     public function model(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function stock(): BelongsTo
+    {
+        return $this->belongsTo(Stock::class, 'product_id', 'product_id');
     }
 }

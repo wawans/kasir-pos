@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PurchaseItem extends Model
 {
-    use Concerns\BelongsToProduct;
-    use Concerns\BelongsToUnit;
+    use Concerns\BelongsToProduct,
+        Concerns\BelongsToProductStock,
+        Concerns\BelongsToUnit,
+        Concerns\MorphOneStockLog;
 
     /**
      * The attributes that are mass assignable.

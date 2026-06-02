@@ -3,8 +3,17 @@
 namespace App\Repositories;
 
 use App\Data\PurchaseData;
+use App\Enums\PaymentStatusType;
+use App\Enums\StatusType;
+use App\Http\Requests\Purchase\StorePurchaseRequest;
+use App\Http\Requests\Purchase\UpdatePurchaseRequest;
+use App\Models\Product;
 use App\Models\Purchase;
 use App\Repositories\Concerns\WithTable;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
@@ -46,18 +55,86 @@ class PurchaseRepository extends Repository
     /**
      * Create a new instance of the given model.
      *
-     * @param  array  $attributes
+     * @param  StorePurchaseRequest  $attributes
      * @return Purchase
      */
     public function store($attributes)
     {
-        return $this->create($attributes);
+        $attributes = collect($attributes);
+        $attributes->put('price', 0);
+        $attributes->put('total', 0);
+        $items = $attributes->pluck('items');
+
+        DB::beginTransaction();
+        try {
+            $model = $this->create($attributes->only($this->model->getFillable())->toArray());
+            $items = $items->map(function ($item) use ($model) {
+                $product = Product::findOrFail($item['product_id']);
+                $total = ($product->product_price * $item['quantity']) - $item['discount'];
+
+                return [
+                    'purchase_id' => $model->id,
+                    'product_id' => $product->id,
+                    'unit_id' => $product->unit_id,
+                    'price' => $product->product_price,
+                    'quantity' => $item['quantity'],
+                    'discount' => $item['discount'],
+                    'subtotal' => max($total, 0),
+                ];
+            });
+
+            $model->items()->saveMany($items->toArray());
+            $subtotal = $model->items()->sum('subtotal');
+            $total = $subtotal + $model->tax - $model->discount + $model->shipping;
+            $model->update([
+                'price' => $subtotal,
+                'total' => $total,
+            ]);
+
+            $pay = PaymentStatusType::tryFrom($attributes->get('payment_status'));
+
+            if ($pay === PaymentStatusType::PAID) {
+                if ($attributes->get('payment_amount') != $total) {
+                    throw ValidationException::withMessages(['payment_amount' => 'Payment Amount don\'t match.']);
+                }
+                // DO PAYMENT ACTION
+                $model->payments()->create([
+                    'payment_method_id' => $attributes->get('payment_method_id'),
+                    'reference' => 'PAY-'.$model->reference,
+                    'date' => Carbon::parse($attributes->get('payment_date', now())),
+                    'amount' => $total,
+                ]);
+            }
+
+            $status = StatusType::tryFrom($attributes->get('status'));
+
+            if ($status === StatusType::FINAL) {
+                // DO LOG STOCK ACTION
+                $model->items->each(function ($item) {
+                    $item->loadMissing('stock');
+                    $item->stockLog()->create([
+                        'product_id' => $item->product_id,
+                        'unit_id' => $item->unit_id,
+                        'quantity' => $item->quantity,
+                        'remaining_quantity' => $item->stock ? ($item->stock->quantity + $item->quantity) : $item->quantity,
+                    ]);
+                });
+            }
+
+            DB::commit();
+
+            return $model;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error($e->getMessage(), $e->getTrace());
+            throw ValidationException::withMessages(['error' => app()->isProduction() ? 'Server Error' : $e->getMessage()]);
+        }
     }
 
     /**
      * Update the model in the database.
      *
-     * @param  array  $attributes
+     * @param  UpdatePurchaseRequest  $attributes
      * @return Purchase
      */
     public function edit($attributes, Purchase $purchase)
