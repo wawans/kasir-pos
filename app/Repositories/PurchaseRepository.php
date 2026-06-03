@@ -57,13 +57,14 @@ class PurchaseRepository extends Repository
      *
      * @param  StorePurchaseRequest  $attributes
      * @return Purchase
+     * @throws \Throwable
      */
     public function store($attributes)
     {
         $attributes = collect($attributes);
         $attributes->put('price', 0);
         $attributes->put('total', 0);
-        $items = $attributes->pluck('items');
+        $items = collect($attributes->get('items', []));
 
         DB::beginTransaction();
         try {
@@ -83,7 +84,7 @@ class PurchaseRepository extends Repository
                 ];
             });
 
-            $model->items()->saveMany($items->toArray());
+            $model->items()->createMany($items->toArray());
             $subtotal = $model->items()->sum('subtotal');
             $total = $subtotal + $model->tax - $model->discount + $model->shipping;
             $model->update([
@@ -124,10 +125,10 @@ class PurchaseRepository extends Repository
             DB::commit();
 
             return $model;
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             DB::rollBack();
-            Log::error($e->getMessage(), $e->getTrace());
-            throw ValidationException::withMessages(['error' => app()->isProduction() ? 'Server Error' : $e->getMessage()]);
+            Log::error($exception->getMessage());
+            return throw app()->isProduction() ? ValidationException::withMessages(['error' => 'Server Error']) : $exception;
         }
     }
 

@@ -148,14 +148,14 @@ export function FormDialog({ currentRow }: FormDialogProps) {
     defaultValues: {
       date: new Date(),
       payment_amount: 0,
-      status: 0,
+      status: 1,
       tax: 0,
       discount: 0,
       shipping: 0,
       price: 0,
       total: 0,
       items: [],
-      payment_method_id: null,
+      // payment_method_id: null,
       reference: '',
       payment_date: null,
       payment_status: '0',
@@ -215,7 +215,6 @@ export function FormDialog({ currentRow }: FormDialogProps) {
     searchProduct,
     { include: 'unit,stock.unit', sort: 'name' }
   )
-  const [supplierId, setSupplierId] = useState<string | null>(null)
   const [searchSupplier, setSearchSupplier] = useState<string>('')
   const { data: suppliers, isLoading: isSuppliersLoading } = useQueryApi(
     'Supplier',
@@ -735,21 +734,18 @@ export function FormDialog({ currentRow }: FormDialogProps) {
                     render={({ field: { value, onChange, ...rest } }) => (
                       <FormItem className='h-fit items-start'>
                         <FormLabel>Payment Method</FormLabel>
-
                         <SelectDropdown
                           {...rest}
                           items={paymentMethods}
                           isPending={isPaymentMethodsLoading}
-                          defaultValue={value}
+                          value={value ?? null}
                           onValueChange={(v) => {
-                            onChange(v === '' ? undefined : Number(v))
+                            onChange(v === '' ? null : Number(v))
                           }}
                           valueBy='id'
                           labelBy='name'
-                          isControlled
                           className='w-full'
                         />
-
                         <FormMessage />
                       </FormItem>
                     )}
@@ -765,11 +761,10 @@ export function FormDialog({ currentRow }: FormDialogProps) {
                         <SelectDropdown
                           {...rest}
                           items={PaymentStatuses}
-                          defaultValue={value}
+                          value={value ?? null}
                           onValueChange={(v) => {
                             onChange(v)
                           }}
-                          isControlled
                           className='w-full'
                         />
                         <FormMessage />

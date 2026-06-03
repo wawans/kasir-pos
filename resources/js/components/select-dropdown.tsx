@@ -8,31 +8,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { type ComponentProps } from 'react'
+import type * as SelectPrimitive from '@radix-ui/react-select'
 
-type SelectDropdownProps = {
+interface SelectDropdownProps extends ComponentProps<typeof SelectPrimitive.Root> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onValueChange?: (value: any) => void
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  defaultValue: any | undefined
+  defaultValue?: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value?: any
   placeholder?: string
   isPending?: boolean
-  items:
-    | {
+  items?:
+     {
         // label: string; value: string
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         [key: string]: any
       }[]
-    | undefined
   disabled?: boolean
   className?: string
   valueBy?: string
   labelBy?: string
-  isControlled?: boolean
 }
 
+
 export function SelectDropdown({
-  defaultValue,
-  onValueChange,
   isPending,
   items,
   placeholder,
@@ -40,13 +41,11 @@ export function SelectDropdown({
   className = '',
   valueBy = 'value',
   labelBy = 'label',
-  isControlled = false,
+  ...props
 }: SelectDropdownProps) {
-  const defaultState = isControlled
-    ? { value: defaultValue, onValueChange }
-    : { defaultValue, onValueChange }
+
   return (
-    <Select {...defaultState}>
+    <Select {...props}>
       <FormControl>
         <SelectTrigger disabled={disabled} className={cn(className)}>
           <SelectValue placeholder={placeholder ?? 'Select'} />
