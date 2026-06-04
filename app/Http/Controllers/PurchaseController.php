@@ -54,7 +54,9 @@ class PurchaseController extends Controller implements HasMiddleware
      */
     public function show(Purchase $purchase)
     {
-        $data = $this->repository->toData($purchase);
+        $data = $this->repository->toData(
+            $this->repository->tableQuery()->find($purchase->id)
+        );
 
         return ApiResponse::data($data);
     }

@@ -1,5 +1,9 @@
 import type { AxiosRequestConfig } from 'axios'
-import { queryOptions } from '@tanstack/react-query'
+import {
+  queryOptions,
+  type QueryOptions,
+  type QueryObserverOptions,
+} from '@tanstack/react-query'
 import { API_URL } from '@/config/app'
 import axios from '@/lib/axios'
 import type { Identifier } from './data-provider'
@@ -100,19 +104,52 @@ export type UpdateManyArgs = Parameters<typeof updateMany>
 export type DestroyArgs = Parameters<typeof destroy>
 export type DestroyManyArgs = Parameters<typeof destroyMany>
 
-export const getAllQueryOptions = (entity: string, url: string, params = {}) =>
+type Options = QueryOptions &
+  Pick<
+    QueryObserverOptions,
+    | 'enabled'
+    | 'staleTime'
+    | 'refetchInterval'
+    | 'refetchIntervalInBackground'
+    | 'refetchOnWindowFocus'
+    | 'refetchOnReconnect'
+    | 'refetchOnMount'
+    | 'retryOnMount'
+    | 'suspense'
+  >
+export const getAllQueryOptions = (
+  entity: string,
+  url: string,
+  params: AxiosRequestConfig['params'] = {},
+  options: Options = {}
+) =>
   queryOptions({
     queryKey: [entity, { url, ...params }],
     queryFn: () => getAll(url, params),
+    ...options,
+  })
+
+export const getDataQueryOptions = (
+  entity: string,
+  url: string,
+  params: AxiosRequestConfig['params'] = {},
+  options: Options = {}
+) =>
+  queryOptions({
+    queryKey: [entity, { url, ...params }],
+    queryFn: () => getAll(url, params).then((r) => r.data || []),
+    ...options,
   })
 
 export const getOneQueryOptions = (
   entity: string,
   url: string,
   id: GetOneArgs[1],
-  params = {}
+  params: AxiosRequestConfig['params'] = {},
+  options: Options = {}
 ) =>
   queryOptions({
     queryKey: [entity, { url, id, ...params }],
     queryFn: () => getOne(url, id, params),
+    ...options,
   })

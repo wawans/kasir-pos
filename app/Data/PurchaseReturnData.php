@@ -9,6 +9,7 @@ use App\Models\Purchase;
 use App\Models\Supplier;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Spatie\LaravelData\Attributes\LoadRelation;
 use Spatie\LaravelData\Attributes\Validation\DateFormat;
 use Spatie\LaravelData\Attributes\Validation\Exists;
@@ -16,6 +17,7 @@ use Spatie\LaravelData\Attributes\Validation\MaxDigits;
 use Spatie\LaravelData\Attributes\Validation\Min;
 use Spatie\LaravelData\Attributes\WithoutValidation;
 use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Lazy;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
@@ -46,6 +48,12 @@ class PurchaseReturnData extends Data
 
     #[WithoutValidation]
     public ?PaymentMethodData $paymentMethod;
+
+    #[WithoutValidation]
+    /**
+     * @var Collection<PurchaseReturnItemData>|Lazy
+     */
+    public ?array $items;
 
     public function __construct(
         #[Exists(Purchase::class, 'id')]

@@ -3,10 +3,17 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { z } from 'zod'
-import { type AxiosError } from 'axios'
+import { type AxiosError, type AxiosRequestConfig } from 'axios'
 import { useFieldArray, useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import {
+  useMutation,
+  useQueryClient,
+  queryOptions,
+  usePrefetchQuery,
+  useQuery,
+} from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
 import { PaymentStatuses } from '@/types'
 import { faker } from '@faker-js/faker'
 import { useFirstMountState } from '@reactuses/core'
@@ -62,80 +69,65 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { useDataProvider } from '@/components/data/data-provider'
+import { getDataQueryOptions } from '@/components/data/utils'
 import { DatePicker } from '@/components/date-picker'
 import { NumberInput } from '@/components/form/number-input'
 import { SelectCombobox } from '@/components/select-combobox'
 import { SelectDropdown } from '@/components/select-dropdown'
+import { ItemForm, DataForm, formSchema, itemSchema } from './schema'
 
-const itemSchema = z.object({
-  product_id: z.coerce
-    .number('invalid')
-    .min(1, 'Product is required')
-    .default(0),
-  unit_id: z.coerce.number('invalid').min(1, 'Unit is required').default(0),
-  quantity: z.coerce
-    .number('invalid')
-    .min(1, 'Quantity is required')
-    .default(0),
-  discount: z.coerce
-    .number('invalid')
-    .gte(0, 'Discount must be greater than or equal to zero')
-    .default(0),
-  price: z.coerce
-    .number('invalid')
-    .gte(0, 'Price must be greater than or equal to zero')
-    .default(0),
-  subtotal: z.coerce
-    .number('invalid')
-    .gte(0, 'Subtotal must be greater than or equal to zero')
-    .default(0),
-  product_name: z.string().optional().nullish(),
-  unit_name: z.string().optional().nullish(),
-})
-
-const formSchema = z.object({
-  supplier_id: z.coerce.number('invalid').min(1, 'supplier is required.'),
-  payment_method_id: z.coerce
-    .number('invalid')
-    .min(1, 'payment method is required.'),
-  reference: z.string().min(1, 'reference is required.'),
-  note: z.string().optional(),
-  status: z.coerce.number('invalid'),
-  payment_status: z.string().min(1, 'payment status is required.'),
-  payment_date: z
-    .date('Date is required.')
-    // .max(new Date(), 'Date cannot be in the future')
-    .nullish(),
-  payment_amount: z.coerce
-    .number('invalid')
-    .gte(0, 'payment amount must be greater than or equal to zero.'),
-  tax: z.coerce
-    .number('invalid')
-    .gte(0, 'tax must be greater than or equal to zero.')
-    .default(0),
-  discount: z.coerce
-    .number('invalid')
-    .gte(0, 'discount must be greater than or equal to zero.')
-    .default(0),
-  shipping: z.coerce
-    .number('invalid')
-    .gte(0, 'shipping must be greater than or equal to zero.')
-    .default(0),
-  price: z.coerce
-    .number('invalid')
-    .gte(0, 'price must be greater than or equal to zero.')
-    .default(0),
-  total: z.coerce
-    .number('invalid')
-    .gte(0, 'total must be greater than or equal to zero.')
-    .default(0),
-  date: z.date('Date is required.'),
-  // .max(new Date(), 'Date cannot be in the future')
-  items: z.array(itemSchema).min(1, 'Add at least one item'),
-})
-
-type ItemForm = z.infer<typeof itemSchema>
-type DataForm = z.infer<typeof formSchema>
+export const ProductsQueryOptions = (
+  search?: string,
+  params: AxiosRequestConfig['params'] = {}
+) =>
+  getDataQueryOptions(
+    'Product',
+    'product',
+    {
+      perPage: 100,
+      include: 'unit,stock.unit',
+      sort: 'name',
+      ...(search ? { filter: { name: search } } : {}),
+      ...params,
+    },
+    {
+      gcTime: 1000 * 60 * 5,
+    }
+  )
+export const PaymentMethodsQueryOptions = (
+  search?: string,
+  params: AxiosRequestConfig['params'] = {}
+) =>
+  getDataQueryOptions(
+    'Payment Method',
+    'payment-method',
+    {
+      perPage: 100,
+      sort: 'name',
+      ...(search ? { filter: { name: search } } : {}),
+      ...params,
+    },
+    {
+      gcTime: 1000 * 60 * 5,
+    }
+  )
+export const SuppliersQueryOptions = (
+  search?: string,
+  params: AxiosRequestConfig['params'] = {}
+) =>
+  getDataQueryOptions(
+    'Supplier',
+    'supplier',
+    {
+      perPage: 100,
+      sort: 'name',
+      ...(search ? { filter: { name: search } } : {}),
+      ...params,
+    },
+    {
+      gcTime: 1000 * 60 * 5,
+    }
+  )
 
 type FormDialogProps = {
   currentRow?: App.Data.PurchaseData
@@ -214,20 +206,16 @@ export function FormDialog({ currentRow }: FormDialogProps) {
     data: products,
     isLoading: isLoadingProducts,
     isFetchedAfterMount: isMountedProducts,
-    isPending: isPendingProducts,
-  } = useQueryApi('Product', 'product', searchProduct, {
-    include: 'unit,stock.unit',
-    sort: 'name',
-  })
+  } = useQuery(ProductsQueryOptions(searchProduct))
+
   const [searchSupplier, setSearchSupplier] = useState<string>('')
-  const { data: suppliers, isLoading: isLoadingSuppliers } = useQueryApi(
-    'Supplier',
-    'supplier',
-    searchSupplier,
-    { sort: 'name' }
+  const { data: suppliers, isLoading: isLoadingSuppliers } = useQuery(
+    SuppliersQueryOptions(searchSupplier)
   )
-  const { data: paymentMethods, isLoading: isLoadingPaymentMethods } =
-    useQueryApi('Payment Method', 'payment-method', undefined, { sort: 'name' })
+
+  const { data: paymentMethods, isLoading: isLoadingPaymentMethods } = useQuery(
+    PaymentMethodsQueryOptions()
+  )
 
   const addItem = (productId) => {
     // const items = form.getValues('items')
@@ -273,45 +261,56 @@ export function FormDialog({ currentRow }: FormDialogProps) {
 
   useEffect(() => {
     function loadValues() {
+      const items = (currentRow?.items || []).map((item) => {
+        return {
+          product_id: item?.product_id,
+          product_name: item?.product?.name,
+          unit_id: item?.unit_id,
+          unit_name: item?.unit?.alias,
+          quantity: item?.quantity,
+          discount: item?.discount,
+          price: item?.price,
+          subtotal: item?.subtotal,
+        }
+      })
+
       form.reset({
         supplier_id: currentRow?.supplier_id,
         payment_method_id: currentRow?.payment_method_id,
         reference: currentRow?.reference || '',
         note: currentRow?.note || '',
-        status: currentRow?.status || 1,
+        status: (currentRow?.status as unknown as number) || 1,
         payment_status: currentRow?.payment_status,
-        payment_date: currentRow?.payment_date,
+        payment_date: currentRow?.payment_date
+          ? new Date(currentRow?.payment_date)
+          : (null as unknown as Date),
         payment_amount: currentRow?.payment_amount,
-        // tax: currentRow?.tax,
-        // discount: currentRow?.discount,
-        // shipping: currentRow?.shipping,
-        // price: currentRow?.price,
-        // total: currentRow?.total,
-        date: currentRow?.date,
-      })
-
-      form.setValues({
         tax: currentRow?.tax,
         discount: currentRow?.discount,
         shipping: currentRow?.shipping,
         price: currentRow?.price,
         total: currentRow?.total,
+        date: currentRow?.date
+          ? new Date(currentRow?.date)
+          : (null as unknown as Date),
+        items: items || [],
       })
     }
 
-    console.log('isMountedProducts: ', isMountedProducts)
-    console.log('isPendingProducts: ', isFirstMount)
+    // console.log('isMountedProducts: ', isMountedProducts)
+    // console.log('isPendingProducts: ', isFirstMount)
 
     if (isEdit) loadValues()
   }, [currentRow, form, isEdit, isMountedProducts, isFirstMount])
 
   const { entity, create, update } = useDataProvider()
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
   const { mutate, isPending } = useMutation({
     mutationFn: (values: DataForm) =>
       isEdit ? update(currentRow.id, values) : create(values),
-    onSuccess: () => {
-      form.reset()
+    onSuccess: (data) => {
+      navigate({ to: '/purchases/$id', params: { id: data.data.id } })
     },
     onSettled: () => {
       queryClient.invalidateQueries({
@@ -323,7 +322,7 @@ export function FormDialog({ currentRow }: FormDialogProps) {
       if (response?.status === 422) {
         if (response?.data?.errors) {
           for (const [key, value] of Object.entries(response.data.errors)) {
-            form.setError(key as keyof z.infer<typeof formSchema>, {
+            form.setError(key as keyof DataForm, {
               type: 'server',
               message: value[0] || 'Invalid',
             })
@@ -436,7 +435,7 @@ export function FormDialog({ currentRow }: FormDialogProps) {
                 <FormItem className='h-fit items-start sm:col-span-3 lg:col-span-4'>
                   <FormLabel>Supplier</FormLabel>
                   <SelectCombobox
-                    data={suppliers}
+                    data={suppliers || []}
                     search={searchSupplier}
                     onSearchChange={setSearchSupplier}
                     value={field.value}
@@ -466,7 +465,7 @@ export function FormDialog({ currentRow }: FormDialogProps) {
                 </ButtonGroup>
                 <ButtonGroup className='col-span-full w-full'>
                   <SelectCombobox
-                    data={products}
+                    data={products || []}
                     search={searchProduct}
                     onSearchChange={setSearchProduct}
                     value={productId}
@@ -774,7 +773,7 @@ export function FormDialog({ currentRow }: FormDialogProps) {
                         <FormLabel>Payment Method</FormLabel>
                         <SelectDropdown
                           {...rest}
-                          items={paymentMethods}
+                          items={paymentMethods || []}
                           isPending={isLoadingPaymentMethods}
                           value={value ?? null}
                           onValueChange={(v) => {

@@ -47,8 +47,10 @@ import { Route as AuthenticatedAdjustmentsCategoriesIndexRouteImport } from './r
 import { Route as AuthenticatedSettingsPasswordRouteImport } from './routes/_authenticated/settings/password'
 import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_authenticated/settings/account'
 import { Route as AuthenticatedPurchasesCreateRouteImport } from './routes/_authenticated/purchases/create'
-import { Route as AuthenticatedPurchasesIdRouteImport } from './routes/_authenticated/purchases/$id'
-import { Route as AuthenticatedPurchasesEditIdRouteImport } from './routes/_authenticated/purchases/edit.$id'
+import { Route as AuthenticatedPurchasesIdIndexRouteImport } from './routes/_authenticated/purchases/$id/index'
+import { Route as AuthenticatedProductsIdIndexRouteImport } from './routes/_authenticated/products/$id/index'
+import { Route as AuthenticatedPurchasesIdEditRouteImport } from './routes/_authenticated/purchases/$id/edit'
+import { Route as AuthenticatedProductsIdEditRouteImport } from './routes/_authenticated/products/$id/edit'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
@@ -262,16 +264,28 @@ const AuthenticatedPurchasesCreateRoute =
     path: '/purchases/create',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedPurchasesIdRoute =
-  AuthenticatedPurchasesIdRouteImport.update({
-    id: '/purchases/$id',
-    path: '/purchases/$id',
+const AuthenticatedPurchasesIdIndexRoute =
+  AuthenticatedPurchasesIdIndexRouteImport.update({
+    id: '/purchases/$id/',
+    path: '/purchases/$id/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedPurchasesEditIdRoute =
-  AuthenticatedPurchasesEditIdRouteImport.update({
-    id: '/purchases/edit/$id',
-    path: '/purchases/edit/$id',
+const AuthenticatedProductsIdIndexRoute =
+  AuthenticatedProductsIdIndexRouteImport.update({
+    id: '/products/$id/',
+    path: '/products/$id/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPurchasesIdEditRoute =
+  AuthenticatedPurchasesIdEditRouteImport.update({
+    id: '/purchases/$id/edit',
+    path: '/purchases/$id/edit',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedProductsIdEditRoute =
+  AuthenticatedProductsIdEditRouteImport.update({
+    id: '/products/$id/edit',
+    path: '/products/$id/edit',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
@@ -287,7 +301,6 @@ export interface FileRoutesByFullPath {
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
-  '/purchases/$id': typeof AuthenticatedPurchasesIdRoute
   '/purchases/create': typeof AuthenticatedPurchasesCreateRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/password': typeof AuthenticatedSettingsPasswordRoute
@@ -314,7 +327,10 @@ export interface FileRoutesByFullPath {
   '/suppliers/': typeof AuthenticatedSuppliersIndexRoute
   '/units/': typeof AuthenticatedUnitsIndexRoute
   '/users/': typeof AuthenticatedUsersIndexRoute
-  '/purchases/edit/$id': typeof AuthenticatedPurchasesEditIdRoute
+  '/products/$id/edit': typeof AuthenticatedProductsIdEditRoute
+  '/purchases/$id/edit': typeof AuthenticatedPurchasesIdEditRoute
+  '/products/$id/': typeof AuthenticatedProductsIdIndexRoute
+  '/purchases/$id/': typeof AuthenticatedPurchasesIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/forgot-password': typeof authForgotPasswordRoute
@@ -327,7 +343,6 @@ export interface FileRoutesByTo {
   '/500': typeof errors500Route
   '/503': typeof errors503Route
   '/': typeof AuthenticatedIndexRoute
-  '/purchases/$id': typeof AuthenticatedPurchasesIdRoute
   '/purchases/create': typeof AuthenticatedPurchasesCreateRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/password': typeof AuthenticatedSettingsPasswordRoute
@@ -354,7 +369,10 @@ export interface FileRoutesByTo {
   '/suppliers': typeof AuthenticatedSuppliersIndexRoute
   '/units': typeof AuthenticatedUnitsIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
-  '/purchases/edit/$id': typeof AuthenticatedPurchasesEditIdRoute
+  '/products/$id/edit': typeof AuthenticatedProductsIdEditRoute
+  '/purchases/$id/edit': typeof AuthenticatedPurchasesIdEditRoute
+  '/products/$id': typeof AuthenticatedProductsIdIndexRoute
+  '/purchases/$id': typeof AuthenticatedPurchasesIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -370,7 +388,6 @@ export interface FileRoutesById {
   '/(errors)/500': typeof errors500Route
   '/(errors)/503': typeof errors503Route
   '/_authenticated/': typeof AuthenticatedIndexRoute
-  '/_authenticated/purchases/$id': typeof AuthenticatedPurchasesIdRoute
   '/_authenticated/purchases/create': typeof AuthenticatedPurchasesCreateRoute
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/_authenticated/settings/password': typeof AuthenticatedSettingsPasswordRoute
@@ -397,7 +414,10 @@ export interface FileRoutesById {
   '/_authenticated/suppliers/': typeof AuthenticatedSuppliersIndexRoute
   '/_authenticated/units/': typeof AuthenticatedUnitsIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
-  '/_authenticated/purchases/edit/$id': typeof AuthenticatedPurchasesEditIdRoute
+  '/_authenticated/products/$id/edit': typeof AuthenticatedProductsIdEditRoute
+  '/_authenticated/purchases/$id/edit': typeof AuthenticatedPurchasesIdEditRoute
+  '/_authenticated/products/$id/': typeof AuthenticatedProductsIdIndexRoute
+  '/_authenticated/purchases/$id/': typeof AuthenticatedPurchasesIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -413,7 +433,6 @@ export interface FileRouteTypes {
     | '/404'
     | '/500'
     | '/503'
-    | '/purchases/$id'
     | '/purchases/create'
     | '/settings/account'
     | '/settings/password'
@@ -440,7 +459,10 @@ export interface FileRouteTypes {
     | '/suppliers/'
     | '/units/'
     | '/users/'
-    | '/purchases/edit/$id'
+    | '/products/$id/edit'
+    | '/purchases/$id/edit'
+    | '/products/$id/'
+    | '/purchases/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/forgot-password'
@@ -453,7 +475,6 @@ export interface FileRouteTypes {
     | '/500'
     | '/503'
     | '/'
-    | '/purchases/$id'
     | '/purchases/create'
     | '/settings/account'
     | '/settings/password'
@@ -480,7 +501,10 @@ export interface FileRouteTypes {
     | '/suppliers'
     | '/units'
     | '/users'
-    | '/purchases/edit/$id'
+    | '/products/$id/edit'
+    | '/purchases/$id/edit'
+    | '/products/$id'
+    | '/purchases/$id'
   id:
     | '__root__'
     | '/_authenticated'
@@ -495,7 +519,6 @@ export interface FileRouteTypes {
     | '/(errors)/500'
     | '/(errors)/503'
     | '/_authenticated/'
-    | '/_authenticated/purchases/$id'
     | '/_authenticated/purchases/create'
     | '/_authenticated/settings/account'
     | '/_authenticated/settings/password'
@@ -522,7 +545,10 @@ export interface FileRouteTypes {
     | '/_authenticated/suppliers/'
     | '/_authenticated/units/'
     | '/_authenticated/users/'
-    | '/_authenticated/purchases/edit/$id'
+    | '/_authenticated/products/$id/edit'
+    | '/_authenticated/purchases/$id/edit'
+    | '/_authenticated/products/$id/'
+    | '/_authenticated/purchases/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -806,18 +832,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPurchasesCreateRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/purchases/$id': {
-      id: '/_authenticated/purchases/$id'
+    '/_authenticated/purchases/$id/': {
+      id: '/_authenticated/purchases/$id/'
       path: '/purchases/$id'
-      fullPath: '/purchases/$id'
-      preLoaderRoute: typeof AuthenticatedPurchasesIdRouteImport
+      fullPath: '/purchases/$id/'
+      preLoaderRoute: typeof AuthenticatedPurchasesIdIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/purchases/edit/$id': {
-      id: '/_authenticated/purchases/edit/$id'
-      path: '/purchases/edit/$id'
-      fullPath: '/purchases/edit/$id'
-      preLoaderRoute: typeof AuthenticatedPurchasesEditIdRouteImport
+    '/_authenticated/products/$id/': {
+      id: '/_authenticated/products/$id/'
+      path: '/products/$id'
+      fullPath: '/products/$id/'
+      preLoaderRoute: typeof AuthenticatedProductsIdIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/purchases/$id/edit': {
+      id: '/_authenticated/purchases/$id/edit'
+      path: '/purchases/$id/edit'
+      fullPath: '/purchases/$id/edit'
+      preLoaderRoute: typeof AuthenticatedPurchasesIdEditRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/products/$id/edit': {
+      id: '/_authenticated/products/$id/edit'
+      path: '/products/$id/edit'
+      fullPath: '/products/$id/edit'
+      preLoaderRoute: typeof AuthenticatedProductsIdEditRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
   }
@@ -844,7 +884,6 @@ const AuthenticatedSettingsRouteRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
-  AuthenticatedPurchasesIdRoute: typeof AuthenticatedPurchasesIdRoute
   AuthenticatedPurchasesCreateRoute: typeof AuthenticatedPurchasesCreateRoute
   AuthenticatedAdjustmentsCategoriesIndexRoute: typeof AuthenticatedAdjustmentsCategoriesIndexRoute
   AuthenticatedAdjustmentsIndexRoute: typeof AuthenticatedAdjustmentsIndexRoute
@@ -868,13 +907,15 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSuppliersIndexRoute: typeof AuthenticatedSuppliersIndexRoute
   AuthenticatedUnitsIndexRoute: typeof AuthenticatedUnitsIndexRoute
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
-  AuthenticatedPurchasesEditIdRoute: typeof AuthenticatedPurchasesEditIdRoute
+  AuthenticatedProductsIdEditRoute: typeof AuthenticatedProductsIdEditRoute
+  AuthenticatedPurchasesIdEditRoute: typeof AuthenticatedPurchasesIdEditRoute
+  AuthenticatedProductsIdIndexRoute: typeof AuthenticatedProductsIdIndexRoute
+  AuthenticatedPurchasesIdIndexRoute: typeof AuthenticatedPurchasesIdIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
-  AuthenticatedPurchasesIdRoute: AuthenticatedPurchasesIdRoute,
   AuthenticatedPurchasesCreateRoute: AuthenticatedPurchasesCreateRoute,
   AuthenticatedAdjustmentsCategoriesIndexRoute:
     AuthenticatedAdjustmentsCategoriesIndexRoute,
@@ -902,7 +943,10 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSuppliersIndexRoute: AuthenticatedSuppliersIndexRoute,
   AuthenticatedUnitsIndexRoute: AuthenticatedUnitsIndexRoute,
   AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
-  AuthenticatedPurchasesEditIdRoute: AuthenticatedPurchasesEditIdRoute,
+  AuthenticatedProductsIdEditRoute: AuthenticatedProductsIdEditRoute,
+  AuthenticatedPurchasesIdEditRoute: AuthenticatedPurchasesIdEditRoute,
+  AuthenticatedProductsIdIndexRoute: AuthenticatedProductsIdIndexRoute,
+  AuthenticatedPurchasesIdIndexRoute: AuthenticatedPurchasesIdIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

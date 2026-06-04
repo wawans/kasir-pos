@@ -37,6 +37,7 @@ class StorePurchaseRequest extends FormRequest
             'payment_method_id' => ['required', 'integer', 'exists:payment_methods,id'],
             'payment_status' => ['required', new Enum(PaymentStatusType::class)],
             'payment_date' => [
+                'sometimes', 'nullable',
                 'required_if:payment_status,'.PaymentStatusType::PAID->value,
                 'date', 'before_or_equal:today'],
             'payment_amount' => [

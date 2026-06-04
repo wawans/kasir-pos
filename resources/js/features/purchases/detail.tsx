@@ -1,9 +1,9 @@
 import { getRouteApi } from '@tanstack/react-router'
 import { Data } from '@/components/data/data'
 
-const route = getRouteApi('/_authenticated/purchases/$id')
+const route = getRouteApi('/_authenticated/purchases/$id/')
 export function DetailPurchase() {
-  const { id } = route.useParams()
+  const { data } = route.useLoaderData()
 
   return (
     <Data
@@ -18,6 +18,10 @@ export function DetailPurchase() {
         },
         {
           title: 'Purchases',
+          href: '/purchases',
+        },
+        {
+          title: 'Detail',
           href: '/purchases',
         },
       ]}

@@ -7,11 +7,16 @@ import {
 import { getRouteApi } from '@tanstack/react-router'
 import { Data } from '@/components/data/data'
 import { useDataProvider } from '@/components/data/data-provider'
-import { FormDialog } from './components/form-dialog'
+import {
+  FormDialog,
+  PaymentMethodsQueryOptions,
+  ProductsQueryOptions,
+  SuppliersQueryOptions,
+} from './components/form-dialog'
 
-const route = getRouteApi('/_authenticated/purchases/edit/$id')
+const route = getRouteApi('/_authenticated/purchases/$id/edit')
 export function UpdatePurchase() {
-  const { id } = route.useParams()
+  const { data } = route.useLoaderData()
 
   return (
     <Data
@@ -28,25 +33,15 @@ export function UpdatePurchase() {
           title: 'Purchases',
           href: '/purchases',
         },
+        {
+          title: 'Edit',
+          href: '/purchases',
+        },
       ]}
     >
-      <Loadable id={id} />
+      <Suspense fallback={<div>Loading</div>}>
+        <FormDialog currentRow={data} />
+      </Suspense>
     </Data>
-  )
-}
-
-function Loadable({ id }) {
-  const { entity, getOne } = useDataProvider()
-  const { data } = useSuspenseQuery({
-    queryKey: [entity, { id }, getOne],
-    queryFn: () => getOne(id, { include: 'items' }).then((r) => r?.data),
-    staleTime: Infinity,
-    gcTime: Infinity,
-  })
-
-  return (
-    <Suspense fallback={<div>Loading</div>}>
-      <FormDialog currentRow={data} />
-    </Suspense>
   )
 }

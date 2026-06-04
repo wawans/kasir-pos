@@ -17,6 +17,10 @@ export function CreatePurchase() {
           title: 'Purchases',
           href: '/purchases',
         },
+        {
+          title: 'Create',
+          href: '/purchases',
+        },
       ]}
     >
       <FormDialog />

@@ -39,6 +39,7 @@ class PurchaseRepository extends Repository
         return QueryBuilder::for($this->query())
             ->allowedFilters($this->model->getKeyName(), ...$this->model->getFillable())
             ->allowedSorts($this->model->getKeyName(), ...$this->model->getFillable())
+            ->allowedIncludes('items', 'items.product', 'items.unit')
             ->defaultSort('-updated_at');
     }
 
@@ -57,6 +58,7 @@ class PurchaseRepository extends Repository
      *
      * @param  StorePurchaseRequest  $attributes
      * @return Purchase
+     *
      * @throws \Throwable
      */
     public function store($attributes)
@@ -128,6 +130,7 @@ class PurchaseRepository extends Repository
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error($exception->getMessage());
+
             return throw app()->isProduction() ? ValidationException::withMessages(['error' => 'Server Error']) : $exception;
         }
     }

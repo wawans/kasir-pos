@@ -36,4 +36,5 @@ export const Route = createFileRoute('/_authenticated')({
     }
   },
   component: AuthenticatedLayout,
+  pendingComponent: () => <div>Loading...</div>,
 })
