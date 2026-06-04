@@ -10,7 +10,7 @@ export function DetailPurchase() {
       entity='Purchase'
       url='purchase'
       title='Purchases'
-      description='Manage your purchases and their information here.'
+      description='View your purchases and their information here.'
       breadcrumbs={[
         {
           title: 'Dashboard',

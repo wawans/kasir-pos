@@ -48,7 +48,7 @@ export function TableRowActions<TData>({ row }: TableRowActionsProps<TData>) {
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link
-              to={`/purchases/$id/edit`}
+              to={`/purchases/edit/$id`}
               params={{
                 id: (row.original as App.Data.UserActorData)
                   .id as unknown as string,

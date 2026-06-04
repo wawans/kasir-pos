@@ -1,3 +1,5 @@
+import { type ComponentProps } from 'react'
+import type * as SelectPrimitive from '@radix-ui/react-select'
 import { Loader } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { FormControl } from '@/components/ui/form'
@@ -8,10 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { type ComponentProps } from 'react'
-import type * as SelectPrimitive from '@radix-ui/react-select'
 
-interface SelectDropdownProps extends ComponentProps<typeof SelectPrimitive.Root> {
+interface SelectDropdownProps extends ComponentProps<
+  typeof SelectPrimitive.Root
+> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onValueChange?: (value: any) => void
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,18 +22,16 @@ interface SelectDropdownProps extends ComponentProps<typeof SelectPrimitive.Root
   value?: any
   placeholder?: string
   isPending?: boolean
-  items?:
-     {
-        // label: string; value: string
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        [key: string]: any
-      }[]
+  items?: {
+    // label: string; value: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: any
+  }[]
   disabled?: boolean
   className?: string
   valueBy?: string
   labelBy?: string
 }
-
 
 export function SelectDropdown({
   isPending,
@@ -43,7 +43,6 @@ export function SelectDropdown({
   labelBy = 'label',
   ...props
 }: SelectDropdownProps) {
-
   return (
     <Select {...props}>
       <FormControl>

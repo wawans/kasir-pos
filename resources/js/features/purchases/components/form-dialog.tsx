@@ -9,12 +9,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { PaymentStatuses } from '@/types'
 import { faker } from '@faker-js/faker'
+import { useFirstMountState } from '@reactuses/core'
 import {
   Dices,
   MinusIcon,
   PlusIcon,
   Save,
-  SparkleIcon,
   SparklesIcon,
   Trash2,
 } from 'lucide-react'
@@ -141,6 +141,7 @@ type FormDialogProps = {
   currentRow?: App.Data.PurchaseData
 }
 export function FormDialog({ currentRow }: FormDialogProps) {
+  const isFirstMount = useFirstMountState()
   const isEdit = !!currentRow
   const form = useForm<DataForm>({
     resolver: zodResolver(formSchema),
@@ -209,20 +210,23 @@ export function FormDialog({ currentRow }: FormDialogProps) {
 
   const [productId, setProductId] = useState<string | null>(null)
   const [searchProduct, setSearchProduct] = useState<string>('')
-  const { data: products, isLoading: isProductsLoading } = useQueryApi(
-    'Product',
-    'product',
-    searchProduct,
-    { include: 'unit,stock.unit', sort: 'name' }
-  )
+  const {
+    data: products,
+    isLoading: isLoadingProducts,
+    isFetchedAfterMount: isMountedProducts,
+    isPending: isPendingProducts,
+  } = useQueryApi('Product', 'product', searchProduct, {
+    include: 'unit,stock.unit',
+    sort: 'name',
+  })
   const [searchSupplier, setSearchSupplier] = useState<string>('')
-  const { data: suppliers, isLoading: isSuppliersLoading } = useQueryApi(
+  const { data: suppliers, isLoading: isLoadingSuppliers } = useQueryApi(
     'Supplier',
     'supplier',
     searchSupplier,
     { sort: 'name' }
   )
-  const { data: paymentMethods, isLoading: isPaymentMethodsLoading } =
+  const { data: paymentMethods, isLoading: isLoadingPaymentMethods } =
     useQueryApi('Payment Method', 'payment-method', undefined, { sort: 'name' })
 
   const addItem = (productId) => {
@@ -266,6 +270,40 @@ export function FormDialog({ currentRow }: FormDialogProps) {
         quantity: items[index].quantity - 1,
       })
   }
+
+  useEffect(() => {
+    function loadValues() {
+      form.reset({
+        supplier_id: currentRow?.supplier_id,
+        payment_method_id: currentRow?.payment_method_id,
+        reference: currentRow?.reference || '',
+        note: currentRow?.note || '',
+        status: currentRow?.status || 1,
+        payment_status: currentRow?.payment_status,
+        payment_date: currentRow?.payment_date,
+        payment_amount: currentRow?.payment_amount,
+        // tax: currentRow?.tax,
+        // discount: currentRow?.discount,
+        // shipping: currentRow?.shipping,
+        // price: currentRow?.price,
+        // total: currentRow?.total,
+        date: currentRow?.date,
+      })
+
+      form.setValues({
+        tax: currentRow?.tax,
+        discount: currentRow?.discount,
+        shipping: currentRow?.shipping,
+        price: currentRow?.price,
+        total: currentRow?.total,
+      })
+    }
+
+    console.log('isMountedProducts: ', isMountedProducts)
+    console.log('isPendingProducts: ', isFirstMount)
+
+    if (isEdit) loadValues()
+  }, [currentRow, form, isEdit, isMountedProducts, isFirstMount])
 
   const { entity, create, update } = useDataProvider()
   const queryClient = useQueryClient()
@@ -403,7 +441,7 @@ export function FormDialog({ currentRow }: FormDialogProps) {
                     onSearchChange={setSearchSupplier}
                     value={field.value}
                     onValueChange={(v) => form.setValue('supplier_id', v)}
-                    isLoading={isSuppliersLoading}
+                    isLoading={isLoadingSuppliers}
                     valueBy='id'
                     labelBy='name'
                     manualFiltering={true}
@@ -433,7 +471,7 @@ export function FormDialog({ currentRow }: FormDialogProps) {
                     onSearchChange={setSearchProduct}
                     value={productId}
                     onValueChange={(v) => setProductId(v)}
-                    isLoading={isProductsLoading}
+                    isLoading={isLoadingProducts}
                     valueBy='id'
                     labelBy='name'
                     className='col-span-full w-full'
@@ -737,7 +775,7 @@ export function FormDialog({ currentRow }: FormDialogProps) {
                         <SelectDropdown
                           {...rest}
                           items={paymentMethods}
-                          isPending={isPaymentMethodsLoading}
+                          isPending={isLoadingPaymentMethods}
                           value={value ?? null}
                           onValueChange={(v) => {
                             onChange(v === '' ? null : Number(v))
