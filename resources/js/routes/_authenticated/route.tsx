@@ -1,5 +1,6 @@
 import { createFileRoute, redirect, isRedirect } from '@tanstack/react-router'
 import { AuthenticatedLayout } from '@/components/layout/authenticated-layout'
+import { AuthenticatedSkeletonLayout } from '@/components/layout/authenticated-skeleton-layout'
 
 export const Route = createFileRoute('/_authenticated')({
   // @ts-expect-error @typescript-eslint/no-unused-vars
@@ -36,5 +37,5 @@ export const Route = createFileRoute('/_authenticated')({
     }
   },
   component: AuthenticatedLayout,
-  pendingComponent: () => <div>Loading...</div>,
+  pendingComponent: AuthenticatedSkeletonLayout,
 })
