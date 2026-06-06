@@ -22,7 +22,6 @@ export function DetailPurchase() {
         },
         {
           title: 'Detail',
-          href: '/purchases',
         },
       ]}
     >

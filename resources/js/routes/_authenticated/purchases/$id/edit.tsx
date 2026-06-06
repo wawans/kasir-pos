@@ -1,12 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { getOne } from '@/components/data/utils'
+import { PaymentMethodsQueryOptions } from '@/features/payment-methods/components/utils'
+import { ProductsQueryOptions } from '@/features/products/components/utils'
 import { EntityURL } from '@/features/purchases'
-import {
-  PaymentMethodsQueryOptions,
-  ProductsQueryOptions,
-  SuppliersQueryOptions,
-} from '@/features/purchases/components/form-dialog'
 import { UpdatePurchase } from '@/features/purchases/update'
+import { SuppliersQueryOptions } from '@/features/suppliers/components/utils'
 
 export const Route = createFileRoute('/_authenticated/purchases/$id/edit')({
   component: UpdatePurchase,

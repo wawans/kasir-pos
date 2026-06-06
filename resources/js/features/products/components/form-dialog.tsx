@@ -1,15 +1,16 @@
 'use client'
 
+import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { z } from 'zod'
 import { type AxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { faker } from '@faker-js/faker'
-import { Save, Dices } from 'lucide-react'
+import { Dices, Save } from 'lucide-react'
 import { toast } from 'sonner'
-import axios, { type LaravelValidationError } from '@/lib/axios'
+import { type LaravelValidationError } from '@/lib/axios'
 import { cn } from '@/lib/utils'
 import { useQueryApi } from '@/hooks/use-query-api'
 import { Button } from '@/components/ui/button'
@@ -47,6 +48,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { useDataProvider } from '@/components/data/data-provider'
+import { NumberInput } from '@/components/form/number-input'
 import { SelectCombobox } from '@/components/select-combobox'
 
 const formSchema = z.object({
@@ -387,7 +389,7 @@ export function FormDialog({
                   key={name}
                   control={form.control}
                   name={name}
-                  render={({ field }) => (
+                  render={({ field: { ref, onChange, ...rest } }) => (
                     <FormItem
                       className={cn(
                         i == 0 && 'col-start-1',
@@ -399,7 +401,17 @@ export function FormDialog({
                         <span className='text-destructive'>*</span>
                       </FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <NumberInput
+                          {...rest}
+                          getInputRef={ref}
+                          thousandSeparator={true}
+                          allowNegative={false}
+                          onValueChange={(v) => {
+                            onChange(v.floatValue)
+                          }}
+                          maxLength={12}
+                          className='text-end'
+                        />
                       </FormControl>
                       {description && (
                         <FormDescription>{description}</FormDescription>
@@ -414,7 +426,7 @@ export function FormDialog({
                   key={name}
                   control={form.control}
                   name={name}
-                  render={({ field }) => (
+                  render={({ field: { ref, onChange, ...rest } }) => (
                     <FormItem
                       className={cn(
                         i == 0 && 'col-start-1',
@@ -423,7 +435,17 @@ export function FormDialog({
                     >
                       <FormLabel>{label}</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <NumberInput
+                          {...rest}
+                          getInputRef={ref}
+                          thousandSeparator={true}
+                          allowNegative={false}
+                          onValueChange={(v) => {
+                            onChange(v.floatValue)
+                          }}
+                          maxLength={12}
+                          className='text-end'
+                        />
                       </FormControl>
                       {description && (
                         <FormDescription>{description}</FormDescription>

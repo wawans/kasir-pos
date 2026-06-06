@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Observers\PurchaseItemObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[ObservedBy([PurchaseItemObserver::class])]
 class PurchaseItem extends Model
 {
     use Concerns\BelongsToProduct,

@@ -1,4 +1,3 @@
-import { type User } from '@/models'
 // import { TeamSwitcher } from './team-switcher'
 import { useAuth } from '@/context/auth-provider'
 import { useLayout } from '@/context/layout-provider'
@@ -33,7 +32,7 @@ export function AppSidebar() {
         ))}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user as User} />
+        <NavUser user={user as App.Data.UserData} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

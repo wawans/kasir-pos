@@ -40,6 +40,8 @@ class PurchaseController extends Controller implements HasMiddleware
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @throws \Throwable
      */
     public function store(StorePurchaseRequest $request)
     {
@@ -63,6 +65,8 @@ class PurchaseController extends Controller implements HasMiddleware
 
     /**
      * Update the specified resource in storage.
+     *
+     * @throws \Throwable
      */
     public function update(UpdatePurchaseRequest $request, Purchase $purchase)
     {
@@ -74,6 +78,8 @@ class PurchaseController extends Controller implements HasMiddleware
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @throws \Throwable
      */
     public function destroy(Purchase $purchase)
     {

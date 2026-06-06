@@ -2,14 +2,18 @@
 
 namespace App\Models;
 
+use App\Observers\SaleReturnItemObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[ObservedBy([SaleReturnItemObserver::class])]
 class SaleReturnItem extends Model
 {
     use Concerns\BelongsToProduct,
         Concerns\BelongsToProductStock,
-        Concerns\BelongsToUnit;
+        Concerns\BelongsToUnit,
+        Concerns\MorphOneStockLog;
 
     /**
      * The attributes that are mass assignable.

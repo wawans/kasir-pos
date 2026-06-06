@@ -19,7 +19,6 @@ export function CreatePurchase() {
         },
         {
           title: 'Create',
-          href: '/purchases',
         },
       ]}
     >

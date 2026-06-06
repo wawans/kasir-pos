@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Data\SaleData;
+use App\Http\Requests\Sale\StoreSaleRequest;
+use App\Http\Requests\Sale\UpdateSaleRequest;
 use App\Models\Sale;
 use App\Repositories\SaleRepository;
 use App\Support\Response\ApiResponse;
@@ -39,10 +40,12 @@ class SaleController extends Controller implements HasMiddleware
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @throws \Throwable
      */
-    public function store(SaleData $request)
+    public function store(StoreSaleRequest $request)
     {
-        $model = $this->repository->store($request->toArray());
+        $model = $this->repository->store($request->validated());
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);
@@ -53,17 +56,21 @@ class SaleController extends Controller implements HasMiddleware
      */
     public function show(Sale $sale)
     {
-        $data = $this->repository->toData($sale);
+        $data = $this->repository->toData(
+            $this->repository->tableQuery()->find($sale->id)
+        );
 
         return ApiResponse::data($data);
     }
 
     /**
      * Update the specified resource in storage.
+     *
+     * @throws \Throwable
      */
-    public function update(SaleData $request, Sale $sale)
+    public function update(UpdateSaleRequest $request, Sale $sale)
     {
-        $model = $this->repository->edit($request->toArray(), $sale);
+        $model = $this->repository->edit($request->validated(), $sale);
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);
@@ -71,6 +78,8 @@ class SaleController extends Controller implements HasMiddleware
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @throws \Throwable
      */
     public function destroy(Sale $sale)
     {

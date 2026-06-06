@@ -39,7 +39,7 @@ class StorePurchaseRequest extends FormRequest
             'payment_date' => [
                 'sometimes', 'nullable',
                 'required_if:payment_status,'.PaymentStatusType::PAID->value,
-                'date', 'before_or_equal:today'],
+                'date', 'before_or_equal:'.today()->endOfDay()],
             'payment_amount' => [
                 'required_if:payment_status,'.PaymentStatusType::PAID->value,
                 'numeric', 'min:0', 'max_digits:15'],

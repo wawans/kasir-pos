@@ -1,15 +1,19 @@
 import { Data } from '@/components/data/data'
 import { DataTable } from '@/components/data/data-table'
-import { ActionButtons } from './components/action-buttons'
 import { ActionDialogs } from './components/action-dialogs'
 import { TableBulkActions } from './components/table-bulk-actions'
 import { columns } from './components/table-columns'
 
+// import { ActionButtons } from './components/action-buttons'
+
+export const Entity: string = 'Purchase Return'
+export const EntityURL: string = 'purchase-return'
+
 export function PurchasesReturns() {
   return (
     <Data
-      entity='Purchase Return'
-      url='purchase-return'
+      entity={Entity}
+      url={EntityURL}
       title='Purchases Returns'
       description='Manage your purchases returns and their information here.'
       breadcrumbs={[
@@ -22,7 +26,6 @@ export function PurchasesReturns() {
           href: '/purchases-returns',
         },
       ]}
-      actions={<ActionButtons />}
     >
       <DataTable
         columns={columns}

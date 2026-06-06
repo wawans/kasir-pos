@@ -1,16 +1,15 @@
 import { createFileRoute } from '@tanstack/react-router'
-import {
-  PaymentMethodsQueryOptions,
-  ProductsQueryOptions,
-  SuppliersQueryOptions,
-} from '@/features/purchases/components/form-dialog'
+import { PaymentMethodsQueryOptions } from '@/features/payment-methods/components/utils'
+import { ProductsQueryOptions } from '@/features/products/components/utils'
 import { CreatePurchase } from '@/features/purchases/create'
+import { SuppliersQueryOptions } from '@/features/suppliers/components/utils'
 
 export const Route = createFileRoute('/_authenticated/purchases/create')({
   component: CreatePurchase,
   loader: ({ context: { queryClient } }) => {
-    queryClient.prefetchQuery(PaymentMethodsQueryOptions())
     queryClient.prefetchQuery(SuppliersQueryOptions())
     queryClient.prefetchQuery(ProductsQueryOptions())
+
+    return queryClient.ensureQueryData(PaymentMethodsQueryOptions())
   },
 })

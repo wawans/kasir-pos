@@ -65,7 +65,9 @@ class ProductController extends Controller implements HasMiddleware
      */
     public function show(Product $product)
     {
-        $data = $this->repository->toData($product);
+        $data = $this->repository->toData(
+            $this->repository->tableQuery()->find($product->id)
+        );
 
         return ApiResponse::data($data);
     }

@@ -1,7 +1,7 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { Link } from '@tanstack/react-router'
 import { type Row } from '@tanstack/react-table'
-import { Eye, PencilLine, Trash2 } from 'lucide-react'
+import { Eye, PencilLine, Trash2, ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -57,6 +57,21 @@ export function TableRowActions<TData>({ row }: TableRowActionsProps<TData>) {
               Edit
               <DropdownMenuShortcut>
                 <PencilLine size={16} />
+              </DropdownMenuShortcut>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <Link
+              to={`/purchases-returns/create/$id`}
+              params={{
+                id: (row.original as App.Data.UserActorData)
+                  .id as unknown as string,
+              }}
+            >
+              Return
+              <DropdownMenuShortcut>
+                <ArrowLeft size={16} />
               </DropdownMenuShortcut>
             </Link>
           </DropdownMenuItem>

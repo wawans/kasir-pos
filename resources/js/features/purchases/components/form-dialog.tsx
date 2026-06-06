@@ -2,21 +2,14 @@
 
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { z } from 'zod'
-import { type AxiosError, type AxiosRequestConfig } from 'axios'
+import { type AxiosError } from 'axios'
 import { useFieldArray, useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  useMutation,
-  useQueryClient,
-  queryOptions,
-  usePrefetchQuery,
-  useQuery,
-} from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { PaymentStatuses } from '@/types'
 import { faker } from '@faker-js/faker'
-import { useFirstMountState } from '@reactuses/core'
+import { useMount, useUpdateEffect } from '@reactuses/core'
 import {
   Dices,
   MinusIcon,
@@ -28,7 +21,6 @@ import {
 import { toast } from 'sonner'
 import { type LaravelValidationError } from '@/lib/axios'
 import { cn } from '@/lib/utils'
-import { useQueryApi } from '@/hooks/use-query-api'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
 import {
@@ -69,71 +61,19 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { useDataProvider } from '@/components/data/data-provider'
-import { getDataQueryOptions } from '@/components/data/utils'
 import { DatePicker } from '@/components/date-picker'
 import { NumberInput } from '@/components/form/number-input'
 import { SelectCombobox } from '@/components/select-combobox'
 import { SelectDropdown } from '@/components/select-dropdown'
-import { ItemForm, DataForm, formSchema, itemSchema } from './schema'
-
-export const ProductsQueryOptions = (
-  search?: string,
-  params: AxiosRequestConfig['params'] = {}
-) =>
-  getDataQueryOptions(
-    'Product',
-    'product',
-    {
-      perPage: 100,
-      include: 'unit,stock.unit',
-      sort: 'name',
-      ...(search ? { filter: { name: search } } : {}),
-      ...params,
-    },
-    {
-      gcTime: 1000 * 60 * 5,
-    }
-  )
-export const PaymentMethodsQueryOptions = (
-  search?: string,
-  params: AxiosRequestConfig['params'] = {}
-) =>
-  getDataQueryOptions(
-    'Payment Method',
-    'payment-method',
-    {
-      perPage: 100,
-      sort: 'name',
-      ...(search ? { filter: { name: search } } : {}),
-      ...params,
-    },
-    {
-      gcTime: 1000 * 60 * 5,
-    }
-  )
-export const SuppliersQueryOptions = (
-  search?: string,
-  params: AxiosRequestConfig['params'] = {}
-) =>
-  getDataQueryOptions(
-    'Supplier',
-    'supplier',
-    {
-      perPage: 100,
-      sort: 'name',
-      ...(search ? { filter: { name: search } } : {}),
-      ...params,
-    },
-    {
-      gcTime: 1000 * 60 * 5,
-    }
-  )
+import { PaymentMethodsQueryOptions } from '@/features/payment-methods/components/utils'
+import { ProductsQueryOptions } from '@/features/products/components/utils'
+import { SuppliersQueryOptions } from '@/features/suppliers/components/utils'
+import { type DataForm, formSchema, type ItemForm } from './schema'
 
 type FormDialogProps = {
   currentRow?: App.Data.PurchaseData
 }
 export function FormDialog({ currentRow }: FormDialogProps) {
-  const isFirstMount = useFirstMountState()
   const isEdit = !!currentRow
   const form = useForm<DataForm>({
     resolver: zodResolver(formSchema),
@@ -202,11 +142,9 @@ export function FormDialog({ currentRow }: FormDialogProps) {
 
   const [productId, setProductId] = useState<string | null>(null)
   const [searchProduct, setSearchProduct] = useState<string>('')
-  const {
-    data: products,
-    isLoading: isLoadingProducts,
-    isFetchedAfterMount: isMountedProducts,
-  } = useQuery(ProductsQueryOptions(searchProduct))
+  const { data: products, isLoading: isLoadingProducts } = useQuery(
+    ProductsQueryOptions(searchProduct)
+  )
 
   const [searchSupplier, setSearchSupplier] = useState<string>('')
   const { data: suppliers, isLoading: isLoadingSuppliers } = useQuery(
@@ -259,7 +197,13 @@ export function FormDialog({ currentRow }: FormDialogProps) {
       })
   }
 
-  useEffect(() => {
+  const [isFirstMount, setIsFirstMount] = useState<boolean>(false)
+
+  useMount(() => {
+    setIsFirstMount(true)
+  })
+
+  useUpdateEffect(() => {
     function loadValues() {
       const items = (currentRow?.items || []).map((item) => {
         return {
@@ -280,7 +224,7 @@ export function FormDialog({ currentRow }: FormDialogProps) {
         reference: currentRow?.reference || '',
         note: currentRow?.note || '',
         status: (currentRow?.status as unknown as number) || 1,
-        payment_status: currentRow?.payment_status,
+        payment_status: currentRow?.payment_status || '0',
         payment_date: currentRow?.payment_date
           ? new Date(currentRow?.payment_date)
           : (null as unknown as Date),
@@ -297,11 +241,8 @@ export function FormDialog({ currentRow }: FormDialogProps) {
       })
     }
 
-    // console.log('isMountedProducts: ', isMountedProducts)
-    // console.log('isPendingProducts: ', isFirstMount)
-
     if (isEdit) loadValues()
-  }, [currentRow, form, isEdit, isMountedProducts, isFirstMount])
+  }, [currentRow, form, isEdit, isFirstMount])
 
   const { entity, create, update } = useDataProvider()
   const queryClient = useQueryClient()
@@ -350,7 +291,7 @@ export function FormDialog({ currentRow }: FormDialogProps) {
   const generate = () => {
     form.setValue(
       'reference',
-      faker.string.alphanumeric({ length: 8, casing: 'upper' }),
+      'PO-' + faker.string.alphanumeric({ length: 8, casing: 'upper' }),
       { shouldValidate: false }
     )
   }
@@ -672,96 +613,99 @@ export function FormDialog({ currentRow }: FormDialogProps) {
                 </TableBody>
               </Table>
             </div>
-
-            <FormField
-              control={form.control}
-              name='discount'
-              render={({ field: { ref, onChange, ...rest } }) => (
-                <FormItem className='h-fit items-start sm:col-span-3 lg:col-span-4'>
-                  <FormLabel>Discount</FormLabel>
-                  <FormControl>
-                    <NumberInput
-                      maxLength={12}
-                      className='text-end'
-                      {...rest}
-                      getInputRef={ref}
-                      thousandSeparator={true}
-                      allowNegative={false}
-                      onValueChange={(v) => {
-                        onChange(v.floatValue)
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='shipping'
-              render={({ field: { ref, onChange, ...rest } }) => (
-                <FormItem className='h-fit items-start sm:col-span-3 lg:col-span-4'>
-                  <FormLabel>Shipping</FormLabel>
-                  <FormControl>
-                    <NumberInput
-                      maxLength={12}
-                      className='text-end'
-                      {...rest}
-                      getInputRef={ref}
-                      thousandSeparator={true}
-                      allowNegative={false}
-                      onValueChange={(v) => {
-                        onChange(v.floatValue)
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='tax'
-              render={({ field: { ref, onChange, ...rest } }) => (
-                <FormItem className='h-fit items-start sm:col-span-3 lg:col-span-4'>
-                  <FormLabel>Tax</FormLabel>
-                  <FormControl>
-                    <NumberInput
-                      maxLength={12}
-                      className='text-end'
-                      {...rest}
-                      getInputRef={ref}
-                      thousandSeparator={true}
-                      allowNegative={false}
-                      onValueChange={(v) => {
-                        onChange(v.floatValue)
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='total'
-              render={({ field: { value } }) => (
-                <FormItem className='h-fit items-start sm:col-span-3 lg:col-span-4'>
-                  <FormLabel>Total</FormLabel>
-                  <FormControl>
-                    <div className='flex h-9 items-center justify-end'>
-                      <NumberInput
-                        className='px-3 py-1 text-sm font-bold'
-                        value={value}
-                        thousandSeparator
-                        asText
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className='col-span-full sm:col-span-full lg:col-span-full'>
+              <div className='grid gap-x-4 gap-y-2.5 px-0.5 sm:grid-cols-6 lg:grid-cols-12'>
+                <FormField
+                  control={form.control}
+                  name='discount'
+                  render={({ field: { ref, onChange, ...rest } }) => (
+                    <FormItem className='h-fit items-start sm:col-span-3 lg:col-span-3'>
+                      <FormLabel>Discount</FormLabel>
+                      <FormControl>
+                        <NumberInput
+                          maxLength={12}
+                          className='text-end'
+                          {...rest}
+                          getInputRef={ref}
+                          thousandSeparator={true}
+                          allowNegative={false}
+                          onValueChange={(v) => {
+                            onChange(v.floatValue)
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='shipping'
+                  render={({ field: { ref, onChange, ...rest } }) => (
+                    <FormItem className='h-fit items-start sm:col-span-3 lg:col-span-3'>
+                      <FormLabel>Shipping</FormLabel>
+                      <FormControl>
+                        <NumberInput
+                          maxLength={12}
+                          className='text-end'
+                          {...rest}
+                          getInputRef={ref}
+                          thousandSeparator={true}
+                          allowNegative={false}
+                          onValueChange={(v) => {
+                            onChange(v.floatValue)
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='tax'
+                  render={({ field: { ref, onChange, ...rest } }) => (
+                    <FormItem className='h-fit items-start sm:col-span-3 lg:col-span-3'>
+                      <FormLabel>Tax</FormLabel>
+                      <FormControl>
+                        <NumberInput
+                          maxLength={12}
+                          className='text-end'
+                          {...rest}
+                          getInputRef={ref}
+                          thousandSeparator={true}
+                          allowNegative={false}
+                          onValueChange={(v) => {
+                            onChange(v.floatValue)
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='total'
+                  render={({ field: { value } }) => (
+                    <FormItem className='h-fit items-start sm:col-span-3 lg:col-span-3'>
+                      <FormLabel>Total</FormLabel>
+                      <FormControl>
+                        <div className='flex h-9 items-center justify-end'>
+                          <NumberInput
+                            className='px-3 py-1 text-sm font-bold'
+                            value={value}
+                            thousandSeparator
+                            asText
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
             <div className='col-span-full sm:col-span-full lg:col-span-full'>
               <div className='grid gap-x-4 gap-y-2.5 px-0.5 sm:grid-cols-6 lg:grid-cols-12'>
                 <div className='h-fit items-start sm:col-span-3 lg:col-span-3'>

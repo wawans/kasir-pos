@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react'
-import { type Model } from '@/models'
 import useDialogState from '@/hooks/use-dialog-state'
 import {
   create,
@@ -23,8 +22,7 @@ export type Identifier = string | number
 
 type DataDialogType = 'create' | 'update' | 'delete' | 'detail'
 interface DataContextType<
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Entity extends Model = any,
+  Entity = string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   DataDialogContextType extends DataDialogType = any,
 > {

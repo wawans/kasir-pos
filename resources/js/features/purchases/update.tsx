@@ -7,12 +7,10 @@ import {
 import { getRouteApi } from '@tanstack/react-router'
 import { Data } from '@/components/data/data'
 import { useDataProvider } from '@/components/data/data-provider'
-import {
-  FormDialog,
-  PaymentMethodsQueryOptions,
-  ProductsQueryOptions,
-  SuppliersQueryOptions,
-} from './components/form-dialog'
+import { PaymentMethodsQueryOptions } from '@/features/payment-methods/components/utils'
+import { ProductsQueryOptions } from '@/features/products/components/utils'
+import { SuppliersQueryOptions } from '@/features/suppliers/components/utils'
+import { FormDialog } from './components/form-dialog'
 
 const route = getRouteApi('/_authenticated/purchases/$id/edit')
 export function UpdatePurchase() {
@@ -35,7 +33,6 @@ export function UpdatePurchase() {
         },
         {
           title: 'Edit',
-          href: '/purchases',
         },
       ]}
     >

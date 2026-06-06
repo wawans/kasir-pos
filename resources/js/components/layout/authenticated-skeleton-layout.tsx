@@ -126,16 +126,17 @@ function NavGroup({ items }: NavGroupProps) {
           const key = `${item.title}-${item.url}`
 
           if (!item.items)
-            return (state === 'collapsed')
-              ? <SidebarMenuIcon key={key} />
-              : <SidebarMenuLink key={key} item={item} />
+            return state === 'collapsed' ? (
+              <SidebarMenuIcon key={key} />
+            ) : (
+              <SidebarMenuLink key={key} item={item} />
+            )
 
           if (state === 'collapsed' && !isMobile)
             /*return <SidebarMenuCollapsedDropdown key={key} item={item} />*/
             return <SidebarMenuIcon key={key} />
 
-          if (state === 'collapsed')
-            return <SidebarMenuIcon key={key} />
+          if (state === 'collapsed') return <SidebarMenuIcon key={key} />
 
           return <SidebarMenuCollapsible key={key} item={item} />
         })}

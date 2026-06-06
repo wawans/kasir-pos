@@ -6,6 +6,7 @@ use App\Enums\PaymentStatusType;
 use App\Enums\StatusType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Sale extends Model
 {
@@ -62,5 +63,10 @@ class Sale extends Model
     public function items(): HasMany
     {
         return $this->hasMany(SaleItem::class);
+    }
+
+    public function returned(): HasOne
+    {
+        return $this->hasOne(SaleReturn::class);
     }
 }

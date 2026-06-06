@@ -22,16 +22,15 @@ class ProductObserver
     }
 
     /**
-     * Handle the "created" event.
+     * Handle the Product "created" event.
      */
     public function created(Product $product): void
     {
         $this->firstOrCreateLog($product);
-
     }
 
     /**
-     * Handle the "updated" event.
+     * Handle the Product "updated" event.
      */
     public function updated(Product $product): void
     {
@@ -44,7 +43,7 @@ class ProductObserver
     }
 
     /**
-     * Handle the "deleted" event.
+     * Handle the Product "deleted" event.
      */
     public function deleted(Product $product): void
     {
@@ -52,7 +51,7 @@ class ProductObserver
     }
 
     /**
-     * Handle the "restored" event.
+     * Handle the Product "restored" event.
      */
     public function restored(Product $product): void
     {
@@ -65,7 +64,7 @@ class ProductObserver
     }
 
     /**
-     * Handle the "forceDeleted" event.
+     * Handle the Product "forceDeleted" event.
      */
     public function forceDeleted(Product $product): void
     {

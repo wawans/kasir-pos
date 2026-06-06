@@ -5,11 +5,15 @@ import { ActionDialogs } from './components/action-dialogs'
 import { TableBulkActions } from './components/table-bulk-actions'
 import { columns } from './components/table-columns'
 
+export const Entity: string = 'Sale'
+// eslint-disable-next-line react-refresh/only-export-components
+export const EntityURL: string = Entity.toLowerCase()
+
 export function Sales() {
   return (
     <Data
-      entity='Sale'
-      url='sale'
+      entity={Entity}
+      url={EntityURL}
       title='Sales'
       description='Manage your sales and their information here.'
       breadcrumbs={[

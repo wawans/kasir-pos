@@ -1,6 +1,4 @@
-import { type ComponentProps } from 'react'
 import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
-import { type Command as CommandPrimitive } from 'cmdk'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -28,10 +26,14 @@ interface DataItem {
 export type SelectComboboxProps = {
   isLoading?: boolean
   data: DataItem[]
-  search: ComponentProps<typeof CommandPrimitive.Input>['value']
-  onSearchChange: ComponentProps<typeof CommandPrimitive.Input>['onValueChange']
-  value: ComponentProps<typeof CommandPrimitive.Item>['value']
-  onValueChange: ComponentProps<typeof CommandPrimitive.Item>['onSelect']
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  search: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onSearchChange: (value: any) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onValueChange: (value: any) => void
   valueBy?: string
   labelBy?: string
   manualFiltering?: boolean

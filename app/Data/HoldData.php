@@ -2,6 +2,7 @@
 
 namespace App\Data;
 
+use App\Data\Transformers\JsonSerializableEnumTransformer;
 use App\Enums\PaymentStatusType;
 use App\Enums\StatusType;
 use App\Models\Customer;
@@ -10,13 +11,16 @@ use Carbon\CarbonImmutable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Spatie\LaravelData\Attributes\LoadRelation;
+use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\Validation\DateFormat;
 use Spatie\LaravelData\Attributes\Validation\Exists;
 use Spatie\LaravelData\Attributes\Validation\MaxDigits;
 use Spatie\LaravelData\Attributes\Validation\Min;
 use Spatie\LaravelData\Attributes\WithoutValidation;
+use Spatie\LaravelData\Attributes\WithTransformer;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Lazy;
+use Spatie\TypeScriptTransformer\Attributes\LiteralTypeScriptType;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
@@ -50,6 +54,18 @@ class HoldData extends Data
      * @var Collection<HoldItemData>|Lazy
      */
     public ?array $items;
+
+    #[WithoutValidation]
+    #[WithTransformer(JsonSerializableEnumTransformer::class)]
+    #[LiteralTypeScriptType(['label' => 'string', 'name' => 'string', 'value' => 'string'])]
+    #[MapInputName('status')]
+    public StatusType $status_type;
+
+    #[WithoutValidation]
+    #[WithTransformer(JsonSerializableEnumTransformer::class)]
+    #[LiteralTypeScriptType(['label' => 'string', 'name' => 'string', 'value' => 'string'])]
+    #[MapInputName('payment_status')]
+    public PaymentStatusType $payment_status_type;
 
     public function __construct(
         #[DateFormat('Y-m-d', 'Y-m-d H:i:s')]
