@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date('date');
             $table->string('reference')->nullable();
+            $table->foreignId('expense_category_id')->constrained('expense_categories')->cascadeOnDelete()->cascadeOnUpdate();
             $table->double('amount')->default(0);
             $table->double('tax')->default(0);
             $table->double('discount')->default(0);

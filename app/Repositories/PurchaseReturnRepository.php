@@ -3,8 +3,10 @@
 namespace App\Repositories;
 
 use App\Data\PurchaseReturnData;
+use App\Models\Purchase;
 use App\Models\PurchaseReturn;
 use App\Repositories\Concerns\WithTable;
+use Illuminate\Validation\ValidationException;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
@@ -49,8 +51,12 @@ class PurchaseReturnRepository extends Repository
      * @param  array  $attributes
      * @return PurchaseReturn
      */
-    public function store($attributes)
+    public function store($attributes, Purchase $purchase)
     {
+        if ($purchase->returned) {
+            throw ValidationException::withMessages(['error' => 'This Purchase is already returned.']);
+        }
+
         return $this->create($attributes);
     }
 

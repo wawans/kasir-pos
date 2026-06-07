@@ -55,7 +55,9 @@ class AdjustmentCategoryController extends Controller implements HasMiddleware
      */
     public function show(AdjustmentCategory $adjustmentCategory)
     {
-        $data = $this->repository->toData($adjustmentCategory);
+        $data = $this->repository->toData(
+            $this->repository->tableQuery()->find($adjustmentCategory->id)
+        );
 
         return ApiResponse::data($data);
     }

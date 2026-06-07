@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Appends(['on_alert', 'on_limit'])]
+#[Appends(['is_alert', 'is_limit'])]
 class Stock extends Model
 {
     use Concerns\BelongsToProduct,
@@ -42,14 +42,14 @@ class Stock extends Model
         ];
     }
 
-    public function onAlert(): Attribute
+    public function isAlert(): Attribute
     {
-        return Attribute::get(fn () => $this->quantity <= $this->stock_alert_quantity);
+        return Attribute::get(fn () => ($this->stock_alert_quantity > 0) && ($this->quantity <= $this->stock_alert_quantity));
     }
 
-    public function onLimit(): Attribute
+    public function isLimit(): Attribute
     {
-        return Attribute::get(fn () => $this->quantity <= $this->stock_limit_quantity);
+        return Attribute::get(fn () => ($this->stock_limit_quantity > 0) && ($this->quantity <= $this->stock_limit_quantity));
     }
 
     public function logs(): HasMany

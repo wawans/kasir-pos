@@ -31,6 +31,7 @@ export function SalesReturns() {
         columns={columns}
         bulkActions={<TableBulkActions />}
         searchKey='name'
+        include='customer,sale'
       />
       <ActionDialogs />
     </Data>

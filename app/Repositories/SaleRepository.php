@@ -38,7 +38,7 @@ class SaleRepository extends Repository
         return QueryBuilder::for($this->query())
             ->allowedFilters($this->model->getKeyName(), ...$this->model->getFillable())
             ->allowedSorts($this->model->getKeyName(), ...$this->model->getFillable())
-            ->allowedIncludes('items', 'items.product', 'items.unit')
+            ->allowedIncludes('items', 'items.product', 'items.unit', 'customer')
             ->defaultSort('-updated_at');
     }
 
@@ -136,7 +136,7 @@ class SaleRepository extends Repository
     public function edit($attributes, Sale $sale)
     {
         if ($sale->returned) {
-            throw ValidationException::withMessages(['error' => 'This Purchase is already returned.']);
+            throw ValidationException::withMessages(['error' => 'This Sale is already returned.']);
         }
 
         $attributes = collect($attributes);
@@ -249,7 +249,7 @@ class SaleRepository extends Repository
     {
         $model->items->each(function ($item) {
             $item->loadMissing('stock');
-            $quantity = $item->quantity * 1;
+            $quantity = $item->quantity * -1;
 
             $item->stockLog()->create([
                 'product_id' => $item->product_id,

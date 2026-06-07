@@ -41,4 +41,9 @@ class AdjustmentItem extends Model
     {
         return $this->belongsTo(Adjustment::class);
     }
+
+    public function parent(): BelongsTo
+    {
+        return $this->adjustment();
+    }
 }

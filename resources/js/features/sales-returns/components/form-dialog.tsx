@@ -5,19 +5,20 @@ import { type AxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
 import { Save } from 'lucide-react'
 import { toast } from 'sonner'
 import { type LaravelValidationError } from '@/lib/axios'
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   Form,
   FormControl,
@@ -30,25 +31,12 @@ import { Input } from '@/components/ui/input'
 import { Spinner } from '@/components/ui/spinner'
 import { Textarea } from '@/components/ui/textarea'
 import { useDataProvider } from '@/components/data/data-provider'
-
-const formSchema = z.object({
-  name: z.string().min(1, 'name is required.'),
-  description: z.string().optional(),
-  is_default: z.boolean().default(false).optional(),
-})
-
-type DataForm = z.infer<typeof formSchema>
+import { type DataForm, formSchema, type ItemForm } from './schema'
 
 type FormDialogProps = {
-  currentRow?: App.Data.BrandData
-  open: boolean
-  onOpenChange: (open: boolean) => void
+  currentRow?: App.Data.SaleReturnData
 }
-export function FormDialog({
-  currentRow,
-  open,
-  onOpenChange,
-}: FormDialogProps) {
+export function FormDialog({ currentRow }: FormDialogProps) {
   const isEdit = !!currentRow
   const form = useForm<DataForm>({
     resolver: zodResolver(formSchema),
@@ -67,12 +55,12 @@ export function FormDialog({
 
   const { entity, create, update } = useDataProvider()
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
   const { mutate, isPending } = useMutation({
     mutationFn: (values: DataForm) =>
       isEdit ? update(currentRow.id, values) : create(values),
-    onSuccess: () => {
-      form.reset()
-      onOpenChange(false)
+    onSuccess: (data) => {
+      navigate({ to: '/sales-returns/$id', params: { id: data.data.id } })
     },
     onSettled: () => {
       queryClient.invalidateQueries({
@@ -84,7 +72,7 @@ export function FormDialog({
       if (response?.status === 422) {
         if (response?.data?.errors) {
           for (const [key, value] of Object.entries(response.data.errors)) {
-            form.setError(key as keyof z.infer<typeof formSchema>, {
+            form.setError(key as keyof DataForm, {
               type: 'server',
               message: value[0] || 'Invalid',
             })
@@ -110,90 +98,80 @@ export function FormDialog({
   }
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(state) => {
-        form.reset()
-        onOpenChange(state)
-      }}
-    >
-      <DialogContent className='sm:max-w-lg'>
-        <DialogHeader className='text-start'>
-          <DialogTitle>
-            {isEdit ? 'Edit ' + entity : 'Add New ' + entity}
-          </DialogTitle>
-          <DialogDescription>
-            {isEdit
-              ? `Update the ${entity} here. `
-              : `Create new ${entity} here. `}
-            Click save when you&apos;re done.
-          </DialogDescription>
-        </DialogHeader>
-        <div className='h-105 w-[calc(100%+0.75rem)] overflow-y-auto py-1 pe-3'>
-          <Form {...form}>
-            <form
-              id={`${entity}-form`}
-              onSubmit={form.handleSubmit(onSubmit)}
-              className='space-y-4 px-0.5'
-            >
-              <FormField
-                control={form.control}
-                name='name'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='description'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea className='resize-none' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='is_default'
-                render={({ field }) => (
-                  <FormItem className='relative flex flex-row items-center'>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className='space-y-1 leading-none'>
-                      <FormLabel>Set as Default</FormLabel>
-                    </div>
-                  </FormItem>
-                )}
-              />
-            </form>
-          </Form>
-        </div>
-        <DialogFooter>
-          <Button
-            className='min-w-[7rem]'
-            disabled={isPending}
-            type='submit'
-            form={`${entity}-form`}
+    <Card>
+      <CardHeader className='text-start'>
+        <CardTitle>{isEdit ? 'Edit ' + entity : 'Add New ' + entity}</CardTitle>
+        <CardDescription>
+          {isEdit
+            ? `Update the ${entity} here. `
+            : `Create new ${entity} here. `}
+          Click save when you&apos;re done.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form
+            id={`${entity}-form`}
+            onSubmit={form.handleSubmit(onSubmit)}
+            className='space-y-4 px-0.5'
           >
-            {isPending ? <Spinner /> : <Save />}
-            <span>{isEdit ? 'Update' : 'Save'}</span>
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+            <FormField
+              control={form.control}
+              name='name'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='description'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea className='resize-none' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='is_default'
+              render={({ field }) => (
+                <FormItem className='relative flex flex-row items-center'>
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className='space-y-1 leading-none'>
+                    <FormLabel>Set as Default</FormLabel>
+                  </div>
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
+      </CardContent>
+      <CardFooter>
+        <Button
+          className='min-w-[7rem]'
+          disabled={isPending}
+          type='submit'
+          form={`${entity}-form`}
+        >
+          {isPending ? <Spinner /> : <Save />}
+          <span>{isEdit ? 'Update' : 'Save'}</span>
+        </Button>
+      </CardFooter>
+    </Card>
   )
 }

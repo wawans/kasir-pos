@@ -39,6 +39,12 @@ class StockData extends Data
     #[WithoutValidation]
     public ?UnitData $unit;
 
+    #[WithoutValidation]
+    public bool $is_alert = false;
+
+    #[WithoutValidation]
+    public bool $is_limit = false;
+
     public function __construct(
         #[Exists(Product::class, 'id')]
         public int $product_id,

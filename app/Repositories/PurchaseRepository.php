@@ -40,7 +40,7 @@ class PurchaseRepository extends Repository
         return QueryBuilder::for($this->query())
             ->allowedFilters($this->model->getKeyName(), ...$this->model->getFillable())
             ->allowedSorts($this->model->getKeyName(), ...$this->model->getFillable())
-            ->allowedIncludes('items', 'items.product', 'items.unit')
+            ->allowedIncludes('items', 'items.product', 'items.unit', 'supplier', 'paymentMethod', 'payments')
             ->defaultSort('-updated_at');
     }
 

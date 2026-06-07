@@ -32,7 +32,7 @@ export function Products() {
         columns={columns}
         bulkActions={<TableBulkActions />}
         searchKey='name'
-        include='stock.unit'
+        include='stock.unit,brand,category'
       />
       <ActionDialogs />
     </Data>

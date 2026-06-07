@@ -3,8 +3,10 @@
 namespace App\Repositories;
 
 use App\Data\SaleReturnData;
+use App\Models\Sale;
 use App\Models\SaleReturn;
 use App\Repositories\Concerns\WithTable;
+use Illuminate\Validation\ValidationException;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
@@ -30,6 +32,7 @@ class SaleReturnRepository extends Repository
         return QueryBuilder::for($this->query())
             ->allowedFilters($this->model->getKeyName(), ...$this->model->getFillable())
             ->allowedSorts($this->model->getKeyName(), ...$this->model->getFillable())
+            ->allowedIncludes('items', 'items.product', 'items.unit', 'customer', 'sale')
             ->defaultSort('-updated_at');
     }
 
@@ -49,8 +52,12 @@ class SaleReturnRepository extends Repository
      * @param  array  $attributes
      * @return SaleReturn
      */
-    public function store($attributes)
+    public function store($attributes, Sale $sale)
     {
+        if ($sale->returned) {
+            throw ValidationException::withMessages(['error' => 'This Sale is already returned.']);
+        }
+
         return $this->create($attributes);
     }
 

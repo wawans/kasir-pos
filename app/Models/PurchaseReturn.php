@@ -59,9 +59,14 @@ class PurchaseReturn extends Model
         ];
     }
 
-    public function parent(): BelongsTo
+    public function purchase(): BelongsTo
     {
         return $this->belongsTo(Purchase::class);
+    }
+
+    public function parent(): BelongsTo
+    {
+        return $this->purchase();
     }
 
     public function items(): HasMany

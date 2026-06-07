@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PurchaseReturn\StorePurchaseReturnRequest;
-use App\Http\Requests\PurchaseReturn\UpdatePurchaseReturnRequest;
-use App\Models\Purchase;
-use App\Models\PurchaseReturn;
-use App\Repositories\PurchaseReturnRepository;
+use App\Data\ExpenseCategoryData;
+use App\Models\ExpenseCategory;
+use App\Repositories\ExpenseCategoryRepository;
 use App\Support\Response\ApiResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 // use Illuminate\Routing\Controllers\Middleware;
 
-class PurchaseReturnController extends Controller implements HasMiddleware
+class ExpenseCategoryController extends Controller implements HasMiddleware
 {
-    public function __construct(protected PurchaseReturnRepository $repository) {}
+    public function __construct(protected ExpenseCategoryRepository $repository) {}
 
     /**
      * Get the middleware that should be assigned to the controller.
@@ -44,9 +44,9 @@ class PurchaseReturnController extends Controller implements HasMiddleware
      *
      * @throws \Throwable
      */
-    public function store(StorePurchaseReturnRequest $request, Purchase $purchase)
+    public function store(ExpenseCategoryData $request)
     {
-        $model = $this->repository->store($request->validated(), $purchase);
+        $model = $this->repository->store($request->toArray());
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);
@@ -55,10 +55,10 @@ class PurchaseReturnController extends Controller implements HasMiddleware
     /**
      * Display the specified resource.
      */
-    public function show(PurchaseReturn $purchaseReturn)
+    public function show(ExpenseCategory $expenseCategory)
     {
         $data = $this->repository->toData(
-            $this->repository->tableQuery()->find($purchaseReturn->id)
+            $this->repository->tableQuery()->find($expenseCategory->id)
         );
 
         return ApiResponse::data($data);
@@ -69,9 +69,15 @@ class PurchaseReturnController extends Controller implements HasMiddleware
      *
      * @throws \Throwable
      */
-    public function update(UpdatePurchaseReturnRequest $request, PurchaseReturn $purchaseReturn)
+    public function update(ExpenseCategoryData $request, ExpenseCategory $expenseCategory)
     {
-        $model = $this->repository->edit($request->validated(), $purchaseReturn);
+        Validator::make($request->toArray(), [
+            'name' => [
+                Rule::unique(ExpenseCategory::class)->ignore($expenseCategory->id),
+            ],
+        ])->validate();
+
+        $model = $this->repository->edit($request->toArray(), $expenseCategory);
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);
@@ -82,9 +88,9 @@ class PurchaseReturnController extends Controller implements HasMiddleware
      *
      * @throws \Throwable
      */
-    public function destroy(PurchaseReturn $purchaseReturn)
+    public function destroy(ExpenseCategory $expenseCategory)
     {
-        $this->repository->destroy($purchaseReturn);
+        $this->repository->destroy($expenseCategory);
 
         return ApiResponse::data();
     }

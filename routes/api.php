@@ -5,6 +5,7 @@ use App\Http\Controllers\AdjustmentController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\HoldController;
 use App\Http\Controllers\PaymentController;
@@ -34,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('category', CategoryController::class);
     Route::apiResource('customer', CustomerController::class);
     Route::apiResource('expense', ExpenseController::class);
+    Route::apiResource('expense-category', ExpenseCategoryController::class)->parameter('expense-category', 'expenseCategory');
     Route::apiResource('hold', HoldController::class);
     Route::apiResource('payment', PaymentController::class);
     Route::apiResource('payment-method', PaymentMethodController::class)->parameter('payment-method', 'paymentMethod');

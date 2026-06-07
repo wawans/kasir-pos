@@ -32,6 +32,7 @@ export function Purchases() {
         columns={columns}
         bulkActions={<TableBulkActions />}
         searchKey='name'
+        include='supplier'
       />
       <ActionDialogs />
     </Data>

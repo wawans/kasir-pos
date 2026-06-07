@@ -61,9 +61,14 @@ class SaleReturn extends Model
         ];
     }
 
-    public function parent(): BelongsTo
+    public function sale(): BelongsTo
     {
         return $this->belongsTo(Sale::class);
+    }
+
+    public function parent(): BelongsTo
+    {
+        return $this->sale();
     }
 
     public function items(): HasMany

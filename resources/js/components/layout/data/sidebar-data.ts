@@ -29,6 +29,11 @@ import {
   TimerReset,
   ClockFading,
   Settings,
+  Banknote,
+  Settings2,
+  Wallet,
+  SquareChartGantt,
+  DollarSign,
 } from 'lucide-react'
 import { type SidebarData } from '../types'
 
@@ -68,6 +73,22 @@ export const sidebarData: SidebarData = {
           title: 'POS',
           url: '/pos',
           icon: Keyboard,
+        },
+        {
+          title: 'Cash',
+          icon: Wallet,
+          items: [
+            {
+              title: 'Balance',
+              url: '/balances',
+              icon: DollarSign,
+            },
+            {
+              title: 'Transactions',
+              url: '/transactions',
+              icon: SquareChartGantt,
+            },
+          ],
         },
         {
           title: 'Products',
@@ -165,6 +186,22 @@ export const sidebarData: SidebarData = {
               title: 'POS',
               url: '/sales-pos',
               icon: ClockFading,
+            },
+          ],
+        },
+        {
+          title: 'Expenses',
+          icon: Banknote,
+          items: [
+            {
+              title: 'Expenses',
+              url: '/expenses',
+              icon: Banknote,
+            },
+            {
+              title: 'Expenses Categories',
+              url: '/expenses-categories',
+              icon: Settings2,
             },
           ],
         },

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Data\SaleReturnData;
+use App\Http\Requests\SaleReturn\StoreSaleReturnRequest;
+use App\Http\Requests\SaleReturn\UpdateSaleReturnRequest;
+use App\Models\Sale;
 use App\Models\SaleReturn;
 use App\Repositories\SaleReturnRepository;
 use App\Support\Response\ApiResponse;
@@ -39,10 +41,12 @@ class SaleReturnController extends Controller implements HasMiddleware
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @throws \Throwable
      */
-    public function store(SaleReturnData $request)
+    public function store(StoreSaleReturnRequest $request, Sale $sale)
     {
-        $model = $this->repository->store($request->toArray());
+        $model = $this->repository->store($request->validated(), $sale);
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);
@@ -53,17 +57,21 @@ class SaleReturnController extends Controller implements HasMiddleware
      */
     public function show(SaleReturn $saleReturn)
     {
-        $data = $this->repository->toData($saleReturn);
+        $data = $this->repository->toData(
+            $this->repository->tableQuery()->find($saleReturn->id)
+        );
 
         return ApiResponse::data($data);
     }
 
     /**
      * Update the specified resource in storage.
+     *
+     * @throws \Throwable
      */
-    public function update(SaleReturnData $request, SaleReturn $saleReturn)
+    public function update(UpdateSaleReturnRequest $request, SaleReturn $saleReturn)
     {
-        $model = $this->repository->edit($request->toArray(), $saleReturn);
+        $model = $this->repository->edit($request->validated(), $saleReturn);
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);
@@ -71,6 +79,8 @@ class SaleReturnController extends Controller implements HasMiddleware
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @throws \Throwable
      */
     public function destroy(SaleReturn $saleReturn)
     {

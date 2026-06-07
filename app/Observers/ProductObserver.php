@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Product;
+use App\Models\StockLog;
 
 class ProductObserver
 {
@@ -21,12 +22,21 @@ class ProductObserver
         return $log;
     }
 
+    public function syncStockAlertLimit(Product $product, StockLog $log): void
+    {
+        $log->stock?->update([
+            'stock_alert_quantity' => $product->stock_alert_quantity,
+            'stock_limit_quantity' => $product->stock_limit_quantity,
+        ]);
+    }
+
     /**
      * Handle the Product "created" event.
      */
     public function created(Product $product): void
     {
-        $this->firstOrCreateLog($product);
+        $log = $this->firstOrCreateLog($product);
+        $this->syncStockAlertLimit($product, $log);
     }
 
     /**
@@ -40,6 +50,8 @@ class ProductObserver
             'quantity' => $product->stock_opening_quantity,
             'remaining_quantity' => $product->stock_opening_quantity,
         ]);
+
+        $this->syncStockAlertLimit($product, $log);
     }
 
     /**
