@@ -27,13 +27,42 @@ export const columns: ColumnDef<App.Data.StockData>[] = [
   {
     accessorKey: 'quantity',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Change Qty' />
+      <DataTableColumnHeader
+        column={column}
+        title='Change Qty'
+        className='justify-end'
+      />
     ),
     cell: ({ row: { original } }) => (
       <div className='w-auto pe-2 text-end text-nowrap'>
         <NumberInput
           className=''
           value={original?.quantity || 0}
+          allowNegative
+          thousandSeparator
+          asText
+        />
+        <span className='ps-1'>{original?.unit?.alias}</span>
+      </div>
+    ),
+    meta: {
+      thClassName: 'max-w-10',
+    },
+  },
+  {
+    accessorKey: 'remaining_quantity',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title='Remaining Qty'
+        className='justify-end'
+      />
+    ),
+    cell: ({ getValue, row: { original } }) => (
+      <div className='w-auto pe-2 text-end text-nowrap'>
+        <NumberInput
+          className=''
+          value={(getValue() as number) || 0}
           allowNegative
           thousandSeparator
           asText

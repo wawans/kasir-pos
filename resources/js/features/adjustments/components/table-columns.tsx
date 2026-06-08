@@ -1,13 +1,17 @@
+import * as React from 'react'
 import { format } from 'date-fns'
 import { type ColumnDef } from '@tanstack/react-table'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
+import { UserTimestampCell } from '@/components/data-table/shared/user-timestamp-cell'
+import { DateText } from '@/components/date-text'
+import { NumberInput } from '@/components/form/number-input'
 import { LongText } from '@/components/long-text'
 import { TableRowActions } from './table-row-actions'
 
-export const columns: ColumnDef<App.Data.BrandData>[] = [
+export const columns: ColumnDef<App.Data.AdjustmentData>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -36,56 +40,72 @@ export const columns: ColumnDef<App.Data.BrandData>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'id',
-    header: ({ column }) => <DataTableColumnHeader column={column} title='#' />,
-    cell: ({ getValue }) => (
-      <div className='w-fit ps-2 text-nowrap'>{getValue() as string}</div>
+    id: 'id',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='No./Ref.' />
+    ),
+    cell: ({ row: { original } }) => (
+      <div className='w-fit text-nowrap'>
+        <div>
+          <span>{original.reference}</span>
+        </div>
+        <div>
+          <DateText
+            value={original.date}
+            asDate
+            className='text-xs text-muted-foreground'
+          />
+        </div>
+      </div>
     ),
   },
   {
-    accessorKey: 'name',
+    accessorKey: 'note',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Name' />
+      <DataTableColumnHeader column={column} title='Note' />
     ),
     cell: ({ row }) => (
-      <div className='w-fit ps-2 text-nowrap'>{row.getValue('name')}</div>
-    ),
-  },
-  {
-    accessorKey: 'description',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Description' />
-    ),
-    cell: ({ row }) => (
-      <LongText className='ps-2'>{row.getValue('description')}</LongText>
+      <LongText className='ps-2'>{row.getValue('note')}</LongText>
     ),
     meta: {
       className: 'max-w-2/6',
     },
   },
   {
-    accessorKey: 'is_default',
+    id: 'category',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Status' />
+      <DataTableColumnHeader column={column} title='Category' />
     ),
-    cell: ({ row }) => (
-      <div className='w-fit ps-2 text-nowrap'>
-        {row.getValue('is_default') ? (
-          <Badge variant='success'>default</Badge>
-        ) : null}
+    cell: ({ row: { original } }) => (
+      <div className='w-fit text-ellipsis'>{original.category?.name}</div>
+    ),
+  },
+  {
+    accessorKey: 'adjustment_total_quantity',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title='Item Amount'
+        className='justify-end'
+      />
+    ),
+    cell: ({ getValue }) => (
+      <div className='w-auto pe-2 text-end text-nowrap'>
+        <NumberInput
+          className=''
+          value={(getValue() as never) || 0}
+          thousandSeparator
+          asText
+        />
       </div>
     ),
   },
   {
-    accessorKey: 'updated_at',
+    id: 'by',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Updated At' />
+      <DataTableColumnHeader column={column} title='By' />
     ),
-    cell: ({ row }) => (
-      <div className='w-fit ps-2 text-nowrap'>
-        {format(row.getValue('updated_at'), 'dd/MM/yyyy HH:mm:ss')}
-      </div>
-    ),
+    cell: UserTimestampCell,
   },
   {
     id: 'actions',

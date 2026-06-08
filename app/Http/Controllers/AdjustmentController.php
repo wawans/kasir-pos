@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Data\AdjustmentData;
+use App\Http\Requests\Adjustment\StoreAdjustmentRequest;
+use App\Http\Requests\Adjustment\UpdateAdjustmentRequest;
 use App\Models\Adjustment;
 use App\Repositories\AdjustmentRepository;
 use App\Support\Response\ApiResponse;
@@ -40,9 +41,9 @@ class AdjustmentController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(AdjustmentData $request)
+    public function store(StoreAdjustmentRequest $request)
     {
-        $model = $this->repository->store($request->toArray());
+        $model = $this->repository->store($request->validated());
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);
@@ -53,7 +54,9 @@ class AdjustmentController extends Controller implements HasMiddleware
      */
     public function show(Adjustment $adjustment)
     {
-        $data = $this->repository->toData($adjustment);
+        $data = $this->repository->toData(
+            $this->repository->tableQuery()->find($adjustment->id)
+        );
 
         return ApiResponse::data($data);
     }
@@ -61,9 +64,9 @@ class AdjustmentController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update(AdjustmentData $request, Adjustment $adjustment)
+    public function update(UpdateAdjustmentRequest $request, Adjustment $adjustment)
     {
-        $model = $this->repository->edit($request->toArray(), $adjustment);
+        $model = $this->repository->edit($request->validated(), $adjustment);
         $data = $this->repository->toData($model);
 
         return ApiResponse::data($data);

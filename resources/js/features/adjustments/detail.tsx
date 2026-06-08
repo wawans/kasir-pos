@@ -1,25 +1,28 @@
+import { getRouteApi } from '@tanstack/react-router'
 import { Data } from '@/components/data/data'
 import { Entity, EntityURL } from './index'
 
-export function DetailProduct() {
+const route = getRouteApi('/_authenticated/adjustments/$id/')
+export function DetailAdjustments() {
+  const { data } = route.useLoaderData()
+
   return (
     <Data
       entity={Entity}
       url={EntityURL}
-      title='Product'
-      description='View your product and their information here.'
+      title='Stocks Adjustments'
+      description='View your stocks adjustments and their information here.'
       breadcrumbs={[
         {
           title: 'Dashboard',
           href: '/',
         },
         {
-          title: 'Products',
-          href: '/products',
+          title: 'Adjustments',
+          href: '/adjustments',
         },
         {
           title: 'Detail',
-          href: '/products',
         },
       ]}
     >

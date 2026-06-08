@@ -5,11 +5,14 @@ import { ActionDialogs } from './components/action-dialogs'
 import { TableBulkActions } from './components/table-bulk-actions'
 import { columns } from './components/table-columns'
 
+export const Entity: string = 'Adjustment Category'
+export const EntityURL: string = 'adjustment-category'
+
 export function AdjustmentsCategories() {
   return (
     <Data
-      entity='Adjustment Category'
-      url='adjustment-category'
+      entity={Entity}
+      url={EntityURL}
       title='Adjustments Categories'
       description='Manage your adjustments categories and their information here.'
       breadcrumbs={[

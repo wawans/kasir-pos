@@ -1,29 +1,29 @@
 import { Data } from '@/components/data/data'
+import { FormDialog } from './components/form-dialog'
 import { Entity, EntityURL } from './index'
 
-export function DetailProduct() {
+export function CreateAdjustments() {
   return (
     <Data
       entity={Entity}
       url={EntityURL}
-      title='Product'
-      description='View your product and their information here.'
+      title='Stocks Adjustments'
+      description='Create your stocks adjustments and their information here.'
       breadcrumbs={[
         {
           title: 'Dashboard',
           href: '/',
         },
         {
-          title: 'Products',
-          href: '/products',
+          title: 'Adjustments',
+          href: '/adjustments',
         },
         {
-          title: 'Detail',
-          href: '/products',
+          title: 'Create',
         },
       ]}
     >
-      <h1>Detail</h1>
+      <FormDialog />
     </Data>
   )
 }

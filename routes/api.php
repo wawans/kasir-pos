@@ -42,9 +42,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('pos', PosController::class);
     Route::apiResource('product', ProductController::class);
     Route::apiResource('purchase', PurchaseController::class);
-    Route::apiResource('purchase-return', PurchaseReturnController::class)->parameter('purchase-return', 'purchaseReturn');
+    Route::post('purchase-return/{purchase}', [PurchaseReturnController::class, 'store']);
+    Route::apiResource('purchase-return', PurchaseReturnController::class)->except('store')->parameter('purchase-return', 'purchaseReturn');
     Route::apiResource('sale', SaleController::class);
-    Route::apiResource('sale-return', SaleReturnController::class)->parameter('sale-return', 'saleReturn');
+    Route::post('sale-return/{sale}', [SaleReturnController::class, 'store']);
+    Route::apiResource('sale-return', SaleReturnController::class)->except('store')->parameter('sale-return', 'saleReturn');
     Route::apiResource('stock', StockController::class);
     Route::apiResource('stock-log', StockLogController::class);
     Route::apiResource('supplier', SupplierController::class);

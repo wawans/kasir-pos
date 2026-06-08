@@ -13,8 +13,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Touches(['adjustment'])]
 class AdjustmentItem extends Model
 {
-    use Concerns\BelongsToProduct;
-    use Concerns\BelongsToUnit;
+    use Concerns\BelongsToProduct,
+        Concerns\BelongsToProductStock,
+        Concerns\BelongsToUnit,
+        Concerns\MorphOneStockLog;
 
     /**
      * The attributes that are mass assignable.

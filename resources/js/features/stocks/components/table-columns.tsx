@@ -27,7 +27,11 @@ export const columns: ColumnDef<App.Data.StockData>[] = [
   {
     accessorKey: 'quantity',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Stock Qty' />
+      <DataTableColumnHeader
+        column={column}
+        title='Stock Qty'
+        className='justify-end'
+      />
     ),
     cell: ({ row: { original } }) => (
       <div className='w-auto pe-2 text-end text-nowrap'>
@@ -44,7 +48,11 @@ export const columns: ColumnDef<App.Data.StockData>[] = [
   {
     accessorKey: 'stock_alert_quantity',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Alert Qty' />
+      <DataTableColumnHeader
+        column={column}
+        title='Alert Qty'
+        className='justify-end'
+      />
     ),
     cell: ({ row: { original } }) => (
       <div className='w-auto pe-2 text-end text-nowrap'>
@@ -61,7 +69,11 @@ export const columns: ColumnDef<App.Data.StockData>[] = [
   {
     accessorKey: 'stock_limit_quantity',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Limit Qty' />
+      <DataTableColumnHeader
+        column={column}
+        title='Limit Qty'
+        className='justify-end'
+      />
     ),
     cell: ({ row: { original } }) => (
       <div className='w-auto pe-2 text-end text-nowrap'>

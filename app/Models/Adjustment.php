@@ -41,7 +41,7 @@ class Adjustment extends Model
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(AdjustmentCategory::class);
+        return $this->belongsTo(AdjustmentCategory::class, 'adjustment_category_id');
     }
 
     public function items(): HasMany
