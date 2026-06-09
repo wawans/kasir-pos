@@ -2,10 +2,12 @@
 
 namespace App\Http\Requests\SaleReturn;
 
+use App\Http\Requests\Sale\StoreSaleRequest;
+use App\Models\SaleReturn;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StoreSaleReturnRequest extends FormRequest
+class StoreSaleReturnRequest extends StoreSaleRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +24,11 @@ class StoreSaleReturnRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        return array_merge(parent::rules(), [
+            'reference' => [
+                'required', 'string', 'max:30',
+                Rule::unique(SaleReturn::class),
+            ],
+        ]);
     }
 }

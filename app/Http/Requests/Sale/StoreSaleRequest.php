@@ -27,7 +27,7 @@ class StoreSaleRequest extends FormRequest
     {
         return [
             'date' => ['required', 'date', 'before_or_equal:'.today()->endOfDay()],
-            'reference' => ['required', 'string', 'max:30', 'unique:purchases'],
+            'reference' => ['required', 'string', 'max:30', 'unique:sales'],
             'customer_id' => ['required', 'integer', 'exists:customers,id'],
             'tax' => ['required', 'numeric', 'min:0', 'max_digits:15'],
             'discount' => ['required', 'numeric', 'min:0', 'max_digits:15'],

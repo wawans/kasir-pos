@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\SaleReturn;
 
+use App\Models\SaleReturn;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Validation\Rule;
 
 class UpdateSaleReturnRequest extends StoreSaleReturnRequest
 {
@@ -21,8 +23,11 @@ class UpdateSaleReturnRequest extends StoreSaleReturnRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        return array_merge(parent::rules(), [
+            'reference' => [
+                'required', 'string', 'max:30',
+                Rule::unique(SaleReturn::class)->ignore($this->saleReturn->id),
+            ],
+        ]);
     }
 }

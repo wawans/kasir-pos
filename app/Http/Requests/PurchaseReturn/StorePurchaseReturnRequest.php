@@ -2,10 +2,12 @@
 
 namespace App\Http\Requests\PurchaseReturn;
 
+use App\Http\Requests\Purchase\StorePurchaseRequest;
+use App\Models\PurchaseReturn;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StorePurchaseReturnRequest extends FormRequest
+class StorePurchaseReturnRequest extends StorePurchaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +24,11 @@ class StorePurchaseReturnRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        return array_merge(parent::rules(), [
+            'reference' => [
+                'required', 'string', 'max:30',
+                Rule::unique(PurchaseReturn::class),
+            ],
+        ]);
     }
 }

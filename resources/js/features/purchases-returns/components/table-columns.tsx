@@ -62,7 +62,7 @@ export const columns: ColumnDef<App.Data.PurchaseReturnData>[] = [
   {
     id: 'id',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='No./Ref.' />
+      <DataTableColumnHeader column={column} title='Return No./Ref.' />
     ),
     cell: ({ row: { original } }) => (
       <div className='w-fit text-nowrap'>
@@ -113,7 +113,11 @@ export const columns: ColumnDef<App.Data.PurchaseReturnData>[] = [
   {
     id: 'total',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Total' />
+      <DataTableColumnHeader
+        column={column}
+        title='Total'
+        className='pe-2 text-end'
+      />
     ),
     cell: ({ row: { original } }) => (
       <div className='w-auto pe-2 text-end text-nowrap'>
@@ -129,7 +133,11 @@ export const columns: ColumnDef<App.Data.PurchaseReturnData>[] = [
   {
     id: 'paid',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Paid' />
+      <DataTableColumnHeader
+        column={column}
+        title='Paid'
+        className='pe-2 text-end'
+      />
     ),
     cell: ({ row: { original } }) => (
       <div className='w-auto pe-2 text-end text-nowrap'>

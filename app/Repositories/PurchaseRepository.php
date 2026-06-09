@@ -167,9 +167,9 @@ class PurchaseRepository extends Repository
                 ];
             });
 
-            $prevItems = $purchase->items->pluck('product_id')->toArray();
+            $oldItems = $purchase->items->pluck('product_id')->toArray();
             $newItems = $items->pluck('product_id')->toArray();
-            $remItems = collect($prevItems)->except($newItems)->toArray();
+            $remItems = collect($oldItems)->filter(fn ($f) => ! in_array($f, $newItems))->toArray();
 
             // $model->items()?->delete();
             $purchase->items->filter(fn ($item) => ! in_array($item->product_id, $newItems))->each(fn ($item) => $item->delete());

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\PurchaseReturn;
 
+use App\Models\PurchaseReturn;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Validation\Rule;
 
 class UpdatePurchaseReturnRequest extends StorePurchaseReturnRequest
 {
@@ -21,8 +23,11 @@ class UpdatePurchaseReturnRequest extends StorePurchaseReturnRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        return array_merge(parent::rules(), [
+            'reference' => [
+                'required', 'string', 'max:30',
+                Rule::unique(PurchaseReturn::class)->ignore($this->purchaseReturn->id),
+            ],
+        ]);
     }
 }

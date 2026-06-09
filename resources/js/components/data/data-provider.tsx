@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import useDialogState from '@/hooks/use-dialog-state'
 import {
+  client,
   create,
   type CreateArgs,
   destroy,
@@ -72,6 +73,7 @@ export const useDataProvider = () => {
 
   return {
     ...context,
+    client,
     getAll: useCallback(
       (params = {}, config = {}) => getAll(context.url, params, config),
       [context.url]

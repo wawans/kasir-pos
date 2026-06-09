@@ -8,6 +8,21 @@ import { API_URL } from '@/config/app'
 import axios from '@/lib/axios'
 import type { Identifier } from './data-provider'
 
+export const client = async (
+  method: AxiosRequestConfig['method'],
+  url: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any = null,
+  config: Omit<AxiosRequestConfig, 'baseURL'> = {}
+) => {
+  return await axios(url, {
+    baseURL: API_URL,
+    method,
+    params: method?.toLowerCase() === 'get' ? data : null,
+    data: method?.toLowerCase() !== 'get' ? data : null,
+    ...config,
+  })
+}
 export const getAll = async (
   url: string,
   params: AxiosRequestConfig['params'] = {},
@@ -96,6 +111,7 @@ export const destroyMany = async (
   return { data: responses }
 }
 
+export type ClientArgs = Parameters<typeof client>
 export type GetAllArgs = Parameters<typeof getAll>
 export type GetOneArgs = Parameters<typeof getOne>
 export type CreateArgs = Parameters<typeof create>

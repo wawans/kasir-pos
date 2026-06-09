@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { getOne } from '@/components/data/utils'
+import { PageSkeleton } from '@/components/layout/page-skeleton'
 import { PaymentMethodsQueryOptions } from '@/features/payment-methods/components/utils'
 import { ProductsQueryOptions } from '@/features/products/components/utils'
 import { EntityURL } from '@/features/purchases'
@@ -8,6 +9,7 @@ import { SuppliersQueryOptions } from '@/features/suppliers/components/utils'
 
 export const Route = createFileRoute('/_authenticated/purchases/$id/edit')({
   component: UpdatePurchase,
+  pendingComponent: PageSkeleton,
   loader: async ({ params, context: { queryClient } }) => {
     await queryClient.ensureQueryData(PaymentMethodsQueryOptions())
     await queryClient.ensureQueryData(SuppliersQueryOptions())
