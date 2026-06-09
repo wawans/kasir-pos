@@ -7,6 +7,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Spatie\LaravelData\Attributes\LoadRelation;
+use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Attributes\Validation\DateFormat;
 use Spatie\LaravelData\Attributes\Validation\Exists;
 use Spatie\LaravelData\Attributes\Validation\Max;
@@ -15,6 +16,7 @@ use Spatie\LaravelData\Attributes\Validation\Min;
 use Spatie\LaravelData\Attributes\WithoutValidation;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Lazy;
+use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
@@ -31,10 +33,12 @@ class AdjustmentData extends Data
 
     #[WithoutValidation]
     #[LoadRelation]
+    #[MapOutputName(SnakeCaseMapper::class)]
     public ?UserActorData $createdBy;
 
     #[WithoutValidation]
     #[LoadRelation]
+    #[MapOutputName(SnakeCaseMapper::class)]
     public ?UserActorData $updatedBy;
 
     #[WithoutValidation]

@@ -10,7 +10,7 @@ type UserstampCellProps<TData> = {
 export function UserTimestampCell<TData>({
   row: { original },
 }: UserstampCellProps<TData>) {
-  const user = original?.updatedBy || original?.createdBy
+  const user = original?.updated_by || original?.created_by
   const initials = getDisplayNameInitials(user?.name || '')
   const timestamp = original?.updated_at || original?.created_at
   const textstamp = timestamp ? format(timestamp, 'dd/MM/yyyy HH:mm:ss') : null

@@ -40,10 +40,12 @@ class PurchaseReturnData extends Data
 
     #[WithoutValidation]
     #[LoadRelation]
+    #[MapOutputName(SnakeCaseMapper::class)]
     public ?UserActorData $createdBy;
 
     #[WithoutValidation]
     #[LoadRelation]
+    #[MapOutputName(SnakeCaseMapper::class)]
     public ?UserActorData $updatedBy;
 
     #[WithoutValidation]

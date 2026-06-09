@@ -23,6 +23,14 @@ class PurchaseReturnItemObserver
     }
 
     /**
+     * Handle the PurchaseReturnItem "deleting" event.
+     */
+    public function deleting(PurchaseReturnItem $item): void
+    {
+        $item->stockLog?->delete();
+    }
+
+    /**
      * Handle the PurchaseReturnItem "deleted" event.
      */
     public function deleted(PurchaseReturnItem $item): void

@@ -23,6 +23,14 @@ class SaleReturnItemObserver
     }
 
     /**
+     * Handle the SaleReturnItem "deleting" event.
+     */
+    public function deleting(SaleReturnItem $item): void
+    {
+        $item->stockLog?->delete();
+    }
+
+    /**
      * Handle the SaleReturnItem "deleted" event.
      */
     public function deleted(SaleReturnItem $item): void

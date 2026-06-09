@@ -31,6 +31,14 @@ class SaleItemObserver
     }
 
     /**
+     * Handle the SaleItem "deleting" event.
+     */
+    public function deleting(SaleItem $item): void
+    {
+        $item->stockLog?->delete();
+    }
+
+    /**
      * Handle the SaleItem "deleted" event.
      */
     public function deleted(SaleItem $item): void

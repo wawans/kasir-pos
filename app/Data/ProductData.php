@@ -7,12 +7,14 @@ use App\Models\Category;
 use App\Models\Unit;
 use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Attributes\LoadRelation;
+use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Attributes\Validation\Exists;
 use Spatie\LaravelData\Attributes\Validation\Max;
 use Spatie\LaravelData\Attributes\Validation\MaxDigits;
 use Spatie\LaravelData\Attributes\Validation\Min;
 use Spatie\LaravelData\Attributes\WithoutValidation;
 use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
@@ -29,10 +31,12 @@ class ProductData extends Data
 
     #[WithoutValidation]
     #[LoadRelation]
+    #[MapOutputName(SnakeCaseMapper::class)]
     public ?UserActorData $createdBy;
 
     #[WithoutValidation]
     #[LoadRelation]
+    #[MapOutputName(SnakeCaseMapper::class)]
     public ?UserActorData $updatedBy;
 
     #[WithoutValidation]

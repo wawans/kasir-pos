@@ -4,8 +4,10 @@ namespace App\Data;
 
 use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Attributes\LoadRelation;
+use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Attributes\WithoutValidation;
 use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
@@ -25,10 +27,12 @@ class UserData extends Data
 
     #[WithoutValidation]
     #[LoadRelation]
+    #[MapOutputName(SnakeCaseMapper::class)]
     public ?UserActorData $createdBy;
 
     #[WithoutValidation]
     #[LoadRelation]
+    #[MapOutputName(SnakeCaseMapper::class)]
     public ?UserActorData $updatedBy;
 
     #[WithoutValidation]

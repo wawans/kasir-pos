@@ -23,6 +23,14 @@ class PurchaseItemObserver
     }
 
     /**
+     * Handle the PurchaseItem "deleting" event.
+     */
+    public function deleting(PurchaseItem $item): void
+    {
+        $item->stockLog?->delete();
+    }
+
+    /**
      * Handle the PurchaseItem "deleted" event.
      */
     public function deleted(PurchaseItem $item): void

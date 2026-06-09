@@ -6,6 +6,7 @@ use App\Data\AdjustmentData;
 use App\Http\Requests\Adjustment\StoreAdjustmentRequest;
 use App\Http\Requests\Adjustment\UpdateAdjustmentRequest;
 use App\Models\Adjustment;
+use App\Models\AdjustmentItem;
 use App\Models\Product;
 use App\Repositories\Concerns\WithTable;
 use Illuminate\Support\Facades\DB;
@@ -120,8 +121,21 @@ class AdjustmentRepository extends Repository
                 ];
             });
 
-            $model->items()?->delete();
-            $model->items()->createMany($items->toArray());
+            // $model->items()?->delete();
+            // $model->items()->createMany($items->toArray());
+            $oldItems = $adjustment->items->pluck('product_id')->toArray();
+            $newItems = $items->pluck('product_id')->toArray();
+            $remItems = collect($oldItems)->filter(fn ($f) => ! in_array($f, $newItems))->toArray();
+
+            // REMOVE OLD ITEMS
+            $adjustment->items->filter(fn (AdjustmentItem $item) => ! in_array($item->product_id, $newItems))->each(fn (AdjustmentItem $item) => $item->delete());
+            // UPDATE EXISTING ITEMS
+            $items->each(function ($item) use ($adjustment) {
+                $e = $adjustment->items->where('adjustment_id', $item['adjustment_id'])->firstWhere('product_id', $item['product_id']);
+
+                ($e) ? $e->update($item) : $adjustment->items()->create($item);
+            });
+
             $model->update([
                 'adjustment_total_quantity' => $model->items()->count(),
             ]);
