@@ -4,7 +4,6 @@ namespace App\Observers;
 
 use App\Enums\AdjustmentItemType;
 use App\Models\AdjustmentItem;
-use Illuminate\Support\Facades\Log;
 
 class AdjustmentItemObserver
 {
@@ -31,17 +30,15 @@ class AdjustmentItemObserver
     {
         $log = $item->stockLog;
         $stock = $item->stockLog->stock;
-        $quantity = $item->adjustment_item_type === AdjustmentItemType::SUB ? ($item->quantity * -1) : $item->quantity;
+        $remaining = $stock->quantity;
+        $change = $log->quantity;
+        $origin = $remaining - $change;
 
-        Log::debug('AdjustmentItem "updated" event', [
-            'item' => $item,
-            'stockLog' => $item->stockLog,
-            'stock' => $item->stockLog?->stock,
-        ]);
+        $quantity = $item->adjustment_item_type === AdjustmentItemType::SUB ? ($item->quantity * -1) : $item->quantity;
 
         $item->stockLog->update([
             'quantity' => $quantity,
-            'remaining_quantity' => $stock->quantity + $log->quantity - $quantity,
+            'remaining_quantity' => $origin + $quantity,
         ]);
     }
 
@@ -50,12 +47,6 @@ class AdjustmentItemObserver
      */
     public function deleting(AdjustmentItem $item): void
     {
-        Log::debug('AdjustmentItem "deleting" event', [
-            'item' => $item,
-            'stockLog' => $item->stockLog,
-            'stock' => $item->stockLog?->stock,
-        ]);
-
         $item->stockLog?->delete();
 
     }
@@ -65,12 +56,6 @@ class AdjustmentItemObserver
      */
     public function deleted(AdjustmentItem $item): void
     {
-        Log::debug('AdjustmentItem "deleted" event', [
-            'item' => $item,
-            'stockLog' => $item->stockLog,
-            'stock' => $item->stockLog?->stock,
-        ]);
-
         $item->stockLog?->delete();
     }
 

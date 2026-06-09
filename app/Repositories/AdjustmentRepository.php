@@ -121,15 +121,14 @@ class AdjustmentRepository extends Repository
                 ];
             });
 
-            // $model->items()?->delete();
-            // $model->items()->createMany($items->toArray());
             $oldItems = $adjustment->items->pluck('product_id')->toArray();
             $newItems = $items->pluck('product_id')->toArray();
             $remItems = collect($oldItems)->filter(fn ($f) => ! in_array($f, $newItems))->toArray();
 
-            // REMOVE OLD ITEMS
+            // $model->items()?->delete();
             $adjustment->items->filter(fn (AdjustmentItem $item) => ! in_array($item->product_id, $newItems))->each(fn (AdjustmentItem $item) => $item->delete());
-            // UPDATE EXISTING ITEMS
+
+            // $model->items()->createMany($items->toArray());
             $items->each(function ($item) use ($adjustment) {
                 $e = $adjustment->items->where('adjustment_id', $item['adjustment_id'])->firstWhere('product_id', $item['product_id']);
 

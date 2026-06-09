@@ -46,16 +46,6 @@ export default defineConfig({
           // minSize: 100000, // 100KB minimum chunk size
           // maxSize: 500000, // 500KB max chunk size
           groups: [
-            // {
-            //   name(moduleId) {
-            //     if (moduleId.includes('node_modules')) {
-            //       return 'vendor';
-            //     }
-            //     return null;
-            //   },
-            //   // minSize: 100000, // 100KB minimum chunk size
-            //   maxSize: 500000, // 500KB max chunk size
-            // },
             {
               name(moduleId) {
                 if (moduleId.includes('components/ui')) {
@@ -66,11 +56,6 @@ export default defineConfig({
             },
           ],
         },
-        // manualChunks(id) {
-        //   if (id.includes('components/ui')) {
-        //     return 'components-ui';
-        //   }
-        // },
       },
     },
   },

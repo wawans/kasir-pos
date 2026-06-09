@@ -19,7 +19,20 @@ class SaleReturnItemObserver
      */
     public function updated(SaleReturnItem $item): void
     {
-        //
+        $log = $item->stockLog;
+        if ($log) {
+            $stock = $item->stockLog->stock;
+            $remaining = $stock->quantity;
+            $change = $log->quantity;
+            $origin = $remaining - $change;
+
+            $quantity = $item->quantity;
+
+            $item->stockLog->update([
+                'quantity' => $quantity,
+                'remaining_quantity' => $origin + $quantity,
+            ]);
+        }
     }
 
     /**

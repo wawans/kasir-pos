@@ -14,10 +14,15 @@ class PurchaseItemObserver
         $log = $item->stockLog;
         if ($log) {
             $stock = $item->stockLog->stock;
+            $remaining = $stock->quantity;
+            $change = $log->quantity;
+            $origin = $remaining - $change;
+
+            $quantity = $item->quantity;
 
             $item->stockLog->update([
-                'quantity' => $item->quantity,
-                'remaining_quantity' => $stock->quantity - $log->quantity + $item->quantity,
+                'quantity' => $quantity,
+                'remaining_quantity' => $origin + $quantity,
             ]);
         }
     }

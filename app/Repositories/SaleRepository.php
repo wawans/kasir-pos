@@ -169,8 +169,16 @@ class SaleRepository extends Repository
             $newItems = $items->pluck('product_id')->toArray();
             $remItems = collect($prevItems)->except($newItems)->toArray();
 
-            $model->items()?->delete();
-            $model->items()->createMany($items->toArray());
+            // $model->items()?->delete();
+            $sale->items->filter(fn ($item) => ! in_array($item->product_id, $newItems))->each(fn ($item) => $item->delete());
+
+            // $model->items()->createMany($items->toArray());
+            $items->each(function ($item) use ($sale) {
+                $e = $sale->items->firstWhere('product_id', $item['product_id']);
+
+                ($e) ? $e->update($item) : $sale->items()->create($item);
+            });
+
             $subtotal = $model->items()->sum('subtotal');
             $total = $subtotal + $model->tax - $model->discount + $model->shipping;
             $model->update([
