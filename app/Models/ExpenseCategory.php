@@ -8,7 +8,7 @@ class ExpenseCategory extends Model
 {
     use Concerns\ActiveScope,
         Concerns\DefaultScope,
-        Concerns\HasUserstamps;
+        Concerns\HasQueryBuilder, Concerns\HasUserstamps;
 
     /**
      * The attributes that are mass assignable.

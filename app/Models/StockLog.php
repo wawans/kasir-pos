@@ -13,7 +13,7 @@ class StockLog extends Model
 {
     use Concerns\BelongsToProduct,
         Concerns\BelongsToUnit,
-        Concerns\HasUserstamps;
+        Concerns\HasQueryBuilder, Concerns\HasUserstamps;
 
     /**
      * The relations to eager load on every query.
@@ -42,6 +42,13 @@ class StockLog extends Model
      * @return array<string, string>
      */
     protected function casts(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getAllowedIncludes(): array
     {
         return [
             //

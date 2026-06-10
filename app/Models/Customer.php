@@ -11,7 +11,7 @@ class Customer extends Model implements HasMedia
     use Concerns\ActiveScope,
         Concerns\AvatarAttribute,
         Concerns\DefaultScope,
-        Concerns\HasUserstamps;
+        Concerns\HasQueryBuilder, Concerns\HasUserstamps;
     use InteractsWithMedia;
 
     /**

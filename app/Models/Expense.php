@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Expense extends Model
 {
     use Concerns\BelongsToPaymentMethod,
-        Concerns\HasUserstamps,
+        Concerns\HasQueryBuilder, Concerns\HasUserstamps,
         Concerns\MorphManyPayment;
 
     /**

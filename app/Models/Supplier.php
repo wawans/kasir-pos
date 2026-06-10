@@ -11,7 +11,7 @@ class Supplier extends Model implements HasMedia
     use Concerns\ActiveScope,
         Concerns\AvatarAttribute,
         Concerns\DefaultScope,
-        Concerns\HasUserstamps;
+        Concerns\HasQueryBuilder, Concerns\HasUserstamps;
     use InteractsWithMedia;
 
     /**
@@ -56,5 +56,12 @@ class Supplier extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('default')->singleFile();
+    }
+
+    public static function getAllowedIncludes(): array
+    {
+        return [
+            //
+        ];
     }
 }

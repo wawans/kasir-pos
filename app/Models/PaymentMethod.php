@@ -8,7 +8,7 @@ class PaymentMethod extends Model
 {
     use Concerns\ActiveScope,
         Concerns\DefaultScope,
-        Concerns\HasUserstamps;
+        Concerns\HasQueryBuilder, Concerns\HasUserstamps;
 
     /**
      * The relations to eager load on every query.

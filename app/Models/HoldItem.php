@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class HoldItem extends Model
 {
-    use Concerns\BelongsToProduct;
-    use Concerns\BelongsToUnit;
+    use Concerns\BelongsToProduct,
+        Concerns\BelongsToUnit,
+        Concerns\HasQueryBuilder;
 
     /**
      * The attributes that are mass assignable.

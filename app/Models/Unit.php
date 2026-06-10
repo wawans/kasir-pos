@@ -9,7 +9,7 @@ class Unit extends Model
 {
     use Concerns\ActiveScope,
         Concerns\DefaultScope,
-        Concerns\HasUserstamps;
+        Concerns\HasQueryBuilder, Concerns\HasUserstamps;
 
     /**
      * The relations to eager load on every query.
@@ -50,6 +50,13 @@ class Unit extends Model
         'is_active' => true,
         'is_default' => false,
     ];
+
+    public static function getAllowedIncludes(): array
+    {
+        return [
+            //
+        ];
+    }
 
     public function parent(): BelongsTo
     {

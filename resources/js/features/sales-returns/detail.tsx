@@ -1,7 +1,11 @@
 import { Data } from '@/components/data/data'
 import { Entity, EntityURL } from './index'
+import { getRouteApi } from '@tanstack/react-router'
 
+const route = getRouteApi('/_authenticated/sales-returns/$id/')
 export function DetailSalesReturns() {
+  const { data } = route.useLoaderData()
+
   return (
     <Data
       entity={Entity}

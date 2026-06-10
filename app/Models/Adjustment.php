@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Adjustment extends Model
 {
-    use Concerns\HasUserstamps,
+    use Concerns\HasQueryBuilder, Concerns\HasUserstamps,
         Concerns\MorphManyStockLog;
 
     /**

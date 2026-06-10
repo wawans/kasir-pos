@@ -21,7 +21,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements HasMedia
 {
     use Concerns\AvatarAttribute,
-        Concerns\HasUserstamps;
+        Concerns\HasQueryBuilder, Concerns\HasUserstamps;
     use HasApiTokens;
 
     /** @use HasFactory<UserFactory> */
@@ -59,5 +59,12 @@ class User extends Authenticatable implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('default')->singleFile();
+    }
+
+    public static function getAllowedIncludes(): array
+    {
+        return [
+            //
+        ];
     }
 }

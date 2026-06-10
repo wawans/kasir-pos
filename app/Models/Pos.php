@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pos extends Model
 {
-    use Concerns\HasUserstamps;
+    use Concerns\HasQueryBuilder, Concerns\HasUserstamps;
 
     /**
      * The relations to eager load on every query.

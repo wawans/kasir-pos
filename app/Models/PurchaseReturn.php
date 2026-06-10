@@ -11,7 +11,7 @@ class PurchaseReturn extends Model
 {
     use Concerns\BelongsToPaymentMethod,
         Concerns\BelongsToSupplier,
-        Concerns\HasUserstamps,
+        Concerns\HasQueryBuilder, Concerns\HasUserstamps,
         Concerns\MorphManyPayment,
         Concerns\MorphManyStockLog;
 

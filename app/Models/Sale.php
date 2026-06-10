@@ -12,7 +12,7 @@ class Sale extends Model
 {
     use Concerns\BelongsToCustomer,
         Concerns\BelongsToPaymentMethod,
-        Concerns\HasUserstamps,
+        Concerns\HasQueryBuilder, Concerns\HasUserstamps,
         Concerns\MorphManyPayment,
         Concerns\MorphManyStockLog;
 

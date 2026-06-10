@@ -33,7 +33,7 @@ import {
   Settings2,
   Wallet,
   SquareChartGantt,
-  DollarSign,
+  DollarSign, BanknoteArrowUp, BanknoteArrowDown,
 } from 'lucide-react'
 import { type SidebarData } from '../types'
 
@@ -75,7 +75,7 @@ export const sidebarData: SidebarData = {
           icon: Keyboard,
         },
         {
-          title: 'Cash',
+          title: 'Finance',
           icon: Wallet,
           items: [
             {
@@ -87,6 +87,26 @@ export const sidebarData: SidebarData = {
               title: 'Transactions',
               url: '/transactions',
               icon: SquareChartGantt,
+            },
+            {
+              title: 'Expenses',
+              url: '/expenses',
+              icon: BanknoteArrowDown,
+            },
+            {
+              title: 'Expenses Categories',
+              url: '/expenses-categories',
+              icon: Settings2,
+            },
+            {
+              title: 'Incomes',
+              url: '/incomes',
+              icon: BanknoteArrowUp,
+            },
+            {
+              title: 'Incomes Categories',
+              url: '/incomes-categories',
+              icon: Settings2,
             },
           ],
         },
@@ -189,22 +209,11 @@ export const sidebarData: SidebarData = {
             },
           ],
         },
-        {
-          title: 'Expenses',
-          icon: Banknote,
-          items: [
-            {
-              title: 'Expenses',
-              url: '/expenses',
-              icon: Banknote,
-            },
-            {
-              title: 'Expenses Categories',
-              url: '/expenses-categories',
-              icon: Settings2,
-            },
-          ],
-        },
+        // {
+        //   title: 'Expenses',
+        //   icon: Banknote,
+        //   items: [],
+        // },
         {
           title: 'Customers',
           url: '/customers',

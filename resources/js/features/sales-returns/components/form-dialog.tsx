@@ -34,33 +34,32 @@ import { useDataProvider } from '@/components/data/data-provider'
 import { type DataForm, formSchema, type ItemForm } from './schema'
 
 type FormDialogProps = {
+  parentRow: App.Data.SaleData
   currentRow?: App.Data.SaleReturnData
 }
-export function FormDialog({ currentRow }: FormDialogProps) {
+export function FormDialog({ parentRow, currentRow }: FormDialogProps) {
   const isEdit = !!currentRow
   const form = useForm<DataForm>({
     resolver: zodResolver(formSchema),
-    mode: 'onChange',
-    defaultValues: isEdit
-      ? {
-          ...currentRow,
-          description: currentRow?.description || '',
-        }
-      : {
-          name: '',
-          description: '',
-          is_default: false,
+    mode: 'onSubmit',
+    defaultValues:  {
+
         },
   })
 
-  const { entity, create, update } = useDataProvider()
+  const { entity, url, client, update } = useDataProvider()
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const { mutate, isPending } = useMutation({
     mutationFn: (values: DataForm) =>
-      isEdit ? update(currentRow.id, values) : create(values),
+      isEdit
+        ? update(currentRow.id, values)
+        : client('post', `${url}/${parentRow.id}`, values),
     onSuccess: (data) => {
-      navigate({ to: '/sales-returns/$id', params: { id: data.data.id } })
+      navigate({
+        to: '/sales-returns/$id',
+        params: { id: data?.data?.data?.id || data?.data?.id || data?.id },
+      })
     },
     onSettled: () => {
       queryClient.invalidateQueries({

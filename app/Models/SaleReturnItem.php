@@ -13,7 +13,8 @@ class SaleReturnItem extends Model
     use Concerns\BelongsToProduct,
         Concerns\BelongsToProductStock,
         Concerns\BelongsToUnit,
-        Concerns\MorphOneStockLog;
+        Concerns\MorphOneStockLog,
+        Concerns\HasQueryBuilder;
 
     /**
      * The attributes that are mass assignable.

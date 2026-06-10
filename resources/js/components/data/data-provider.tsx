@@ -23,9 +23,9 @@ export type Identifier = string | number
 
 type DataDialogType = 'create' | 'update' | 'delete' | 'detail'
 interface DataContextType<
-  Entity = string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  DataDialogContextType extends DataDialogType = any,
+  Entity = any,
+  DataDialogContextType extends string = DataDialogType,
 > {
   entity: string
   url: string

@@ -1,8 +1,13 @@
 import { Data } from '@/components/data/data'
 import { FormDialog } from './components/form-dialog'
 import { Entity, EntityURL } from './index'
+import { getRouteApi } from '@tanstack/react-router'
+
+const route = getRouteApi('/_authenticated/sales-returns/create/$id')
 
 export function CreateSalesReturns() {
+  const { data } = route.useLoaderData()
+
   return (
     <Data
       entity={Entity}
@@ -23,7 +28,7 @@ export function CreateSalesReturns() {
         },
       ]}
     >
-      <FormDialog />
+      <FormDialog parentRow={data} />
     </Data>
   )
 }

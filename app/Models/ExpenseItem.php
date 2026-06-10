@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ExpenseItem extends Model
 {
+    use Concerns\HasQueryBuilder;
+
     /**
      * The attributes that are mass assignable.
      *
