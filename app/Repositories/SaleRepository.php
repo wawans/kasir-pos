@@ -8,6 +8,7 @@ use App\Enums\StatusType;
 use App\Models\PaymentMethod;
 use App\Models\Product;
 use App\Models\Sale;
+use App\Models\SaleItem;
 use App\Repositories\Concerns\WithTable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -38,7 +39,10 @@ class SaleRepository extends Repository
         return QueryBuilder::for($this->query())
             ->allowedFilters($this->model->getKeyName(), ...$this->model->getFillable())
             ->allowedSorts($this->model->getKeyName(), ...$this->model->getFillable())
-            ->allowedIncludes('items', 'items.product', 'items.unit', 'customer')
+            ->allowedIncludes(
+                ...$this->model::getAllowedIncludes(),
+                ...array_map(fn ($s) => 'items.'.$s, SaleItem::getAllowedIncludes()),
+            )
             ->defaultSort('-updated_at');
     }
 

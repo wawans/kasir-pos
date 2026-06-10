@@ -30,7 +30,7 @@ export function SalesReturns() {
       <DataTable
         columns={columns}
         bulkActions={<TableBulkActions />}
-        searchKey='name'
+        searchKey='id'
         include='customer,sale'
       />
       <ActionDialogs />

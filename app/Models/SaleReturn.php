@@ -61,6 +61,19 @@ class SaleReturn extends Model
         ];
     }
 
+    public static function getAllowedIncludes(): array
+    {
+        return [
+            'sale',
+            'parent',
+            'items',
+            'customer',
+            'paymentMethod',
+            'payments',
+            'stockLogs',
+        ];
+    }
+
     public function sale(): BelongsTo
     {
         return $this->belongsTo(Sale::class);

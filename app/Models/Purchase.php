@@ -60,6 +60,18 @@ class Purchase extends Model
         ];
     }
 
+    public static function getAllowedIncludes(): array
+    {
+        return [
+            'returned',
+            'items',
+            'supplier',
+            'paymentMethod',
+            'payments',
+            'stockLogs',
+        ];
+    }
+
     public function items(): HasMany
     {
         return $this->hasMany(PurchaseItem::class);

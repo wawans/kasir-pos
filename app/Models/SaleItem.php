@@ -13,8 +13,8 @@ class SaleItem extends Model
     use Concerns\BelongsToProduct,
         Concerns\BelongsToProductStock,
         Concerns\BelongsToUnit,
-        Concerns\MorphOneStockLog,
-        Concerns\HasQueryBuilder;
+        Concerns\HasQueryBuilder,
+        Concerns\MorphOneStockLog;
 
     /**
      * The attributes that are mass assignable.
@@ -40,6 +40,17 @@ class SaleItem extends Model
     {
         return [
             //
+        ];
+    }
+
+    public static function getAllowedIncludes(): array
+    {
+        return [
+            'parent',
+            'product',
+            'unit',
+            'stock',
+            'stockLog',
         ];
     }
 

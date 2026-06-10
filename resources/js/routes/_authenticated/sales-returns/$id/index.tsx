@@ -9,7 +9,18 @@ export const Route = createFileRoute('/_authenticated/sales-returns/$id/')({
   pendingComponent: PageSkeleton,
   loader: async ({ params }) => {
     const { data } = await getOne(EntityURL, params.id, {
-      include: 'items.product,items.unit,customer,paymentMethod,payments',
+      include: [
+        'items.product',
+        'items.unit',
+        'customer',
+        'paymentMethod',
+        'payments',
+        'sale.items.product',
+        'sale.items.unit',
+        'sale.customer',
+        'sale.paymentMethod',
+        'sale.payments',
+      ].join(','),
     })
     return { data }
   },

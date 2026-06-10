@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Models\SaleReturn;
+use App\Models\SaleReturnItem;
 use App\Repositories\Concerns\WithTable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -41,7 +42,12 @@ class SaleReturnRepository extends Repository
         return QueryBuilder::for($this->query())
             ->allowedFilters($this->model->getKeyName(), ...$this->model->getFillable())
             ->allowedSorts($this->model->getKeyName(), ...$this->model->getFillable())
-            ->allowedIncludes('items', 'items.product', 'items.unit', 'customer', 'sale')
+            ->allowedIncludes(
+                ...$this->model::getAllowedIncludes(),
+                ...array_map(fn ($s) => 'items.'.$s, SaleReturnItem::getAllowedIncludes()),
+                ...array_map(fn ($s) => 'sale.'.$s, Sale::getAllowedIncludes()),
+                ...array_map(fn ($s) => 'sale.items.'.$s, SaleItem::getAllowedIncludes()),
+            )
             ->defaultSort('-updated_at');
     }
 

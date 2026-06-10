@@ -33,7 +33,9 @@ import {
   Settings2,
   Wallet,
   SquareChartGantt,
-  DollarSign, BanknoteArrowUp, BanknoteArrowDown,
+  DollarSign,
+  BanknoteArrowUp,
+  BanknoteArrowDown,
 } from 'lucide-react'
 import { type SidebarData } from '../types'
 

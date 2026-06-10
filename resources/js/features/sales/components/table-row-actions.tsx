@@ -32,27 +32,33 @@ export function TableRowActions<TData>({ row }: TableRowActionsProps<TData>) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-40'>
-          <DropdownMenuItem
-            onClick={() => {
-              setCurrentRow(row.original)
-              setOpen('detail')
-            }}
-          >
-            View
-            <DropdownMenuShortcut>
-              <Eye size={16} />
-            </DropdownMenuShortcut>
+          <DropdownMenuItem asChild>
+            <Link
+              to={`/sales/$id`}
+              params={{
+                id: (row.original as App.Data.UserActorData)
+                  .id as unknown as string,
+              }}
+            >
+              View
+              <DropdownMenuShortcut>
+                <Eye size={16} />
+              </DropdownMenuShortcut>
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => {
-              setCurrentRow(row.original)
-              setOpen('update')
-            }}
-          >
-            Edit
-            <DropdownMenuShortcut>
-              <PencilLine size={16} />
-            </DropdownMenuShortcut>
+          <DropdownMenuItem asChild>
+            <Link
+              to={`/sales/$id/edit`}
+              params={{
+                id: (row.original as App.Data.UserActorData)
+                  .id as unknown as string,
+              }}
+            >
+              Edit
+              <DropdownMenuShortcut>
+                <PencilLine size={16} />
+              </DropdownMenuShortcut>
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>

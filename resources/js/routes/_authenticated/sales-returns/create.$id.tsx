@@ -1,11 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { getOne } from '@/components/data/utils'
 import { PageSkeleton } from '@/components/layout/page-skeleton'
-import { CreateSalesReturns } from '@/features/sales-returns/create'
-import { EntityURL } from '@/features/sales'
+import { CustomersQueryOptions } from '@/features/customers/components/utils'
 import { PaymentMethodsQueryOptions } from '@/features/payment-methods/components/utils'
 import { ProductsQueryOptions } from '@/features/products/components/utils'
-import { getOne } from '@/components/data/utils'
-import { CustomersQueryOptions } from '@/features/customers/components/utils'
+import { EntityURL } from '@/features/sales'
+import { CreateSalesReturns } from '@/features/sales-returns/create'
 
 export const Route = createFileRoute(
   '/_authenticated/sales-returns/create/$id'

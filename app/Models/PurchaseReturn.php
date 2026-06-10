@@ -59,6 +59,19 @@ class PurchaseReturn extends Model
         ];
     }
 
+    public static function getAllowedIncludes(): array
+    {
+        return [
+            'purchase',
+            'parent',
+            'items',
+            'supplier',
+            'paymentMethod',
+            'payments',
+            'stockLogs',
+        ];
+    }
+
     public function purchase(): BelongsTo
     {
         return $this->belongsTo(Purchase::class);

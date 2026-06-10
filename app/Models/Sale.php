@@ -60,6 +60,18 @@ class Sale extends Model
         ];
     }
 
+    public static function getAllowedIncludes(): array
+    {
+        return [
+            'returned',
+            'items',
+            'customer',
+            'paymentMethod',
+            'payments',
+            'stockLogs',
+        ];
+    }
+
     public function items(): HasMany
     {
         return $this->hasMany(SaleItem::class);

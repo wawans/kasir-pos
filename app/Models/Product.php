@@ -61,6 +61,23 @@ class Product extends Model implements HasMedia
         $this->addMediaCollection('default');
     }
 
+    public static function getAllowedIncludes(): array
+    {
+        return [
+            'brand',
+            'category',
+            'supplier',
+            'stock',
+            'stockLog',
+            'stockLogs',
+            'unit',
+            'createdBy',
+            'updatedBy',
+            'deletedBy',
+            'media',
+        ];
+    }
+
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class);
