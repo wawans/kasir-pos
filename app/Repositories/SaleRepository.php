@@ -215,7 +215,7 @@ class SaleRepository extends Repository
 
             if ($status === StatusType::FINAL) {
                 // DO LOG STOCK ACTION
-                $this->createItemsStockLog($model);
+                // $this->createItemsStockLog($model);
             }
 
             DB::commit();
@@ -239,7 +239,24 @@ class SaleRepository extends Repository
      */
     public function destroy(Sale $sale)
     {
-        return $this->delete($sale);
+        DB::beginTransaction();
+        try {
+            // $model->items()?->delete(); // NOT WORKING!!! THIS DOESN'T TRIGGER OBSERVERS!
+            // $model->items->each->delete(); // THIS IS WORKING! - OR -
+            // $model->items()->cursor()->each(fn (Item $item) => $item->delete());
+            $sale->payments()->cursor()->each(fn ($model) => $model->delete());
+            $sale->items()->cursor()->each(fn ($model) => $model->delete());
+            $this->delete($sale);
+
+            DB::commit();
+
+            return true;
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error($exception->getMessage());
+
+            return throw app()->isProduction() ? ValidationException::withMessages(['error' => 'Server Error']) : $exception;
+        }
     }
 
     protected function createPayments(

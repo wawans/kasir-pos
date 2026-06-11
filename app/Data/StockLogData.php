@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Unit;
 use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Attributes\LoadRelation;
+use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Attributes\Validation\Exists;
 use Spatie\LaravelData\Attributes\Validation\MaxDigits;
@@ -42,6 +43,10 @@ class StockLogData extends Data
 
     #[WithoutValidation]
     public ?UnitData $unit;
+
+    #[WithoutValidation]
+    #[MapInputName('type_label')]
+    public string $type;
 
     public function __construct(
         #[Exists(Product::class, 'id')]

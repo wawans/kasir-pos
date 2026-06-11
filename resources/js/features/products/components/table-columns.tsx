@@ -88,7 +88,11 @@ export const columns: ColumnDef<App.Data.ProductData>[] = [
   {
     accessorKey: 'product_price',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Price' />
+      <DataTableColumnHeader
+        column={column}
+        title='Price'
+        className='justify-end'
+      />
     ),
     cell: ({ row }) => (
       <div className='w-auto pe-2 text-end text-nowrap'>
@@ -104,10 +108,14 @@ export const columns: ColumnDef<App.Data.ProductData>[] = [
   {
     id: 'stock',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Stock' />
+      <DataTableColumnHeader
+        column={column}
+        title='Stock'
+        className='justify-end text-end'
+      />
     ),
     cell: ({ row: { original } }) => (
-      <div className='w-auto pe-2 text-end text-nowrap'>
+      <div className='w-auto text-end text-nowrap'>
         <NumberInput
           className=''
           value={original?.stock?.quantity || 0}

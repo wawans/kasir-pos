@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use App\Enums\StockLogModelType;
 use App\Observers\StockLogObserver;
+use Illuminate\Database\Eloquent\Attributes\Appends;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
+#[Appends(['type', 'type_label', 'type_type'])]
 #[ObservedBy([StockLogObserver::class])]
 class StockLog extends Model
 {
@@ -53,6 +57,21 @@ class StockLog extends Model
         return [
             //
         ];
+    }
+
+    public function type(): Attribute
+    {
+        return Attribute::get(fn () => StockLogModelType::tryFrom($this->model_type));
+    }
+
+    public function typeLabel(): Attribute
+    {
+        return Attribute::get(fn () => $this->type?->label());
+    }
+
+    public function typeType(): Attribute
+    {
+        return Attribute::get(fn () => $this->type?->jsonSerialize());
     }
 
     public function model(): MorphTo

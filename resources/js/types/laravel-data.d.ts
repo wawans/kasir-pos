@@ -461,6 +461,7 @@ created_by: App.Data.UserActorData | null,
 updated_by: App.Data.UserActorData | null,
 product: App.Data.ProductData | null,
 unit: App.Data.UnitData | null,
+type: string,
 product_id: number,
 unit_id: number,
 quantity: number,
@@ -524,6 +525,7 @@ namespace Enums {
 export type AdjustmentItemType = '1' | '2';
 export type PaymentStatusType = '0' | '1';
 export type StatusType = '0' | '1';
+export type StockLogModelType = 'App\\Models\\Adjustment' | 'App\\Models\\AdjustmentItem' | 'App\\Models\\Hold' | 'App\\Models\\HoldItem' | 'App\\Models\\Product' | 'App\\Models\\Purchase' | 'App\\Models\\PurchaseItem' | 'App\\Models\\PurchaseReturn' | 'App\\Models\\PurchaseReturnItem' | 'App\\Models\\Sale' | 'App\\Models\\SaleItem' | 'App\\Models\\SaleReturn' | 'App\\Models\\SaleReturnItem';
 }
 }
 declare namespace Illuminate {

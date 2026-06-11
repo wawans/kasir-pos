@@ -14,7 +14,7 @@ enum PaymentStatusType: string implements JsonSerializable
     public function label(): string
     {
         return match ($this) {
-            default => $this->name,
+            default => ucwords(strtolower($this->name)),
         };
     }
 

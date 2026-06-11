@@ -16,6 +16,15 @@ export const columns: ColumnDef<App.Data.StockData>[] = [
     },
   },
   {
+    id: 'type',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Type' />
+    ),
+    cell: ({ row: { original } }) => (
+      <div className='w-fit text-nowrap'>{original?.type}</div>
+    ),
+  },
+  {
     id: 'name',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Name' />

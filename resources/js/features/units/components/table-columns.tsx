@@ -80,7 +80,7 @@ export const columns: ColumnDef<App.Data.UnitData>[] = [
       <DataTableColumnHeader column={column} title='Status' />
     ),
     cell: ({ row: { original } }) => (
-      <div className='w-fit space-x-2 ps-2 text-nowrap'>
+      <div className='w-fit space-x-2 text-nowrap'>
         <Badge variant={original.is_active ? 'info' : 'neutral'}>
           {original.is_active ? 'active' : 'inactive'}
         </Badge>
