@@ -1,0 +1,63 @@
+<?php
+
+namespace App\Data;
+
+use App\Models\Product;
+use App\Models\Unit;
+use Carbon\CarbonImmutable;
+use Spatie\LaravelData\Attributes\LoadRelation;
+use Spatie\LaravelData\Attributes\MapInputName;
+use Spatie\LaravelData\Attributes\MapOutputName;
+use Spatie\LaravelData\Attributes\Validation\Exists;
+use Spatie\LaravelData\Attributes\Validation\MaxDigits;
+use Spatie\LaravelData\Attributes\Validation\Min;
+use Spatie\LaravelData\Attributes\WithoutValidation;
+use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Mappers\SnakeCaseMapper;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
+
+#[TypeScript]
+class StockLogData extends Data
+{
+    #[WithoutValidation]
+    public int $id;
+
+    #[WithoutValidation]
+    public CarbonImmutable $created_at;
+
+    #[WithoutValidation]
+    public CarbonImmutable $updated_at;
+
+    #[WithoutValidation]
+    #[LoadRelation]
+    #[MapOutputName(SnakeCaseMapper::class)]
+    public ?UserActorData $createdBy;
+
+    #[WithoutValidation]
+    #[LoadRelation]
+    #[MapOutputName(SnakeCaseMapper::class)]
+    public ?UserActorData $updatedBy;
+
+    #[WithoutValidation]
+    public ?ProductData $product;
+
+    #[WithoutValidation]
+    public ?UnitData $unit;
+
+    #[WithoutValidation]
+    #[MapInputName('type_label')]
+    public string $type;
+
+    public function __construct(
+        #[Exists(Product::class, 'id')]
+        public int $product_id,
+        #[Exists(Unit::class, 'id')]
+        public int $unit_id,
+        #[Min(0)]
+        #[MaxDigits(15)]
+        public float $quantity,
+        #[Min(0)]
+        #[MaxDigits(15)]
+        public int $remaining_quantity = 0,
+    ) {}
+}

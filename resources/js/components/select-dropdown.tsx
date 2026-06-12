@@ -1,3 +1,5 @@
+import { type ComponentProps } from 'react'
+import type * as SelectPrimitive from '@radix-ui/react-select'
 import { Loader } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { FormControl } from '@/components/ui/form'
@@ -9,32 +11,40 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-type SelectDropdownProps = {
-  onValueChange?: (value: string) => void
-  defaultValue: string | undefined
+interface SelectDropdownProps extends ComponentProps<
+  typeof SelectPrimitive.Root
+> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onValueChange?: (value: any) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  defaultValue?: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value?: any
   placeholder?: string
   isPending?: boolean
-  items: { label: string; value: string }[] | undefined
+  items?: {
+    // label: string; value: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: any
+  }[]
   disabled?: boolean
   className?: string
-  isControlled?: boolean
+  valueBy?: string
+  labelBy?: string
 }
 
 export function SelectDropdown({
-  defaultValue,
-  onValueChange,
   isPending,
   items,
   placeholder,
   disabled,
   className = '',
-  isControlled = false,
+  valueBy = 'value',
+  labelBy = 'label',
+  ...props
 }: SelectDropdownProps) {
-  const defaultState = isControlled
-    ? { value: defaultValue, onValueChange }
-    : { defaultValue, onValueChange }
   return (
-    <Select {...defaultState}>
+    <Select {...props}>
       <FormControl>
         <SelectTrigger disabled={disabled} className={cn(className)}>
           <SelectValue placeholder={placeholder ?? 'Select'} />
@@ -50,9 +60,9 @@ export function SelectDropdown({
             </div>
           </SelectItem>
         ) : (
-          items?.map(({ label, value }) => (
-            <SelectItem key={value} value={value}>
-              {label}
+          items?.map((f) => (
+            <SelectItem key={f[labelBy] + f[valueBy]} value={f[valueBy]}>
+              {f[labelBy]}
             </SelectItem>
           ))
         )}

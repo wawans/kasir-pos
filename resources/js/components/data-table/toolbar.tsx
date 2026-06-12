@@ -29,12 +29,17 @@ export function DataTableToolbar<TData>({
   filters = [],
   children,
 }: DataTableToolbarProps<TData>) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [globalFilterValue, setGlobalFilterValue] = useState<any>(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     table.getState().globalFilter as any
   )
   const deferredGlobalFilterValue = useDeferredValue(globalFilterValue)
 
-  const [searchKeyValue, setSearchKeyValue] = useState<any>('')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [searchKeyValue, setSearchKeyValue] = useState<any>(
+    searchKey ? (table.getColumn(searchKey)?.getFilterValue() ?? '') : ''
+  )
   const deferredSearchKeyValue = useDeferredValue(searchKeyValue)
 
   const isFiltered =
@@ -49,22 +54,14 @@ export function DataTableToolbar<TData>({
       table.getColumn(searchKey)?.setFilterValue(deferredSearchKeyValue)
   }, [deferredSearchKeyValue, searchKey, table])
 
-  // useEffect(() => {
-  //   if (searchKey) setSearchKeyValue((table.getColumn(searchKey)?.getFilterValue() as string) ?? '')
-  // }, [searchKey, table])
-
   return (
     <div className='flex items-center justify-between'>
       <div className='flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2'>
         {searchKey ? (
           <Input
             placeholder={searchPlaceholder}
-            value={
-              (table.getColumn(searchKey)?.getFilterValue() as string) ?? ''
-            }
-            onChange={(event) =>
-              table.getColumn(searchKey)?.setFilterValue(event.target.value)
-            }
+            value={(searchKeyValue ?? '') as string}
+            onChange={(event) => setSearchKeyValue(event.target.value)}
             className='h-8 w-37.5 lg:w-62.5'
           />
         ) : (
@@ -96,6 +93,8 @@ export function DataTableToolbar<TData>({
             onClick={() => {
               table.resetColumnFilters()
               table.setGlobalFilter('')
+              setGlobalFilterValue('')
+              setSearchKeyValue('')
             }}
             className='h-8 px-2 lg:px-3'
           >

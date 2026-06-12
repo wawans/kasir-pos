@@ -1,20 +1,22 @@
 import { createContext, useCallback, useContext } from 'react'
-import type { User } from '@/models'
 import { useSessionStorage } from 'usehooks-ts'
 import axios from '@/lib/axios'
 
 export interface AuthContextType {
-  user: User | null
+  user: App.Data.UserData | null
   isAuthenticated: boolean
-  getUser: () => Promise<User | null>
+  getUser: () => Promise<App.Data.UserData | null>
   logout: () => Promise<void>
-  login: (email: string, password: string) => Promise<{ data: User }>
+  login: (
+    email: string,
+    password: string
+  ) => Promise<{ data: App.Data.UserData }>
   register: (
     name: string,
     email: string,
     password: string,
     passwordConfirmation: string
-  ) => Promise<{ data: User }>
+  ) => Promise<{ data: App.Data.UserData }>
   reset: () => void
 }
 
@@ -25,7 +27,10 @@ const AuthKey =
   '.auth.user'
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useSessionStorage<User | null>(AuthKey, null)
+  const [user, setUser] = useSessionStorage<App.Data.UserData | null>(
+    AuthKey,
+    null
+  )
 
   const getCsrfToken = useCallback(async (): Promise<void> => {
     await axios.get('/sanctum/csrf-cookie', {

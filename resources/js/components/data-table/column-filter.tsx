@@ -2,7 +2,9 @@ import { useState, useDeferredValue, useEffect } from 'react'
 import type { Column } from '@tanstack/react-table'
 import { Input } from '@/components/ui/input'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ColumnFilter({ column }: { column: Column<any, unknown> }) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [value, setValue] = useState<any>(column.getFilterValue() as any)
   const deferredValue = useDeferredValue(value)
 

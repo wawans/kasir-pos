@@ -1,0 +1,43 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('expenses', function (Blueprint $table) {
+            $table->id();
+            $table->date('date');
+            $table->string('reference')->nullable();
+            $table->foreignId('expense_category_id')->constrained('expense_categories')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->double('amount')->default(0);
+            $table->double('tax')->default(0);
+            $table->double('discount')->default(0);
+            $table->double('shipping')->default(0);
+            $table->double('total')->default(0);
+            $table->foreignId('payment_method_id')->constrained('payment_methods')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->double('payment_amount')->default(0);
+            $table->date('payment_date')->nullable();
+            $table->unsignedTinyInteger('payment_status')->default(1);
+            $table->text('note')->nullable();
+            $table->unsignedTinyInteger('status')->default(0);
+            $table->timestamps();
+            $table->foreignId('created_by')->nullable()->constrained('users', 'id');
+            $table->foreignId('updated_by')->nullable()->constrained('users', 'id');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('expenses');
+    }
+};

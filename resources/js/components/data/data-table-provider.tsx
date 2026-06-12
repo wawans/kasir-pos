@@ -4,6 +4,7 @@ import type { Table, RowData } from '@tanstack/react-table'
 export const createDataTableContext = <TData extends RowData>() =>
   createContext<Table<TData> | undefined>(undefined)
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const DataTableContext = createDataTableContext<any>()
 
 export const useDataTableProvider = () => {

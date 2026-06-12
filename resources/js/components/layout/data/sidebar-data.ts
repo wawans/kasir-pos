@@ -1,30 +1,42 @@
 import {
-  Construction,
-  LayoutDashboard,
-  Monitor,
-  Bug,
-  ListTodo,
-  FileX,
-  HelpCircle,
-  Lock,
-  Bell,
-  Package,
-  Palette,
-  ServerOff,
-  Settings,
-  KeyRound,
-  UserCog,
-  UserX,
-  Users,
-  User,
-  MessagesSquare,
-  ShieldCheck,
-  BadgeCheck,
   AudioWaveform,
   Command,
   GalleryVerticalEnd,
+  KeyRound,
+  LayoutDashboard,
+  Package,
+  Blocks,
+  RulerDimensionLine,
+  Truck,
+  ArrowUpDown,
+  UserCog,
+  Users,
+  Printer,
+  Award,
+  ReceiptText,
+  ArrowLeft,
+  ArrowRight,
+  Signpost,
+  Hand,
+  ShoppingCart,
+  ChartNoAxesCombined,
+  Store,
+  CreditCard,
+  SwatchBook,
+  Boxes,
+  Keyboard,
+  Milestone,
+  TimerReset,
+  ClockFading,
+  Settings,
+  Banknote,
+  Settings2,
+  Wallet,
+  SquareChartGantt,
+  DollarSign,
+  BanknoteArrowUp,
+  BanknoteArrowDown,
 } from 'lucide-react'
-import { ClerkLogo } from '@/assets/clerk-logo'
 import { type SidebarData } from '../types'
 
 export const sidebarData: SidebarData = {
@@ -60,18 +72,194 @@ export const sidebarData: SidebarData = {
           icon: LayoutDashboard,
         },
         {
-          title: 'Users',
-          url: '/users',
+          title: 'POS',
+          url: '/pos',
+          icon: Keyboard,
+        },
+        {
+          title: 'Finance',
+          icon: Wallet,
+          items: [
+            {
+              title: 'Balance',
+              url: '/balances',
+              icon: DollarSign,
+            },
+            {
+              title: 'Transactions',
+              url: '/transactions',
+              icon: SquareChartGantt,
+            },
+            {
+              title: 'Expenses',
+              url: '/expenses',
+              icon: BanknoteArrowDown,
+            },
+            {
+              title: 'Expenses Categories',
+              url: '/expenses-categories',
+              icon: Settings2,
+            },
+            {
+              title: 'Incomes',
+              url: '/incomes',
+              icon: BanknoteArrowUp,
+            },
+            {
+              title: 'Incomes Categories',
+              url: '/incomes-categories',
+              icon: Settings2,
+            },
+          ],
+        },
+        {
+          title: 'Products',
+          icon: Package,
+          items: [
+            {
+              title: 'Products',
+              url: '/products',
+              icon: Boxes,
+            },
+            {
+              title: 'Categories',
+              url: '/products-categories',
+              icon: SwatchBook,
+            },
+            {
+              title: 'Brands',
+              url: '/brands',
+              icon: Award,
+            },
+            {
+              title: 'Units',
+              url: '/units',
+              icon: RulerDimensionLine,
+            },
+            {
+              title: 'Print Barcode',
+              url: '/products-barcodes',
+              icon: Printer,
+            },
+          ],
+        },
+        {
+          title: 'Stocks',
+          icon: Blocks,
+          items: [
+            {
+              title: 'Stocks',
+              url: '/stocks',
+              icon: ArrowUpDown,
+            },
+            {
+              title: 'Adjustments',
+              url: '/adjustments',
+              icon: Signpost,
+            },
+            {
+              title: 'Adjustments Categories',
+              url: '/adjustments-categories',
+              icon: Milestone,
+            },
+            {
+              title: 'Stocks Logs',
+              url: '/stocks-logs',
+              icon: TimerReset,
+            },
+          ],
+        },
+        {
+          title: 'Purchases',
+          icon: ReceiptText,
+          items: [
+            {
+              title: 'Purchases',
+              url: '/purchases',
+              icon: ReceiptText,
+            },
+            {
+              title: 'Purchases Returns',
+              url: '/purchases-returns',
+              icon: ArrowLeft,
+            },
+          ],
+        },
+        {
+          title: 'Sales',
+          icon: ShoppingCart,
+          items: [
+            {
+              title: 'Sales',
+              url: '/sales',
+              icon: ShoppingCart,
+            },
+            {
+              title: 'Sales Returns',
+              url: '/sales-returns',
+              icon: ArrowRight,
+            },
+            {
+              title: 'Holds',
+              url: '/sales-holds',
+              icon: Hand,
+            },
+            {
+              title: 'POS',
+              url: '/sales-pos',
+              icon: ClockFading,
+            },
+          ],
+        },
+        // {
+        //   title: 'Expenses',
+        //   icon: Banknote,
+        //   items: [],
+        // },
+        {
+          title: 'Customers',
+          url: '/customers',
           icon: Users,
+        },
+        {
+          title: 'Suppliers',
+          url: '/suppliers',
+          icon: Truck,
+        },
+        {
+          title: 'Reports',
+          url: '/reports',
+          icon: ChartNoAxesCombined,
         },
       ],
     },
     {
-      title: 'Other',
+      title: 'Settings',
       items: [
         {
-          title: 'Settings',
+          title: 'Umum',
           icon: Settings,
+          items: [
+            {
+              title: 'Stores',
+              url: '/stores',
+              icon: Store,
+            },
+            {
+              title: 'Payment Methods',
+              url: '/payment-methods',
+              icon: CreditCard,
+            },
+          ],
+        },
+        {
+          title: 'Users',
+          url: '/users',
+          icon: Users,
+        },
+        {
+          title: 'My Account',
+          icon: UserCog,
           items: [
             {
               title: 'Profile',
