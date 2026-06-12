@@ -38,6 +38,8 @@ class {{ class }} extends Controller implements HasMiddleware
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @throws \Throwable
      */
     public function store(Request $request)
     {
@@ -50,12 +52,16 @@ class {{ class }} extends Controller implements HasMiddleware
      */
     public function show(string $id)
     {
-        // $model = $this->repository->toArray(${{ modelVariable }});
+        // $model = $this->repository->toArray(
+        //     $this->repository->tableQuery()->find(${{ modelVariable }}->id)
+        // );
         // return ApiResponse::data($model);
     }
 
     /**
      * Update the specified resource in storage.
+     *
+     * @throws \Throwable
      */
     public function update(Request $request, string $id)
     {
@@ -65,20 +71,12 @@ class {{ class }} extends Controller implements HasMiddleware
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @throws \Throwable
      */
     public function destroy(string $id)
     {
         // $this->repository->destroy(${{ modelVariable }});
-        // return ApiResponse::data();
-    }
-
-    /**
-     * Remove resource(s) from storage.
-     */
-    public function destroys(Request $request)
-    {
-        // $validated = $request->validate(['ids' => 'array']);
-        // $this->repository->destroys($validated['ids']);
         // return ApiResponse::data();
     }
 }

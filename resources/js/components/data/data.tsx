@@ -1,7 +1,7 @@
 import {
   DataProvider,
   type DataProviderProps,
-} from '@/components/data/data-provider.tsx'
+} from '@/components/data/data-provider'
 import { Main } from '@/components/layout/main'
 import { Page, type PageProps } from '@/components/layout/page'
 

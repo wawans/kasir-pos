@@ -2,20 +2,23 @@
 
 namespace {{ namespace }};
 
+use App\Data\{{ modelName }}Data;
 use App\Repositories\Repository;
-// use App\Repositories\Concerns\WithTable;
+use App\Repositories\Concerns\WithTable;
+use Spatie\QueryBuilder\QueryBuilder;
 
 /**
  * \{{ namespace }}\{{ class }}
  *
  * @property {{ model }} $model
  *
- * @method \Illuminate\Database\Eloquent\Builder|{{ model }} query()
+ * @method \Illuminate\Database\Eloquent\Builder<{{ model }}> query()
+ * @method {{ model }} create(array $attributes)
  * @method {{ model }} update(array $attributes, {{ model }} ${{ modelVariable }})
  */
 class {{ class }} extends Repository
 {
-    // use WithTable;
+    use WithTable;
 
     /**
      * Create a new repository instance.
@@ -24,6 +27,22 @@ class {{ class }} extends Repository
      */
     public function __construct(protected {{ model }} $model)
     {
+    }
+
+    public function tableQuery()
+    {
+        return QueryBuilder::for($this->query())
+            ->defaultSort('-updated_at');
+    }
+
+    public function toCollection($data)
+    {
+        return {{ modelName }}Data::collect($data);
+    }
+
+    public function toData($model)
+    {
+        return {{ modelName }}Data::from($model);
     }
 
     /**
@@ -58,16 +77,5 @@ class {{ class }} extends Repository
     public function destroy({{ model }} ${{ modelVariable }})
     {
         return $this->delete(${{ modelVariable }});
-    }
-
-    /**
-     * Delete the model(s) from the database.
-     *
-     * @param list<string> $keys
-     * @return bool|null|void
-     */
-    public function destroys(array $keys)
-    {
-        return $this->query()->whereIn('id', $keys)->delete();
     }
 }

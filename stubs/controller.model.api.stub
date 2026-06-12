@@ -38,11 +38,14 @@ class {{ class }} extends Controller implements HasMiddleware
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @throws \Throwable
      */
     public function store({{ storeRequest }} $request)
     {
         // $model = $this->repository->store($request->validated());
-        // return ApiResponse::data($model);
+        // $data = $this->repository->toData($model);
+        // return ApiResponse::data($data);
     }
 
     /**
@@ -50,35 +53,32 @@ class {{ class }} extends Controller implements HasMiddleware
      */
     public function show({{ model }} ${{ modelVariable }})
     {
-        // $model = $this->repository->toArray(${{ modelVariable }});
-        // return ApiResponse::data($model);
+        // $data = $this->repository->toData(
+        //     $this->repository->tableQuery()->find(${{ modelVariable }}->id)
+        // );
+        // return ApiResponse::data($data);
     }
 
     /**
      * Update the specified resource in storage.
+     *
+     * @throws \Throwable
      */
     public function update({{ updateRequest }} $request, {{ model }} ${{ modelVariable }})
     {
         // $model = $this->repository->edit($request->validated(), ${{ modelVariable }});
-        // return ApiResponse::data($model);
+        // $data = $this->repository->toData($model);
+        // return ApiResponse::data($data);
     }
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @throws \Throwable
      */
     public function destroy({{ model }} ${{ modelVariable }})
     {
         // $this->repository->destroy(${{ modelVariable }});
-        // return ApiResponse::data();
-    }
-
-    /**
-     * Remove resource(s) from storage.
-     */
-    public function destroys(Request $request)
-    {
-        // $validated = $request->validate(['ids' => 'array']);
-        // $this->repository->destroys($validated['ids']);
         // return ApiResponse::data();
     }
 }

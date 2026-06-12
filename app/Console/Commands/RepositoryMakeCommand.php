@@ -57,7 +57,8 @@ class RepositoryMakeCommand extends GeneratorCommand
     protected function buildClass($name)
     {
         if ($this->isModel()) {
-            $class = '\\'.$this->qualifyModel($this->option('model'));
+            $model = $this->option('model');
+            $class = '\\'.$this->qualifyModel($model);
 
             $replace = [
                 'DummyModel' => $class,
@@ -66,6 +67,9 @@ class RepositoryMakeCommand extends GeneratorCommand
                 'DummyModelVariable' => lcfirst(class_basename($class)),
                 '{{ modelVariable }}' => lcfirst(class_basename($class)),
                 '{{modelVariable}}' => lcfirst(class_basename($class)),
+                'DummyModelName' => $model,
+                '{{ modelName }}' => $model,
+                '{{modelName}}' => $model,
             ];
 
             return str_replace(

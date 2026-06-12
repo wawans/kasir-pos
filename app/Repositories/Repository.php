@@ -2,8 +2,14 @@
 
 namespace App\Repositories;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Traits\ForwardsCalls;
 
+/**
+ * \App\Repositories\Repository
+ *
+ * @property Model $model
+ */
 abstract class Repository
 {
     use ForwardsCalls;

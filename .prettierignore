@@ -4,5 +4,5 @@ resources/views/mail/*
 # Ignore auto generated routeTree.gen.ts
 /resources/js/routeTree.gen.ts
 
-# Ignore auto generated generated.d.ts
-/resources/js/generated/*
+# Ignore auto generated typescript-transformer
+resources/js/types/laravel-data.d.ts

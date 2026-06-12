@@ -1,16 +1,31 @@
 import React, { useCallback, useState } from 'react'
-import { type AxiosRequestConfig } from 'axios'
-import { API_URL } from '@/config/app.ts'
-import { type Model } from '@/models'
-import axios from '@/lib/axios.ts'
 import useDialogState from '@/hooks/use-dialog-state'
+import {
+  client,
+  create,
+  type CreateArgs,
+  destroy,
+  type DestroyArgs,
+  destroyMany,
+  type DestroyManyArgs,
+  getAll,
+  getAllQueryOptions,
+  getOne,
+  type GetOneArgs,
+  getOneQueryOptions,
+  update,
+  type UpdateArgs,
+  updateMany,
+  type UpdateManyArgs,
+} from './utils'
 
-type Identifier = string | number
+export type Identifier = string | number
 
 type DataDialogType = 'create' | 'update' | 'delete' | 'detail'
 interface DataContextType<
-  Entity extends Model = any,
-  DataDialogContextType extends DataDialogType = any,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Entity = any,
+  DataDialogContextType extends string = DataDialogType,
 > {
   entity: string
   url: string
@@ -56,116 +71,50 @@ export const useDataProvider = () => {
     throw new Error('useDataProvider has to be used within <DataProvider>')
   }
 
-  const getAll = useCallback(
-    async (
-      params: AxiosRequestConfig['params'] = {},
-      config: Omit<AxiosRequestConfig, 'params'> = {}
-    ) => {
-      return await axios
-        .get(`${API_URL}/${context.url}`, { ...config, params })
-        .then((r) => r.data)
-    },
-    [context.url]
-  )
-
-  const getOne = useCallback(
-    async (
-      id: Identifier,
-      params: AxiosRequestConfig['params'] = {},
-      config: Omit<AxiosRequestConfig, 'params'> = {}
-    ) => {
-      return await axios
-        .get(`${API_URL}/${context.url}/${id}`, { ...config, params })
-        .then((r) => r.data)
-    },
-    [context.url]
-  )
-
-  const create = useCallback(
-    async (
-      data: AxiosRequestConfig['params'],
-      params: AxiosRequestConfig['params'] = {},
-      config: Omit<AxiosRequestConfig, 'params'> = {}
-    ) => {
-      return await axios
-        .post(`${API_URL}/${context.url}`, data, { ...config, params })
-        .then((r) => r.data)
-    },
-    [context.url]
-  )
-
-  const update = useCallback(
-    async (
-      id: Identifier,
-      data: AxiosRequestConfig['params'],
-      params: AxiosRequestConfig['params'] = {},
-      config: Omit<AxiosRequestConfig, 'params'> = {}
-    ) => {
-      return await axios
-        .put(`${API_URL}/${context.url}/${id}`, data, { ...config, params })
-        .then((r) => r.data)
-    },
-    [context.url]
-  )
-
-  const updateMany = useCallback(
-    async (
-      ids: Identifier[],
-      data: AxiosRequestConfig['params'],
-      params: AxiosRequestConfig['params'] = {},
-      config: Omit<AxiosRequestConfig, 'params'> = {}
-    ) => {
-      const responses = await Promise.all(
-        ids.map((id) =>
-          axios
-            .put(`${API_URL}/${context.url}/${id}`, data, { ...config, params })
-            .then((r) => r.data)
-        )
-      )
-      return { data: responses }
-    },
-    [context.url]
-  )
-
-  const destroy = useCallback(
-    async (
-      id: Identifier,
-      params: AxiosRequestConfig['params'] = {},
-      config: Omit<AxiosRequestConfig, 'params'> = {}
-    ) => {
-      return await axios
-        .delete(`${API_URL}/${context.url}/${id}`, { ...config, params })
-        .then((r) => r.data)
-    },
-    [context.url]
-  )
-
-  const destroyMany = useCallback(
-    async (
-      ids: Identifier[],
-      params: AxiosRequestConfig['params'] = {},
-      config: Omit<AxiosRequestConfig, 'params'> = {}
-    ) => {
-      const responses = await Promise.all(
-        ids.map((id) =>
-          axios
-            .delete(`${API_URL}/${context.url}/${id}`, { ...config, params })
-            .then((r) => r.data)
-        )
-      )
-      return { data: responses }
-    },
-    [context.url]
-  )
-
   return {
     ...context,
-    getAll,
-    getOne,
-    create,
-    update,
-    updateMany,
-    destroy,
-    destroyMany,
+    client,
+    getAll: useCallback(
+      (params = {}, config = {}) => getAll(context.url, params, config),
+      [context.url]
+    ),
+    getOne: useCallback(
+      (id: GetOneArgs[1], params = {}, config = {}) =>
+        getOne(context.url, id, params, config),
+      [context.url]
+    ),
+    create: useCallback(
+      (data: CreateArgs[1], params = {}, config = {}) =>
+        create(context.url, data, params, config),
+      [context.url]
+    ),
+    update: useCallback(
+      (id: UpdateArgs[1], data: UpdateArgs[2], params = {}, config = {}) =>
+        update(context.url, id, data, params, config),
+      [context.url]
+    ),
+    updateMany: useCallback(
+      (
+        id: UpdateManyArgs[1],
+        data: UpdateManyArgs[2],
+        params = {},
+        config = {}
+      ) => updateMany(context.url, id, data, params, config),
+      [context.url]
+    ),
+    destroy: useCallback(
+      (id: DestroyArgs[1], params = {}, config = {}) =>
+        destroy(context.url, id, params, config),
+      [context.url]
+    ),
+    destroyMany: useCallback(
+      (id: DestroyManyArgs[1], params = {}, config = {}) =>
+        destroyMany(context.url, id, params, config),
+      [context.url]
+    ),
+    getAllQueryOptions: (params = {}) =>
+      getAllQueryOptions(context.entity, context.url, params),
+    getOneQueryOptions: (id: GetOneArgs[1], params = {}) =>
+      getOneQueryOptions(context.entity, context.url, id, params),
   }
 }

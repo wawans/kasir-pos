@@ -16,7 +16,7 @@ export default defineConfig(
       'tailwind.config.js',
       'vite.config.ts',
       'resources/js/components/ui/*',
-      'resources/js/generated/*',
+      'resources/js/types/laravel-data.d.ts',
     ],
   },
   {

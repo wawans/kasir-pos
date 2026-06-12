@@ -20,7 +20,9 @@ class TypeScriptTransformerServiceProvider extends BaseTypeScriptTransformerServ
             ->transformer(AttributedClassTransformer::class)
             ->transformer(EnumTransformer::class)
             ->transformDirectories(app_path())
-            ->writer(new GlobalNamespaceWriter('generated.d.ts'))
+            ->writer(new GlobalNamespaceWriter('laravel-data.d.ts'))
             ->formatter(PrettierFormatter::class);
+
+        $config->outputDirectory(resource_path('js/types'));
     }
 }

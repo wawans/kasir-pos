@@ -11,7 +11,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 /**
  * \App\Repositories\UserRepository
  *
- * @method \Illuminate\Database\Eloquent\Builder|User query()
+ * @method \Illuminate\Database\Eloquent\Builder<User> query()
  * @method User update(array $attributes, User $user)
  */
 class UserRepository extends Repository

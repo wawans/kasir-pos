@@ -1,5 +1,9 @@
-import type { ColumnDef, Table as TTable } from '@tanstack/react-table'
-import { getCoreRowModel, useReactTable } from '@tanstack/react-table'
+import {
+  type ColumnDef,
+  type Table as TTable,
+  getCoreRowModel,
+  useReactTable,
+} from '@tanstack/react-table'
 import { cn } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
@@ -12,6 +16,7 @@ import {
 } from '@/components/ui/table'
 
 type DataTableSkeletonProps<TData> = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   columns?: ColumnDef<any>[]
   table?: TTable<TData>
   className?: string
@@ -22,6 +27,7 @@ type DataTableSkeletonProps<TData> = {
   wrapperClassName?: string
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const cols: ColumnDef<any>[] = [
   {
     id: 'id',
