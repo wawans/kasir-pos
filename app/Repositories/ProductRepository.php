@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Data\ProductData;
 use App\Models\Product;
 use App\Repositories\Concerns\WithTable;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
@@ -28,7 +29,14 @@ class ProductRepository extends Repository
     public function tableQuery()
     {
         return QueryBuilder::for($this->query())
-            ->allowedFilters($this->model->getKeyName(), ...$this->model->getFillable())
+            ->allowedFilters(
+                AllowedFilter::groupOr('search', [
+                    AllowedFilter::partial('name'),
+                    AllowedFilter::exact('code'),
+                    AllowedFilter::exact('reference'),
+                ]),
+                $this->model->getKeyName(), ...$this->model->getFillable(),
+            )
             ->allowedSorts($this->model->getKeyName(), ...$this->model->getFillable())
             ->allowedIncludes('brand', 'category', 'unit', 'stock', 'stock.unit', 'stockLog', 'stockLogs')
             ->defaultSort('-updated_at');
