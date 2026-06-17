@@ -1,7 +1,4 @@
-import {
-  DataProvider,
-  type DataProviderProps,
-} from '@/components/data/data-provider'
+import { DataProvider } from '@/components/data/data-provider'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { FormDialog } from './components/form-dialog'

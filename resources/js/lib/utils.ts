@@ -64,6 +64,7 @@ export function getPageNumbers(currentPage: number, totalPages: number) {
  * character of the last word. One word only: first two characters. Empty: `?`.
  */
 export function getDisplayNameInitials(displayName: string): string {
+  if (blank(displayName)) return '?'
   const parts = displayName.trim().split(/\s+/).filter(Boolean)
   if (parts.length === 0) return '?'
   if (parts.length === 1) {
@@ -72,4 +73,9 @@ export function getDisplayNameInitials(displayName: string): string {
   const first = parts[0][0] ?? ''
   const last = parts[parts.length - 1]?.[0] ?? ''
   return (first + last).toUpperCase()
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function blank(value: any): boolean {
+  return value === null || value === undefined || value === ''
 }

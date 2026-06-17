@@ -6,8 +6,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
   useCarousel,
 } from '@/components/ui/carousel'
 import { ProductsCategoriesQueryOptions } from '@/features/products-categories/components/utils'
@@ -28,7 +26,7 @@ export function Categories<T>({
   }
 
   return (
-    <Carousel className='flex gap-x-1'>
+    <Carousel className='flex justify-between gap-x-1'>
       {/*<div className='flex min-w-0 items-center justify-between pb-3'>
         <div className='flex'>Categories</div>
         <div className='flex'>
@@ -39,11 +37,11 @@ export function Categories<T>({
       <div className='relative flex w-9 flex-none items-center justify-center'>
         <Prev />
       </div>
-      <CarouselContent className='flex flex-nowrap'>
+      <CarouselContent className='flex flex-nowrap' wrapperClassName='grow-1'>
         {isLoading ? (
           <div>Loading...</div>
         ) : (
-          (data || []).map((p) => (
+          ((data as App.Data.CategoryData[]) || []).map((p) => (
             <CarouselItem key={p.id} className='mx-1 basis-24'>
               <CategoryItem
                 category={p}

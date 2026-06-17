@@ -1,35 +1,30 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import * as React from 'react'
-import { z } from 'zod'
+import { useEffect, useState } from 'react'
 import { type AxiosError } from 'axios'
 import { useFieldArray, useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { PaymentStatuses } from '@/types'
+import { faker } from '@faker-js/faker'
+import { useMount, useUpdateEffect } from '@reactuses/core'
 import {
+  DollarSign,
+  Hand,
   MinusIcon,
   PlusIcon,
-  Save,
   Trash2,
-  Hand,
-  DollarSign,
+  Tag,
+  PercentCircle,
+  SparklesIcon,
+  Save,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { type LaravelValidationError } from '@/lib/axios'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { Checkbox } from '@/components/ui/checkbox'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -38,14 +33,16 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import { Spinner } from '@/components/ui/spinner'
-import { Textarea } from '@/components/ui/textarea'
 import { useDataProvider } from '@/components/data/data-provider'
+import { DatePicker } from '@/components/date-picker'
 import { NumberInput } from '@/components/form/number-input'
 import { SelectCombobox } from '@/components/select-combobox'
+import { SelectDropdown } from '@/components/select-dropdown'
 import { CustomersQueryOptions } from '@/features/customers/components/utils'
 import { PaymentMethodsQueryOptions } from '@/features/payment-methods/components/utils'
+import { EntityURL as SaleURL } from '@/features/sales'
+import { EntityURL as HoldURL } from '@/features/sales-holds'
 import {
   type DataForm,
   formSchema,
@@ -128,41 +125,91 @@ export function FormDialog() {
     CustomersQueryOptions(searchCustomer)
   )
 
-  const reset = () => {}
+  const [isFirstMount, setIsFirstMount] = useState<boolean>(false)
+  const [isReady, setIsReady] = useState<boolean>(false)
 
-  const { entity, create } = useDataProvider()
+  const generate = () => {
+    form.setValue(
+      'reference',
+      'SA-' + faker.string.alphanumeric({ length: 8, casing: 'upper' }),
+      { shouldValidate: false }
+    )
+  }
+
+  const reset = () => {
+    const payment_method = (paymentMethods || []).find((f) => f.is_default)
+    const customer = (customers || []).find((f) => f.is_default)
+
+    form.setValue('payment_method_id', payment_method?.id || null)
+    form.setValue('customer_id', customer?.id || null)
+    generate()
+  }
+
+  useMount(() => {
+    setIsFirstMount(true)
+  })
+
+  useUpdateEffect(() => {
+    if (isFirstMount) setIsReady(true)
+  }, [isFirstMount, isReady])
+
+  useUpdateEffect(() => {
+    if (isFirstMount && isReady) reset()
+  }, [isFirstMount, isReady])
+
+  const onError = ({ response }: AxiosError<LaravelValidationError>) => {
+    if (response?.status === 422) {
+      if (response?.data?.errors) {
+        for (const [key, value] of Object.entries(response.data.errors)) {
+          form.setError(key as keyof DataForm, {
+            type: 'server',
+            message: value[0] || 'Invalid',
+          })
+        }
+
+        // if (Object.hasOwn(response.data.errors, 'error')) showErrorAlert()
+      }
+
+      if (response?.data?.message) {
+        toast.error('Error!', {
+          description: response?.data?.message || 'Something went wrong.',
+        })
+      }
+    } else {
+      toast.error('Error!', { description: 'Something went wrong' })
+    }
+  }
+
+  const { entity, client } = useDataProvider()
   const { mutate, isPending } = useMutation({
-    mutationFn: (values: DataForm) => create(values),
+    mutationFn: (values: DataForm) => client('POST', SaleURL, values),
     onSuccess: () => {
       reset()
     },
-    onError: ({ response }: AxiosError<LaravelValidationError>) => {
-      if (response?.status === 422) {
-        if (response?.data?.errors) {
-          for (const [key, value] of Object.entries(response.data.errors)) {
-            form.setError(key as keyof DataForm, {
-              type: 'server',
-              message: value[0] || 'Invalid',
-            })
-          }
-
-          // if (Object.hasOwn(response.data.errors, 'error')) showErrorAlert()
-        }
-
-        if (response?.data?.message) {
-          toast.error('Error!', {
-            description: response?.data?.message || 'Something went wrong.',
-          })
-        }
-      } else {
-        toast.error('Error!', { description: 'Something went wrong' })
-      }
+    onError: onError,
+  })
+  const { mutate: hold, isPending: isHolding } = useMutation({
+    mutationFn: (values: DataForm) => client('POST', HoldURL, values),
+    onSuccess: () => {
+      reset()
     },
+    onError: onError,
   })
 
   const onSubmit = (values: DataForm) => {
     form.clearErrors()
     mutate(values)
+  }
+
+  const onHold = (values: DataForm) => {
+    form.clearErrors()
+    hold(values)
+  }
+
+  const pay = () => {
+    form.setValue('payment_amount', form.getValues('total'), {
+      shouldValidate: false,
+    })
   }
 
   const addItem = (product: App.Data.ProductData) => {
@@ -261,6 +308,7 @@ export function FormDialog() {
                                     subQty(index)
                                   }}
                                   disabled={rest.value <= 1}
+                                  className='w-6!'
                                 >
                                   <MinusIcon />
                                 </Button>
@@ -286,6 +334,7 @@ export function FormDialog() {
                                   onClick={() => {
                                     addQty(index)
                                   }}
+                                  className='w-6!'
                                 >
                                   <PlusIcon />
                                 </Button>
@@ -307,19 +356,55 @@ export function FormDialog() {
                               </p>
                             )}
                           />
-                          <FormField
-                            control={form.control}
-                            key={`items.${index}.price`}
-                            name={`items.${index}.price`}
-                            render={({ field: { value } }) => (
-                              <NumberInput
-                                className='text-sm text-muted-foreground'
-                                value={value}
-                                thousandSeparator
-                                asText
-                              />
-                            )}
-                          />
+                          <div className='flex items-center gap-x-2'>
+                            <FormField
+                              control={form.control}
+                              key={`items.${index}.price`}
+                              name={`items.${index}.price`}
+                              render={({ field: { value } }) => (
+                                <div
+                                  title='Price'
+                                  className='flex items-center justify-center gap-x-0.5 align-middle'
+                                >
+                                  <span>
+                                    <Tag className='-mb-0.5 size-3 text-muted-foreground' />
+                                  </span>
+                                  <span>
+                                    <NumberInput
+                                      className='text-xs text-muted-foreground'
+                                      value={value}
+                                      thousandSeparator
+                                      asText
+                                    />{' '}
+                                  </span>
+                                </div>
+                              )}
+                            />
+
+                            <FormField
+                              control={form.control}
+                              key={`items.${index}.discount`}
+                              name={`items.${index}.discount`}
+                              render={({ field: { value } }) => (
+                                <div
+                                  title='Discount'
+                                  className='flex items-center justify-center gap-x-0.5 align-middle'
+                                >
+                                  <span>
+                                    <PercentCircle className='-mb-0.5 size-3 text-muted-foreground' />
+                                  </span>
+                                  <span>
+                                    <NumberInput
+                                      className='text-xs text-muted-foreground'
+                                      value={value}
+                                      thousandSeparator
+                                      asText
+                                    />{' '}
+                                  </span>
+                                </div>
+                              )}
+                            />
+                          </div>
                         </div>
                         <div className=''>
                           <FormField
@@ -341,7 +426,7 @@ export function FormDialog() {
                         <Button
                           className='text-red-500!'
                           type='button'
-                          variant='outline'
+                          variant='ghost'
                           size='icon'
                           onClick={() => remove(index)}
                         >
@@ -428,7 +513,7 @@ export function FormDialog() {
                       <FormControl>
                         <div className='flex h-9 items-center justify-end'>
                           <NumberInput
-                            className='font-bold'
+                            className='px-3 py-1 text-base font-bold text-destructive'
                             value={value}
                             thousandSeparator
                             asText
@@ -439,14 +524,126 @@ export function FormDialog() {
                     </FormItem>
                   )}
                 />
+                <div className='mt-4 space-y-1 sm:mt-5 lg:mt-6'>
+                  <div className='h-fit items-start'>
+                    <FormField
+                      control={form.control}
+                      name='payment_method_id'
+                      render={({ field: { value, onChange, ...rest } }) => (
+                        <FormItem className='grid h-fit items-center sm:grid-cols-2'>
+                          <FormLabel>Payment Method</FormLabel>
+                          <SelectDropdown
+                            {...rest}
+                            items={paymentMethods || []}
+                            isPending={isLoadingPaymentMethods}
+                            value={value ?? null}
+                            onValueChange={(v) => {
+                              onChange(v === '' ? null : Number(v))
+                            }}
+                            valueBy='id'
+                            labelBy='name'
+                            className='w-full'
+                          />
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className='h-fit items-start'>
+                    <FormField
+                      control={form.control}
+                      name='payment_status'
+                      render={({ field: { value, onChange, ...rest } }) => (
+                        <FormItem className='grid h-fit items-center sm:grid-cols-2'>
+                          <FormLabel>Payment Status</FormLabel>
+                          <SelectDropdown
+                            {...rest}
+                            items={PaymentStatuses}
+                            value={value ?? null}
+                            onValueChange={(v) => {
+                              onChange(v)
+                            }}
+                            className='w-full'
+                          />
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className='h-fit items-start'>
+                    <FormField
+                      control={form.control}
+                      name='payment_date'
+                      render={({ field }) => (
+                        <FormItem className='grid h-fit items-center sm:grid-cols-2'>
+                          <FormLabel>Payment Date</FormLabel>
+                          <DatePicker
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            className='w-full'
+                          />
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className='h-fit items-start'>
+                    <FormField
+                      control={form.control}
+                      name='payment_amount'
+                      render={({ field: { ref, onChange, ...rest } }) => (
+                        <FormItem className='grid h-fit items-center sm:grid-cols-2'>
+                          <FormLabel>Payment Amount</FormLabel>
+                          <ButtonGroup className='w-full'>
+                            <Button
+                              type='button'
+                              variant='outline'
+                              size='icon'
+                              onClick={() => pay()}
+                            >
+                              <SparklesIcon />
+                            </Button>
+                            <FormControl>
+                              <NumberInput
+                                maxLength={12}
+                                className='text-end'
+                                {...rest}
+                                getInputRef={ref}
+                                thousandSeparator={true}
+                                allowNegative={false}
+                                onValueChange={(v) => {
+                                  onChange(v.floatValue)
+                                }}
+                              />
+                            </FormControl>
+                          </ButtonGroup>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
               </CardContent>
               <CardFooter className='flex items-center justify-between gap-x-4 border-t px-4'>
-                <Button type='button' className='flex-1'>
-                  <DollarSign />
+                <Button
+                  className='flex-1'
+                  type='submit'
+                  form={`${entity}-form`}
+                  disabled={isPending || isHolding}
+                >
+                  {isPending ? <Spinner /> : <DollarSign />}
                   <span className='flex-1'>Checkout</span>
                 </Button>
-                <Button type='button' className='flex-1' variant='destructive'>
-                  <Hand />
+                <Button
+                  className='flex-1'
+                  variant='destructive'
+                  type='button'
+                  form={`${entity}-form`}
+                  disabled={isPending || isHolding}
+                  onClick={form.handleSubmit(onHold)}
+                >
+                  {isHolding ? <Spinner /> : <Hand />}
+
                   <span className='flex-1'>Hold</span>
                 </Button>
               </CardFooter>
